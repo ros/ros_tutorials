@@ -1,0 +1,20 @@
+<package>
+  <description brief="turtlesim">
+
+     turtlesim
+
+  </description>
+  <author>Josh Faust</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/turtlesim</url>
+  <depend package="roscpp"/>
+  <depend package="roslib"/>
+  <depend package="rosconsole"/>
+  <depend package="std_srvs"/>
+  
+  <rosdep name="wxwidgets"/>
+
+</package>
+
+
