@@ -141,6 +141,12 @@ void TurtleFrame::updateTurtle()
   pos_.y += cos(orient_ + PI) * lin_vel_ * dt;
 
   // Clamp to screen size
+  if (pos_.x < 0 || pos_.x >= GetSize().GetWidth()
+      || pos_.y < 0 || pos_.y >= GetSize().GetWidth())
+  {
+    ROS_ERROR("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x, pos_.y);
+  }
+
   pos_.x = std::min(std::max(pos_.x, 0.0f), (float)GetSize().GetWidth());
   pos_.y = std::min(std::max(pos_.y, 0.0f), (float)GetSize().GetHeight());
 
