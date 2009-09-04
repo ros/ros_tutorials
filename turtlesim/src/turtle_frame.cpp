@@ -31,7 +31,7 @@
 
 #include <ros/package.h>
 
-#define PI 3.141592
+#define PI 3.14159265
 
 namespace turtlesim
 {
@@ -73,6 +73,8 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   clear_srv_ = nh_.advertiseService("clear", &TurtleFrame::clearCallback, this);
   reset_srv_ = nh_.advertiseService("reset", &TurtleFrame::resetCallback, this);
   set_pen_srv_ = nh_.advertiseService("set_pen", &TurtleFrame::setPenCallback, this);
+
+  ROS_INFO("Starting turtlesim with node name %s",ros::this_node::getName().c_str()) ;
 }
 
 TurtleFrame::~TurtleFrame()
@@ -187,6 +189,8 @@ void TurtleFrame::updateTurtle()
   p.angular_velocity = ang_vel_;
   pose_pub_.publish(p);
 
+  ROS_DEBUG("%s: pos_x: %f pos_y: %f theta: %f",ros::this_node::getName().c_str(), pos_.x, pos_.y, orient_);
+
   Refresh();
 }
 
@@ -199,12 +203,14 @@ void TurtleFrame::velocityCallback(const VelocityConstPtr& vel)
 
 bool TurtleFrame::clearCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&)
 {
+  ROS_WARN("Clearing turtlesim.");
   clear();
   return true;
 }
 
 bool TurtleFrame::resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&)
 {
+  ROS_WARN("Resetting turtlesim.");
   pos_.x = GetSize().GetWidth() / 2;
   pos_.y = GetSize().GetHeight() / 2;
   orient_ = 0.0f;
