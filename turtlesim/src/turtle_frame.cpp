@@ -49,6 +49,10 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   Connect(update_timer_->GetId(), wxEVT_TIMER, wxTimerEventHandler(TurtleFrame::onUpdate), NULL, this);
   Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(TurtleFrame::onPaint), NULL, this);
 
+  nh_.setParam("background_r", 0);
+  nh_.setParam("background_g", 144);
+  nh_.setParam("background_b", 255);
+
   std::string images_path = ros::package::getPath("turtlesim") + "/images/";
   turtle_image_.LoadFile(wxString::FromAscii((images_path + "turtle.png").c_str()));
   turtle_image_.SetMask(true);
