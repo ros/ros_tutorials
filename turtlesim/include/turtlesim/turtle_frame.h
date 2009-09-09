@@ -99,6 +99,8 @@ private:
   float ang_vel_;
   bool pen_on_;
 
+  uint64_t frame_count_;
+
   ros::WallTime last_turtle_update_;
   ros::WallTime last_command_time_;
 

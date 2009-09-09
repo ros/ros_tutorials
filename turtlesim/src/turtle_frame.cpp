@@ -42,6 +42,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
 , lin_vel_(0.0)
 , ang_vel_(0.0)
 , pen_on_(true)
+, frame_count_(0)
 {
   update_timer_ = new wxTimer(this);
   update_timer_->Start(16);
@@ -191,7 +192,10 @@ void TurtleFrame::updateTurtle()
 
   ROS_DEBUG("%s: pos_x: %f pos_y: %f theta: %f",ros::this_node::getName().c_str(), pos_.x, pos_.y, orient_);
 
-  Refresh();
+  if (++frame_count_ % 3 == 0)
+  {
+    Refresh();
+  }
 }
 
 void TurtleFrame::velocityCallback(const VelocityConstPtr& vel)
