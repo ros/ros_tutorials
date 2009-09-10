@@ -35,6 +35,14 @@
 
 #define PI 3.14159265
 
+#define DEFAULT_BG_R 0x45
+#define DEFAULT_BG_G 0x56
+#define DEFAULT_BG_B 0xff
+
+#define DEFAULT_PEN_R 0xb3
+#define DEFAULT_PEN_G 0xb8
+#define DEFAULT_PEN_B 0xff
+
 namespace turtlesim
 {
 
@@ -54,9 +62,9 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   Connect(update_timer_->GetId(), wxEVT_TIMER, wxTimerEventHandler(TurtleFrame::onUpdate), NULL, this);
   Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(TurtleFrame::onPaint), NULL, this);
 
-  nh_.setParam("background_r", 0);
-  nh_.setParam("background_g", 144);
-  nh_.setParam("background_b", 255);
+  nh_.setParam("background_r", DEFAULT_BG_R);
+  nh_.setParam("background_g", DEFAULT_BG_G);
+  nh_.setParam("background_b", DEFAULT_BG_B);
 
   std::string turtles[3] = 
   {
@@ -75,7 +83,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
 
   path_bitmap_ = wxBitmap(GetSize().GetWidth(), GetSize().GetHeight());
   path_dc_.SelectObject(path_bitmap_);
-  wxPen pen(*wxRED_PEN);
+  wxPen pen(wxPen(wxColour(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B)));
   pen.SetWidth(3);
   path_dc_.SetPen(pen);
   clear();
@@ -96,9 +104,9 @@ TurtleFrame::~TurtleFrame()
 
 void TurtleFrame::clear()
 {
-  int r = 0;
-  int g = 144;
-  int b = 255;
+  int r = DEFAULT_BG_R;
+  int g = DEFAULT_BG_G;
+  int b = DEFAULT_BG_B;
 
   nh_.param("background_r", r, r);
   nh_.param("background_g", g, g);
