@@ -30,6 +30,8 @@
 #include "turtlesim/turtle_frame.h"
 
 #include <ros/package.h>
+#include <cstdlib>
+#include <ctime>
 
 #define PI 3.14159265
 
@@ -44,6 +46,8 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
 , pen_on_(true)
 , frame_count_(0)
 {
+  srand(time(NULL));
+
   update_timer_ = new wxTimer(this);
   update_timer_->Start(16);
 
@@ -54,8 +58,15 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   nh_.setParam("background_g", 144);
   nh_.setParam("background_b", 255);
 
+  std::string turtles[3] = 
+  {
+    "box-turtle.png",
+    "robot-turtle.png",
+    "sea-turtle.png"
+  };
+
   std::string images_path = ros::package::getPath("turtlesim") + "/images/";
-  turtle_image_.LoadFile(wxString::FromAscii((images_path + "turtle.png").c_str()));
+  turtle_image_.LoadFile(wxString::FromAscii((images_path + turtles[rand() % 3]).c_str()));
   turtle_image_.SetMask(true);
   turtle_image_.SetMaskColour(255, 255, 255);
   turtle_ = wxBitmap(turtle_image_);
