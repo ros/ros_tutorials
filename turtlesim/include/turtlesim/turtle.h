@@ -27,65 +27,83 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <wx/wx.h>
-#include <wx/event.h>
-#include <wx/timer.h>
+#ifndef TURTLESIM_TURTLE_H
+#define TURTLESIM_TURTLE_H
 
 #include <ros/ros.h>
+#include <boost/shared_ptr.hpp>
 
-#include <std_srvs/Empty.h>
-#include <turtlesim/Spawn.h>
-#include <turtlesim/Kill.h>
-#include <map>
+#include <turtlesim/Pose.h>
+#include <turtlesim/Velocity.h>
+#include <turtlesim/SetPen.h>
 
-#include "turtle.h"
+#include <wx/wx.h>
+
+#define PI 3.14159265
 
 namespace turtlesim
 {
 
-class TurtleFrame : public wxFrame
+struct Vector2
 {
-public:
-  TurtleFrame(wxWindow* parent);
-  ~TurtleFrame();
+  Vector2()
+  : x(0.0)
+  , y(0.0)
+  {}
 
-  std::string spawnTurtle(float x, float y, float angle);
+  Vector2(float _x, float _y)
+  : x(_x)
+  , y(_y)
+  {}
 
-private:
-  void onUpdate(wxTimerEvent& evt);
-  void onPaint(wxPaintEvent& evt);
+  bool operator==(const Vector2& rhs)
+  {
+    return x == rhs.x && y == rhs.y;
+  }
 
-  void updateTurtles();
-  void clear();
+  bool operator!=(const Vector2& rhs)
+  {
+    return x != rhs.x || y != rhs.y;
+  }
 
-  bool clearCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
-  bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
-  bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
-  bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
-
-  ros::NodeHandle nh_;
-  wxTimer* update_timer_;
-  wxBitmap path_bitmap_;
-  wxMemoryDC path_dc_;
-
-  uint64_t frame_count_;
-
-  ros::WallTime last_turtle_update_;
-
-  ros::ServiceServer clear_srv_;
-  ros::ServiceServer reset_srv_;
-  ros::ServiceServer spawn_srv_;
-  ros::ServiceServer kill_srv_;
-
-  typedef std::map<std::string, TurtlePtr> M_Turtle;
-  M_Turtle turtles_;
-  uint32_t id_counter_;
-
-  wxImage turtle_images_[3];
-
-  float meter_;
-  float width_in_meters_;
-  float height_in_meters_;
+  float x;
+  float y;
 };
 
+class Turtle
+{
+public:
+  Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vector2& pos, float orient);
+
+  void update(double dt, wxMemoryDC& path_dc, float canvas_width, float canvas_height);
+  void paint(wxDC& dc);
+private:
+  void velocityCallback(const VelocityConstPtr& vel);
+  bool setPenCallback(turtlesim::SetPen::Request&, turtlesim::SetPen::Response&);
+
+  ros::NodeHandle nh_;
+
+  wxImage turtle_image_;
+  wxBitmap turtle_;
+
+  Vector2 pos_;
+  float orient_;
+
+  float lin_vel_;
+  float ang_vel_;
+  bool pen_on_;
+  wxPen pen_;
+
+  ros::Subscriber velocity_sub_;
+  ros::Publisher pose_pub_;
+  ros::ServiceServer set_pen_srv_;
+
+  ros::WallTime last_command_time_;
+
+  float meter_;
+};
+typedef boost::shared_ptr<Turtle> TurtlePtr;
+
 }
+
+#endif

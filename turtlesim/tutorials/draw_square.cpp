@@ -71,8 +71,8 @@ void stopTurn(ros::Publisher vel_pub)
   {
     ROS_INFO("Reached goal");
     g_state = FORWARD;
-    g_goal.x = sin(g_pose->theta) * 50 + g_pose->x;
-    g_goal.y = cos(g_pose->theta) * 50 + g_pose->y;
+    g_goal.x = sin(g_pose->theta) * 2 + g_pose->x;
+    g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
   }
@@ -92,7 +92,7 @@ void forward(ros::Publisher vel_pub)
   }
   else
   {
-    commandTurtle(vel_pub, 20.0, 0.0);
+    commandTurtle(vel_pub, 1.0, 0.0);
   }
 }
 
@@ -120,8 +120,8 @@ void timerCallback(const ros::TimerEvent&, ros::Publisher vel_pub)
   {
     g_first_goal_set = true;
     g_state = FORWARD;
-    g_goal.x = sin(g_pose->theta) * 50 + g_pose->x;
-    g_goal.y = cos(g_pose->theta) * 50 + g_pose->y;
+    g_goal.x = sin(g_pose->theta) * 2 + g_pose->x;
+    g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
   }
@@ -148,8 +148,8 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "draw_square");
   ros::NodeHandle nh;
-  ros::Subscriber pose_sub = nh.subscribe("turtle_pose", 1, poseCallback);
-  ros::Publisher vel_pub = nh.advertise<turtlesim::Velocity>("command_velocity", 1);
+  ros::Subscriber pose_sub = nh.subscribe("turtle1/pose", 1, poseCallback);
+  ros::Publisher vel_pub = nh.advertise<turtlesim::Velocity>("turtle1/command_velocity", 1);
   ros::ServiceClient reset = nh.serviceClient<std_srvs::Empty>("reset");
   ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, _1, vel_pub));
 

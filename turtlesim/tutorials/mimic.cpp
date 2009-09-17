@@ -19,7 +19,7 @@ Mimic::Mimic()
   ros::NodeHandle input_nh("input");
   ros::NodeHandle output_nh("output");
   vel_pub_ = output_nh.advertise<turtlesim::Velocity>("command_velocity", 1);
-  pose_sub_ = input_nh.subscribe<turtlesim::Pose>("turtle_pose", 1, &Mimic::poseCallback, this);
+  pose_sub_ = input_nh.subscribe<turtlesim::Pose>("pose", 1, &Mimic::poseCallback, this);
 }
 
 void Mimic::poseCallback(const turtlesim::PoseConstPtr& pose)
