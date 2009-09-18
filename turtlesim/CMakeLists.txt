@@ -24,9 +24,9 @@ include(${wxWidgets_USE_FILE})
 include_directories( ${wxWidgets_INCLUDE_DIRS} )
 
 rosbuild_add_boost_directories()
-rosbuild_add_executable(turtlesim src/turtlesim.cpp src/turtle.cpp src/turtle_frame.cpp)
-rosbuild_link_boost(turtlesim thread)
-target_link_libraries(turtlesim ${wxWidgets_LIBRARIES})
+rosbuild_add_executable(turtlesim_node src/turtlesim.cpp src/turtle.cpp src/turtle_frame.cpp)
+rosbuild_link_boost(turtlesim_node thread)
+target_link_libraries(turtlesim_node ${wxWidgets_LIBRARIES})
 
 rosbuild_add_executable(draw_square tutorials/draw_square.cpp)
 rosbuild_add_executable(mimic tutorials/mimic.cpp)
