@@ -54,6 +54,8 @@ Turtle::Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vec
   velocity_sub_ = nh_.subscribe("command_velocity", 1, &Turtle::velocityCallback, this);
   pose_pub_ = nh_.advertise<Pose>("pose", 1);
   set_pen_srv_ = nh_.advertiseService("set_pen", &Turtle::setPenCallback, this);
+  teleport_relative_srv_ = nh_.advertiseService("teleport_relative", &Turtle::teleportRelativeCallback, this);
+  teleport_absolute_srv_ = nh_.advertiseService("teleport_absolute", &Turtle::teleportAbsoluteCallback, this);
 
   meter_ = turtle_.GetHeight();
 }
@@ -84,8 +86,47 @@ bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::
   return true;
 }
 
+bool Turtle::teleportRelativeCallback(turtlesim::TeleportRelative::Request& req, turtlesim::TeleportRelative::Response&)
+{
+  teleport_requests_.push_back(TeleportRequest(0, 0, req.angular, req.linear, true));
+  return true;
+}
+
+bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req, turtlesim::TeleportAbsolute::Response&)
+{
+  teleport_requests_.push_back(TeleportRequest(req.x, req.y, req.theta, 0, false));
+  return true;
+}
+
 void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float canvas_height)
 {
+  // first process any teleportation requests, in order
+  V_TeleportRequest::iterator it = teleport_requests_.begin();
+  V_TeleportRequest::iterator end = teleport_requests_.end();
+  for (; it != end; ++it)
+  {
+    const TeleportRequest& req = *it;
+
+    Vector2 old_pos = pos_;
+    if (req.relative)
+    {
+      orient_ += req.theta;
+      pos_.x += sin(orient_ + PI) * req.linear;
+      pos_.y += cos(orient_ + PI) * req.linear;
+    }
+    else
+    {
+      pos_.x = req.pos.x;
+      pos_.y = req.pos.y;
+      orient_ = req.theta;
+    }
+
+    path_dc.SetPen(pen_);
+    path_dc.DrawLine(pos_.x * meter_, pos_.y * meter_, old_pos.x * meter_, old_pos.y * meter_);
+  }
+
+  teleport_requests_.clear();
+
   if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
   {
     lin_vel_ = 0.0f;

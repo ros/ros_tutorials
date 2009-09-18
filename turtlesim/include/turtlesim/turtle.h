@@ -36,6 +36,8 @@
 #include <turtlesim/Pose.h>
 #include <turtlesim/Velocity.h>
 #include <turtlesim/SetPen.h>
+#include <turtlesim/TeleportRelative.h>
+#include <turtlesim/TeleportAbsolute.h>
 
 #include <wx/wx.h>
 
@@ -80,6 +82,8 @@ public:
 private:
   void velocityCallback(const VelocityConstPtr& vel);
   bool setPenCallback(turtlesim::SetPen::Request&, turtlesim::SetPen::Response&);
+  bool teleportRelativeCallback(turtlesim::TeleportRelative::Request&, turtlesim::TeleportRelative::Response&);
+  bool teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request&, turtlesim::TeleportAbsolute::Response&);
 
   ros::NodeHandle nh_;
 
@@ -97,10 +101,29 @@ private:
   ros::Subscriber velocity_sub_;
   ros::Publisher pose_pub_;
   ros::ServiceServer set_pen_srv_;
+  ros::ServiceServer teleport_relative_srv_;
+  ros::ServiceServer teleport_absolute_srv_;
 
   ros::WallTime last_command_time_;
 
   float meter_;
+
+  struct TeleportRequest
+  {
+    TeleportRequest(float x, float y, float _theta, float _linear, bool _relative)
+    : pos(x, y)
+    , theta(_theta)
+    , linear(_linear)
+    , relative(_relative)
+    {}
+
+    Vector2 pos;
+    float theta;
+    float linear;
+    bool relative;
+  };
+  typedef std::vector<TeleportRequest> V_TeleportRequest;
+  V_TeleportRequest teleport_requests_;
 };
 typedef boost::shared_ptr<Turtle> TurtlePtr;
 
