@@ -1,7 +1,7 @@
 <package>
   <description brief="turtlesim">
 
-     turtlesim
+     turtlesim is a tool made for teaching ROS and ROS-PKGS. 
 
   </description>
   <author>Josh Faust</author>
