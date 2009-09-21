@@ -117,7 +117,7 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
     else
     {
       pos_.x = req.pos.x;
-      pos_.y = req.pos.y;
+      pos_.y = std::max(0.0f, canvas_height - req.pos.y);
       orient_ = req.theta;
     }
 
@@ -176,7 +176,7 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
   }
 
   Pose p;
-  p.x = canvas_width - pos_.x;
+  p.x = pos_.x;
   p.y = canvas_height - pos_.y;
   p.theta = orient_;
   p.linear_velocity = lin_vel_;

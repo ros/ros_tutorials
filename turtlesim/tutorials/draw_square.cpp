@@ -27,7 +27,7 @@ void poseCallback(const turtlesim::PoseConstPtr& pose)
 
 bool hasReachedGoal()
 {
-  return fabsf(g_pose->x - g_goal.x) < 1 && fabsf(g_pose->y - g_goal.y) < 1 && fabsf(g_pose->theta - g_goal.theta) < 0.01;
+  return fabsf(g_pose->x - g_goal.x) < 0.1 && fabsf(g_pose->y - g_goal.y) < 0.1 && fabsf(g_pose->theta - g_goal.theta) < 0.01;
 }
 
 bool hasStopped()
@@ -71,7 +71,7 @@ void stopTurn(ros::Publisher vel_pub)
   {
     ROS_INFO("Reached goal");
     g_state = FORWARD;
-    g_goal.x = sin(g_pose->theta) * 2 + g_pose->x;
+    g_goal.x = g_pose->x - sin(g_pose->theta) * 2;
     g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
@@ -120,7 +120,7 @@ void timerCallback(const ros::TimerEvent&, ros::Publisher vel_pub)
   {
     g_first_goal_set = true;
     g_state = FORWARD;
-    g_goal.x = sin(g_pose->theta) * 2 + g_pose->x;
+    g_goal.x = g_pose->x - sin(g_pose->theta) * 2;
     g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
