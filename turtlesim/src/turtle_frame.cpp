@@ -87,7 +87,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
 
   width_in_meters_ = GetSize().GetWidth() / meter_;
   height_in_meters_ = GetSize().GetHeight() / meter_;
-  spawnTurtle(width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
 }
 
 TurtleFrame::~TurtleFrame()
@@ -97,7 +97,13 @@ TurtleFrame::~TurtleFrame()
 
 bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn::Response& res)
 {
-  std::string name = spawnTurtle(req.x, req.y, req.theta);
+  std::string name = spawnTurtle(req.name, req.x, req.y, req.theta);
+  if (name.empty())
+  {
+    ROS_ERROR("A turtled named [%s] already exists", req.name.c_str());
+    return false;
+  }
+
   res.name = name;
 
   return true;
@@ -117,16 +123,37 @@ bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::R
   return true;
 }
 
-std::string TurtleFrame::spawnTurtle(float x, float y, float angle)
+bool TurtleFrame::hasTurtle(const std::string& name)
 {
-  std::stringstream name;
-  name << "turtle" << ++id_counter_;
-  TurtlePtr t(new Turtle(ros::NodeHandle(name.str()), turtle_images_[rand() % 3], Vector2(x, y), angle));
-  turtles_[name.str()] = t;
+  return turtles_.find(name) != turtles_.end();
+}
 
-  ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", name.str().c_str(), x, y, angle);
+std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle)
+{
+  std::string real_name = name;
+  if (real_name.empty())
+  {
+    do
+    {
+      std::stringstream ss;
+      ss << "turtle" << ++id_counter_;
+      real_name = ss.str();
+    } while (hasTurtle(real_name));
+  }
+  else
+  {
+    if (hasTurtle(real_name))
+    {
+      return "";
+    }
+  }
 
-  return name.str();
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[rand() % 3], Vector2(x, y), angle));
+  turtles_[real_name] = t;
+
+  ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
+
+  return real_name;
 }
 
 void TurtleFrame::clear()
@@ -203,7 +230,7 @@ bool TurtleFrame::resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Resp
   ROS_INFO("Resetting turtlesim.");
   turtles_.clear();
   id_counter_ = 0;
-  spawnTurtle(width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
   clear();
   return true;
 }

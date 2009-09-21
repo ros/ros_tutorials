@@ -49,7 +49,7 @@ public:
   TurtleFrame(wxWindow* parent);
   ~TurtleFrame();
 
-  std::string spawnTurtle(float x, float y, float angle);
+  std::string spawnTurtle(const std::string& name, float x, float y, float angle);
 
 private:
   void onUpdate(wxTimerEvent& evt);
@@ -57,6 +57,7 @@ private:
 
   void updateTurtles();
   void clear();
+  bool hasTurtle(const std::string& name);
 
   bool clearCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
   bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
