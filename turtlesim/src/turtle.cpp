@@ -111,8 +111,8 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
     if (req.relative)
     {
       orient_ += req.theta;
-      pos_.x += sin(orient_ + PI) * req.linear;
-      pos_.y += cos(orient_ + PI) * req.linear;
+      pos_.x += sin(orient_ + PI/2.0) * req.linear;
+      pos_.y += cos(orient_ + PI/2.0) * req.linear;
     }
     else
     {
@@ -136,8 +136,8 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
   Vector2 old_pos = pos_;
 
   orient_ = fmod(orient_ + ang_vel_ * dt, 2*PI);
-  pos_.x += sin(orient_ + PI) * lin_vel_ * dt;
-  pos_.y += cos(orient_ + PI) * lin_vel_ * dt;
+  pos_.x += sin(orient_ + PI/2.0) * lin_vel_ * dt;
+  pos_.y += cos(orient_ + PI/2.0) * lin_vel_ * dt;
 
   // Clamp to screen size
   if (pos_.x < 0 || pos_.x >= canvas_width
@@ -159,7 +159,7 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
   }
 
   {
-    wxImage rotated_image = turtle_image_.Rotate(orient_, wxPoint(turtle_image_.GetWidth() / 2, turtle_image_.GetHeight() / 2), false);
+    wxImage rotated_image = turtle_image_.Rotate(orient_ - PI/2.0, wxPoint(turtle_image_.GetWidth() / 2, turtle_image_.GetHeight() / 2), false);
 
     for (int y = 0; y < rotated_image.GetHeight(); ++y)
     {

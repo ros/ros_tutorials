@@ -71,8 +71,8 @@ void stopTurn(ros::Publisher vel_pub)
   {
     ROS_INFO("Reached goal");
     g_state = FORWARD;
-    g_goal.x = g_pose->x - sin(g_pose->theta) * 2;
-    g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
+    g_goal.x = cos(g_pose->theta) * 2 + g_pose->x;
+    g_goal.y = sin(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
   }
@@ -120,8 +120,8 @@ void timerCallback(const ros::TimerEvent&, ros::Publisher vel_pub)
   {
     g_first_goal_set = true;
     g_state = FORWARD;
-    g_goal.x = g_pose->x - sin(g_pose->theta) * 2;
-    g_goal.y = cos(g_pose->theta) * 2 + g_pose->y;
+    g_goal.x = cos(g_pose->theta) * 2 + g_pose->x;
+    g_goal.y = sin(g_pose->theta) * 2 + g_pose->y;
     g_goal.theta = g_pose->theta;
     printGoal();
   }
