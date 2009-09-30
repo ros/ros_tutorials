@@ -38,6 +38,7 @@
 #include <turtlesim/SetPen.h>
 #include <turtlesim/TeleportRelative.h>
 #include <turtlesim/TeleportAbsolute.h>
+#include <turtlesim/Color.h>
 
 #include <wx/wx.h>
 
@@ -77,7 +78,7 @@ class Turtle
 public:
   Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vector2& pos, float orient);
 
-  void update(double dt, wxMemoryDC& path_dc, float canvas_width, float canvas_height);
+  void update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, wxColour background_color, float canvas_width, float canvas_height);
   void paint(wxDC& dc);
 private:
   void velocityCallback(const VelocityConstPtr& vel);
@@ -100,6 +101,7 @@ private:
 
   ros::Subscriber velocity_sub_;
   ros::Publisher pose_pub_;
+  ros::Publisher color_pub_;
   ros::ServiceServer set_pen_srv_;
   ros::ServiceServer teleport_relative_srv_;
   ros::ServiceServer teleport_absolute_srv_;

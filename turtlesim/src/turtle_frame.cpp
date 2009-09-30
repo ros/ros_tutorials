@@ -208,7 +208,8 @@ void TurtleFrame::updateTurtles()
   M_Turtle::iterator end = turtles_.end();
   for (; it != end; ++it)
   {
-    it->second->update(0.016, path_dc_, width_in_meters_, height_in_meters_);
+    wxImage path_image = path_bitmap_.ConvertToImage();
+    it->second->update(0.016, path_dc_, path_image, path_dc_.GetBackground().GetColour(), width_in_meters_, height_in_meters_);
   }
 
   if (++frame_count_ % 3 == 0)

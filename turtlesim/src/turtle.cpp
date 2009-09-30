@@ -53,6 +53,7 @@ Turtle::Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vec
 
   velocity_sub_ = nh_.subscribe("command_velocity", 1, &Turtle::velocityCallback, this);
   pose_pub_ = nh_.advertise<Pose>("pose", 1);
+  color_pub_ = nh_.advertise<Color>("color_sensor", 1);
   set_pen_srv_ = nh_.advertiseService("set_pen", &Turtle::setPenCallback, this);
   teleport_relative_srv_ = nh_.advertiseService("teleport_relative", &Turtle::teleportRelativeCallback, this);
   teleport_absolute_srv_ = nh_.advertiseService("teleport_absolute", &Turtle::teleportAbsoluteCallback, this);
@@ -98,7 +99,7 @@ bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req,
   return true;
 }
 
-void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float canvas_height)
+void Turtle::update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, wxColour background_color, float canvas_width, float canvas_height)
 {
   // first process any teleportation requests, in order
   V_TeleportRequest::iterator it = teleport_requests_.begin();
@@ -149,14 +150,8 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
   pos_.x = std::min(std::max(pos_.x, 0.0f), canvas_width);
   pos_.y = std::min(std::max(pos_.y, 0.0f), canvas_height);
 
-  if (pen_on_)
-  {
-    if (pos_ != old_pos)
-    {
-      path_dc.SetPen(pen_);
-      path_dc.DrawLine(pos_.x * meter_, pos_.y * meter_, old_pos.x * meter_, old_pos.y * meter_);
-    }
-  }
+  int canvas_x = pos_.x * meter_;
+  int canvas_y = pos_.y * meter_;
 
   {
     wxImage rotated_image = turtle_image_.Rotate(orient_ - PI/2.0, wxPoint(turtle_image_.GetWidth() / 2, turtle_image_.GetHeight() / 2), false);
@@ -183,7 +178,26 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, float canvas_width, float ca
   p.angular_velocity = ang_vel_;
   pose_pub_.publish(p);
 
+  // Figure out (and publish) the color underneath the turtle
+  {
+    wxSize turtle_size = wxSize(turtle_.GetWidth(), turtle_.GetHeight());
+    Color color;
+    color.r = path_image.GetRed(canvas_x, canvas_y);
+    color.g = path_image.GetGreen(canvas_x, canvas_y);
+    color.b = path_image.GetBlue(canvas_x, canvas_y);
+    color_pub_.publish(color);
+  }
+
   ROS_DEBUG("[%s]: pos_x: %f pos_y: %f theta: %f", nh_.getNamespace().c_str(), pos_.x, pos_.y, orient_);
+
+  if (pen_on_)
+  {
+    if (pos_ != old_pos)
+    {
+      path_dc.SetPen(pen_);
+      path_dc.DrawLine(pos_.x * meter_, pos_.y * meter_, old_pos.x * meter_, old_pos.y * meter_);
+    }
+  }
 }
 
 void Turtle::paint(wxDC& dc)
