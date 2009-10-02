@@ -204,11 +204,12 @@ void TurtleFrame::updateTurtles()
     return;
   }
 
+  wxImage path_image = path_bitmap_.ConvertToImage();
+
   M_Turtle::iterator it = turtles_.begin();
   M_Turtle::iterator end = turtles_.end();
   for (; it != end; ++it)
   {
-    wxImage path_image = path_bitmap_.ConvertToImage();
     it->second->update(0.016, path_dc_, path_image, path_dc_.GetBackground().GetColour(), width_in_meters_, height_in_meters_);
   }
 
