@@ -204,19 +204,20 @@ void TurtleFrame::updateTurtles()
     return;
   }
 
-  wxImage path_image = path_bitmap_.ConvertToImage();
+  if (frame_count_ % 3 == 0)
+  {
+    path_image_ = path_bitmap_.ConvertToImage();
+    Refresh();
+  }
 
   M_Turtle::iterator it = turtles_.begin();
   M_Turtle::iterator end = turtles_.end();
   for (; it != end; ++it)
   {
-    it->second->update(0.016, path_dc_, path_image, path_dc_.GetBackground().GetColour(), width_in_meters_, height_in_meters_);
+    it->second->update(0.016, path_dc_, path_image_, path_dc_.GetBackground().GetColour(), width_in_meters_, height_in_meters_);
   }
 
-  if (++frame_count_ % 3 == 0)
-  {
-    Refresh();
-  }
+  ++frame_count_;
 }
 
 

@@ -67,6 +67,7 @@ private:
   ros::NodeHandle nh_;
   wxTimer* update_timer_;
   wxBitmap path_bitmap_;
+  wxImage path_image_;
   wxMemoryDC path_dc_;
 
   uint64_t frame_count_;
