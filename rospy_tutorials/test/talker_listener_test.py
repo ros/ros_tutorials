@@ -38,7 +38,7 @@
 PKG = 'rospy_tutorials'
 NAME = 'talker_listener_test'
 
-import roslib; roslib.update_path(PKG)
+import roslib; roslib.load_manifest(PKG)
 
 import sys, unittest, time
 
