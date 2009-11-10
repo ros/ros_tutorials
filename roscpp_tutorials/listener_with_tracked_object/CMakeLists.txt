@@ -1,1 +1,1 @@
-rospack_add_executable(listener_with_tracked_object listener_with_tracked_object.cpp)
+rosbuild_add_executable(listener_with_tracked_object listener_with_tracked_object.cpp)

@@ -1,1 +1,1 @@
-rospack_add_executable(custom_callback_processing custom_callback_processing.cpp)
+rosbuild_add_executable(custom_callback_processing custom_callback_processing.cpp)

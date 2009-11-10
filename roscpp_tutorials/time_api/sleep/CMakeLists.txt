@@ -1,1 +1,1 @@
-rospack_add_executable(sleep sleep.cpp)
+rosbuild_add_executable(sleep sleep.cpp)

@@ -1,1 +1,1 @@
-rospack_add_executable(talker talker.cpp)
+rosbuild_add_executable(talker talker.cpp)

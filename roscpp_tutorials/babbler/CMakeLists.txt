@@ -1,1 +1,1 @@
-rospack_add_executable(babbler babbler.cpp)
+rosbuild_add_executable(babbler babbler.cpp)

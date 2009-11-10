@@ -1,1 +1,1 @@
-rospack_add_executable(listener_threaded_spin listener_threaded_spin.cpp)
+rosbuild_add_executable(listener_threaded_spin listener_threaded_spin.cpp)

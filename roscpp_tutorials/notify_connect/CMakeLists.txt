@@ -1,1 +1,1 @@
-rospack_add_executable(notify_connect notify_connect.cpp)
+rosbuild_add_executable(notify_connect notify_connect.cpp)

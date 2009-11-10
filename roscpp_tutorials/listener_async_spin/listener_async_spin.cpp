@@ -32,7 +32,7 @@
 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system, using
- * a threaded Spinner object to receive callbacks in multiple threads at the same time.
+ * an asynchronous Spinner object to receive callbacks in multiple threads at the same time.
  */
 
 ros::Duration d(0.01);
@@ -75,12 +75,19 @@ int main(int argc, char **argv)
   ros::Subscriber sub4 = n.subscribe("chatter", 10, chatter4);
 
   /**
-   * The MultiThreadedSpinner object allows you to specify a number of threads to use
+   * The AsyncSpinner object allows you to specify a number of threads to use
    * to call callbacks.  If no explicit # is specified, it will use the # of hardware
    * threads available on your system.  Here we explicitly specify 4 threads.
    */
-  ros::MultiThreadedSpinner s(4);
-  ros::spin(s);
+  ros::AsyncSpinner s(4);
+  s.start();
+
+  ros::Rate r(5);
+  while (ros::ok())
+  {
+    ROS_INFO_STREAM("Main thread [" << boost::this_thread::get_id() << "].");
+    r.sleep();
+  }
 
   return 0;
 }
