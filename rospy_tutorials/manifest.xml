@@ -13,5 +13,8 @@
   <depend package="std_msgs"/>
   <!-- roscpp_tutorials is a dependency for the integration tests -->
   <depend package="roscpp_tutorials"/>
+  <export>
+    <cpp cflags="-I${prefix}/srv/cpp -I${prefix}/msg/cpp"/> 
+  </export>
 </package>
 
