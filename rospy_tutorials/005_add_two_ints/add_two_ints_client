@@ -42,7 +42,6 @@ import roslib; roslib.load_manifest(PKG)
 
 import sys
 import os
-import string
 
 import rospy
 
@@ -93,8 +92,8 @@ if __name__ == "__main__":
         y = random.randint(-50000, 50000)
     elif len(sys.argv) == 3:
         try:
-            x = string.atoi(sys.argv[1])
-            y = string.atoi(sys.argv[2])
+            x = int(sys.argv[1])
+            y = int(sys.argv[2])
         except:
             print usage()
             sys.exit(1)
