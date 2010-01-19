@@ -8,5 +8,6 @@
   <license></license>  
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/ros_tutorials</url>
+  <depend stack="ros"/>
 
 </stack>
