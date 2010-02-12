@@ -51,7 +51,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   update_timer_->Start(16);
 
   Connect(update_timer_->GetId(), wxEVT_TIMER, wxTimerEventHandler(TurtleFrame::onUpdate), NULL, this);
-  Connect(GetId(), wxEVT_PAINT, wxPaintEventHandler(TurtleFrame::onPaint), NULL, this);
+  Connect(wxEVT_PAINT, wxPaintEventHandler(TurtleFrame::onPaint), NULL, this);
 
   nh_.setParam("background_r", DEFAULT_BG_R);
   nh_.setParam("background_g", DEFAULT_BG_G);
