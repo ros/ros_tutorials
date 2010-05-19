@@ -6,5 +6,8 @@
   <depend package="roslisp_runtime" />
   <depend package="std_msgs" />
   <url>http://pr.willowgarage.com/wiki/roslisp</url>
+  <platform os="ubuntu" version="9.04"/>
+  <platform os="ubuntu" version="9.10"/>
+  <platform os="ubuntu" version="10.04"/>
 </package>
 
