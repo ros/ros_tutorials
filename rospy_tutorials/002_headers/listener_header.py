@@ -49,7 +49,7 @@ NAME = 'listener_header'
 def callback(data):
     chatter = data.data
     header = data.header
-    timestamp = header.stamp.to_seconds()
+    timestamp = header.stamp.to_sec()
     print rospy.get_caller_id(), header.seq, "I just heard that %s at %12f"%(chatter, timestamp)
     
 def listener_header():
