@@ -4,7 +4,7 @@
     ros_tutorials contains packages that demonstrate various features of ROS, as well as support packages which help demonstrate those features.
 
   </description>
-  <author>Maintained by Josh Faust, Ken Conley</author>
+  <author>Maintained by Josh Faust, Ken Conley, Melonee Wise</author>
   <license>BSD</license>  
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/ros_tutorials</url>
