@@ -104,9 +104,12 @@ int main(int argc, char **argv)
 
     std::stringstream ss;
     ss << "hello world " << count;
-    ROS_INFO("%s", ss.str().c_str());
     msg.data = ss.str();
 // %EndTag(FILL_MESSAGE)%
+
+// %Tag(ROSCONSOLE)%
+    ROS_INFO("%s", msg.data.c_str());
+// %EndTag(ROSCONSOLE)%
 
     /**
      * The publish() function is how you send messages. The parameter
