@@ -37,7 +37,6 @@
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
  */
-// %Tag(INIT)%
 int main(int argc, char **argv)
 {
   /**
@@ -50,6 +49,7 @@ int main(int argc, char **argv)
    * You must call one of the versions of ros::init() before using any other
    * part of the ROS system.
    */
+// %Tag(INIT)%
   ros::init(argc, argv, "talker");
 // %EndTag(INIT)%
 
