@@ -25,10 +25,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+// %Tag(FULLTEXT)%
 #include "ros/ros.h"
-#include "std_msgs/String.h"
-
-#include <sstream>
 
 /**
  * This tutorial demonstrates the use of timer callbacks.
@@ -53,11 +51,13 @@ int main(int argc, char **argv)
    * Timers allow you to get a callback at a specified rate.  Here we create
    * two timers at different rates as a demonstration.
    */
+// %Tag(CREATE_TIMERS)%
   ros::Timer timer1 = n.createTimer(ros::Duration(0.1), callback1);
   ros::Timer timer2 = n.createTimer(ros::Duration(1.0), callback2);
+// %EndTag(CREATE_TIMERS)%
 
   ros::spin();
 
   return 0;
 }
-
+// %EndTag(FULLTEXT)
