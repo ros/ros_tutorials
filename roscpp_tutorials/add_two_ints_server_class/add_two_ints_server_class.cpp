@@ -28,39 +28,33 @@
 #include "ros/ros.h"
 #include "roscpp_tutorials/TwoInts.h"
 
+// %Tag(CLASS_DECLARATION)%
 class AddTwo
 {
-private:
-  ros::NodeHandle node_handle_;
-  ros::ServiceServer service_;
-
 public:
-  AddTwo(const ros::NodeHandle& node_handle)
-  : node_handle_(node_handle)
-  {}
-
-  void init()
-  {
-    service_ = node_handle_.advertiseService("add_two_ints", &AddTwo::add, this);
-  }
-
-  bool add(roscpp_tutorials::TwoInts::Request  &req,
-           roscpp_tutorials::TwoInts::Response &res )
-  {
-    res.sum = req.a + req.b;
-    ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
-    ROS_INFO("  sending back response: [%ld]", (long int)res.sum);
-    return true;
-  }
+  bool add(roscpp_tutorials::TwoInts::Request& req,
+           roscpp_tutorials::TwoInts::Response& res);
 };
+// %EndTag(CLASS_DECLARATION)%
+
+bool AddTwo::add(roscpp_tutorials::TwoInts::Request& req,
+                 roscpp_tutorials::TwoInts::Response& res)
+{
+  res.sum = req.a + req.b;
+  ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
+  ROS_INFO("  sending back response: [%ld]", (long int)res.sum);
+  return true;
+}
 
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "add_two_ints_server");
   ros::NodeHandle n;
 
-  AddTwo a(n);
-  a.init();
+// %Tag(SERVICE_SERVER)%
+  AddTwo a;
+  ros::ServiceServer ss = n.advertiseService("add_two_ints", &AddTwo::add, &a);
+// %EndTag(SERVICE_SERVER)%
 
   ros::spin();
 

@@ -42,7 +42,9 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "add_two_ints_server");
   ros::NodeHandle n;
 
+// %Tag(SERVICE_SERVER)%
   ros::ServiceServer service = n.advertiseService("add_two_ints", add);
+// %EndTag(SERVICE_SERVER)%
 
   ros::spin();
 
