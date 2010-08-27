@@ -9,5 +9,6 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/ros_tutorials</url>
   <depend stack="ros" /> <!-- rosconsole, std_srvs, roscpp, roslib, std_msgs, rostest, rospy -->
+  <depend stack="roslisp_support" />
 
 </stack>
