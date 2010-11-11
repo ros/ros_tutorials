@@ -8,6 +8,7 @@
   <license>BSD</license>  
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/ros_tutorials</url>
-  <depend stack="ros" /> <!-- rosconsole, std_srvs, roscpp, roslib, std_msgs, rostest, rospy -->
+  <depend stack="ros" /> <!-- roslib -->
+  <depend stack="ros_comm" /> <!-- rosconsole, std_srvs, roscpp, std_msgs, rostest, rospy -->
 
 </stack>
