@@ -83,7 +83,7 @@ private:
   M_Turtle turtles_;
   uint32_t id_counter_;
 
-  wxImage turtle_images_[3];
+  wxImage turtle_images_[4];
 
   float meter_;
   float width_in_meters_;
