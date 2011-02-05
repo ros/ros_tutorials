@@ -28,5 +28,6 @@ rosbuild_add_executable(turtlesim_node src/turtlesim.cpp src/turtle.cpp src/turt
 rosbuild_link_boost(turtlesim_node thread)
 target_link_libraries(turtlesim_node ${wxWidgets_LIBRARIES})
 
+rosbuild_add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
 rosbuild_add_executable(draw_square tutorials/draw_square.cpp)
 rosbuild_add_executable(mimic tutorials/mimic.cpp)
