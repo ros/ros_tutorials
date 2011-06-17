@@ -6,7 +6,7 @@
   <author>Morgan Quigley</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://pr.willowgarage.com</url>
+  <url>http://ros.org/wiki/roscpp_tutorials</url>
   <depend package="roscpp"/>
   <depend package="std_srvs"/>
   <depend package="std_msgs"/>
