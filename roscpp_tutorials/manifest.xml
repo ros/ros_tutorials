@@ -22,6 +22,9 @@
     <depend package="std_srvs"/>
     <depend package="std_msgs"/>
 
+    <!-- Remove this later once roscpp is properly exporting -I's and -L's for rosdeps -->
+    <depend thirdparty="log4cxx"/>
+
     <export>
     </export>
     <srvs>srv/TwoInts.srv</srvs>

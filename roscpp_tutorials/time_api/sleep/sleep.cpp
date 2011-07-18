@@ -32,6 +32,7 @@
 
 int main(int argc, char **argv)
 {
+  ros::Time::init();
   // ros::Duration objects are constructed with two parameters: the first
   // is the number of seconds in the duration, and the second is the number
   // of nanoseconds.

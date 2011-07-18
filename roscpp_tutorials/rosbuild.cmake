@@ -1,5 +1,8 @@
 include(${CMAKE_CURRENT_BINARY_DIR}/package.cmake)
 
+# Remove this later once rostime is properly exporting -I and -L's for rosdeps.
+rosbuild_add_boost_directories()
+
 add_subdirectory(listener)
 add_subdirectory(notify_connect)
 add_subdirectory(talker)
