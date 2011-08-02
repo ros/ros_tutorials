@@ -1,3 +1,7 @@
+if (WIN32)
+  return()
+endif()
+
 include(${CMAKE_CURRENT_BINARY_DIR}/package.cmake)
 
 # Set the build type.  Options are:
@@ -9,7 +13,12 @@ include(${CMAKE_CURRENT_BINARY_DIR}/package.cmake)
 #set(ROS_BUILD_TYPE RelWithDebInfo)
 #set the default path for built executables to the "bin" directory
 #set the default path for built libraries to the "lib" directory
-find_package(wxWidgets REQUIRED)
+find_package(wxWidgets)
+if (NOT wxWidgets_FOUND)
+  return()
+  message(STATUS "disabling build of turtlesim... wxwidgets not found")
+endif()
+
 include(${wxWidgets_USE_FILE})
 include_directories(${wxWidgets_INCLUDE_DIRS})
 rosbuild_add_boost_directories()
