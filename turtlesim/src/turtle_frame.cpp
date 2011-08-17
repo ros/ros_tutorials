@@ -57,7 +57,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   nh_.setParam("background_g", DEFAULT_BG_G);
   nh_.setParam("background_b", DEFAULT_BG_B);
 
-  std::string turtles[5] = 
+  std::string turtles[TURTLESIM_NUM_TURTLES] = 
   {
     "box-turtle.png",
     "robot-turtle.png",
@@ -67,7 +67,7 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
   };
 
   std::string images_path = ros::package::getPath("turtlesim") + "/images/";
-  for (size_t i = 0; i < 5; ++i)
+  for (size_t i = 0; i < TURTLESIM_NUM_TURTLES; ++i)
   {
     turtle_images_[i].LoadFile(wxString::FromAscii((images_path + turtles[i]).c_str()));
     turtle_images_[i].SetMask(true);
@@ -150,7 +150,7 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
     }
   }
 
-  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[rand() % 5], Vector2(x, y), angle));
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[rand() % TURTLESIM_NUM_TURTLES], Vector2(x, y), angle));
   turtles_[real_name] = t;
 
   ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
