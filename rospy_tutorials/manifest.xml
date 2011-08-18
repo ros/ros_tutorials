@@ -6,7 +6,7 @@
   <author>Ken Conley</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://pr.willowgarage.com</url>
+  <url>http://ros.org/wiki/rospy_tutorials</url>
   <depend package="rospy"/>
   <depend package="rostest"/>  
   <depend package="std_srvs"/>

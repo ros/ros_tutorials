@@ -40,6 +40,8 @@
 
 #include "turtle.h"
 
+#define TURTLESIM_NUM_TURTLES 5
+
 namespace turtlesim
 {
 
@@ -83,7 +85,7 @@ private:
   M_Turtle turtles_;
   uint32_t id_counter_;
 
-  wxImage turtle_images_[4];
+  wxImage turtle_images_[TURTLESIM_NUM_TURTLES];
 
   float meter_;
   float width_in_meters_;

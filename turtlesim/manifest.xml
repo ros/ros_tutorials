@@ -22,6 +22,21 @@
   <platform os="ubuntu" version="9.04"/>
   <platform os="ubuntu" version="9.10"/>
   <platform os="ubuntu" version="10.04"/>
+
+  <rosbuild2>
+    <depend package="roscpp"/>
+    <depend package="roslib"/>
+    <depend package="rosconsole"/>
+    <depend package="std_srvs"/>
+
+    <msgs>
+      msg/Color.msg  msg/Pose.msg  msg/Velocity.msg 
+    </msgs>
+    <srvs>
+      srv/Kill.srv  
+      srv/SetPen.srv  srv/Spawn.srv  srv/TeleportAbsolute.srv  srv/TeleportRelative.srv
+    </srvs>
+  </rosbuild2>
 </package>
 
 
