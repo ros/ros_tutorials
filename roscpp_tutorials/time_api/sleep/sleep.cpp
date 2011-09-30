@@ -30,7 +30,7 @@
 #include <cstdio>
 #include "ros/time.h"
 
-int main(int argc, char **argv)
+int main(int /*argc*/, char **/*argv*/)
 {
   ros::Time::init();
   // ros::Duration objects are constructed with two parameters: the first

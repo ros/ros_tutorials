@@ -32,12 +32,12 @@
  * This tutorial demonstrates the use of timer callbacks.
  */
 
-void callback1(const ros::TimerEvent& e)
+void callback1(const ros::TimerEvent&)
 {
   ROS_INFO("Callback 1 triggered");
 }
 
-void callback2(const ros::TimerEvent& e)
+void callback2(const ros::TimerEvent&)
 {
   ROS_INFO("Callback 2 triggered");
 }

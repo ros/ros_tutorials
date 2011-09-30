@@ -48,7 +48,7 @@ void chatterConnect(const ros::SingleSubscriberPublisher& pub)
   pub.publish(msg);  // This message will get published only to the subscriber that just connected
 }
 
-void chatterDisconnect(const ros::SingleSubscriberPublisher& pub)
+void chatterDisconnect(const ros::SingleSubscriberPublisher&)
 {
   ROS_INFO("chatter disconnect");
 }
