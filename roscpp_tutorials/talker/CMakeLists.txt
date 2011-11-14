@@ -1,1 +1,5 @@
+if(CATKIN)
+  include(catkin.cmake)
+  return()
+endif()
 rosbuild_add_executable(talker talker.cpp)
