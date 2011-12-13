@@ -1,0 +1,19 @@
+Package: ros-tutorials
+Version: 0.0.0
+Section: misc
+Priority: extra
+Architecture: any
+Depends: ${misc:Depends} python-empy, cmake, make, 
+         @(CATKIN_PACKAGE_PREFIX)genmsg, @(CATKIN_PACKAGE_PREFIX)genpy, @(CATKIN_PACKAGE_PREFIX)gencpp,
+Build-Depends: debhelper (>= 7), cmake, gcc, make, python, python-empy, python-setuptools, 
+               @(CATKIN_PACKAGE_PREFIX)catkin, @(CATKIN_PACKAGE_PREFIX)genmsg, 
+               @(CATKIN_PACKAGE_PREFIX)genpy, @(CATKIN_PACKAGE_PREFIX)gencpp,
+Description:
+Author: 
+Maintainer: 
+Homepage: 
+
+Catkin-ProjectName: ros_tutorials
+Catkin-CopyrightType: willowgarage
+Catkin-Depends: catkin, std_msgs, ros_comm, roscpp_core, common_msgs
+Catkin-DebRulesType: cmake
