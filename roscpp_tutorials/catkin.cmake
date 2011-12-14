@@ -4,3 +4,6 @@ find_package(catkin)
 
 add_subdirectory(talker)
 add_subdirectory(listener)
+
+install_cmake_infrastructure(roscpp_tutorials)
+
