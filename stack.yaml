@@ -4,10 +4,10 @@ Section: misc
 Priority: extra
 Architecture: any
 Depends: ${misc:Depends} python-empy, cmake, make, 
-         @(CATKIN_PACKAGE_PREFIX)genmsg, @(CATKIN_PACKAGE_PREFIX)genpy, @(CATKIN_PACKAGE_PREFIX)gencpp,
+         @(PackagePrefix)genmsg, @(PackagePrefix)genpy, @(PackagePrefix)gencpp,
 Build-Depends: debhelper (>= 7), cmake, gcc, make, python, python-empy, python-setuptools, 
-               @(CATKIN_PACKAGE_PREFIX)catkin, @(CATKIN_PACKAGE_PREFIX)genmsg, 
-               @(CATKIN_PACKAGE_PREFIX)genpy, @(CATKIN_PACKAGE_PREFIX)gencpp,
+               @(PackagePrefix)catkin, @(PackagePrefix)genmsg, 
+               @(PackagePrefix)genpy, @(PackagePrefix)gencpp,
 Description:
 Author: 
 Maintainer: 
