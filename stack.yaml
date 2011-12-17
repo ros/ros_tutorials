@@ -3,8 +3,8 @@ Version: 0.0.0
 Section: misc
 Priority: extra
 Architecture: any
-Depends: ${misc:Depends} python-empy, cmake, make, 
-         @(PackagePrefix)genmsg, @(PackagePrefix)genpy, @(PackagePrefix)gencpp,
+Depends: ${misc:Depends} python-empy, cmake, make,
+         @(PackagePrefix)genmsg, @(PackagePrefix)genpy, @(PackagePrefix)gencpp, $(PackagePrefix)roscpp_core
 Build-Depends: debhelper (>= 7), cmake, gcc, make, python, python-empy, python-setuptools, 
                @(PackagePrefix)catkin, @(PackagePrefix)genmsg, 
                @(PackagePrefix)genpy, @(PackagePrefix)gencpp,
