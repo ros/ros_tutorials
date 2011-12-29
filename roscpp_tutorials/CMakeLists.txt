@@ -1,36 +1,32 @@
-if(CATKIN)
-  include(catkin.cmake)
-  return()
-endif()
-if(ROSBUILD)
-  include(rosbuild.cmake)
-  return()
-endif()
 cmake_minimum_required(VERSION 2.4.6)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+rosbuild_catkinize()
 rosbuild_init()
 rosbuild_gensrv()
 include_directories(${PROJECT_SOURCE_DIR}/srv/cpp)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-add_subdirectory(listener)
-add_subdirectory(notify_connect)
-add_subdirectory(talker)
-add_subdirectory(babbler)
-add_subdirectory(add_two_ints_client)
-add_subdirectory(add_two_ints_server)
-add_subdirectory(add_two_ints_server_class)
-add_subdirectory(anonymous_listener)
-add_subdirectory(listener_with_userdata)
-add_subdirectory(time_api)
-add_subdirectory(listener_multiple)
-add_subdirectory(listener_threaded_spin)
-add_subdirectory(listener_async_spin)
-#add_subdirectory(listener_single_message)
-add_subdirectory(listener_with_tracked_object)
-add_subdirectory(listener_unreliable)
-add_subdirectory(listener_class)
-add_subdirectory(node_handle_namespaces)
-add_subdirectory(custom_callback_processing)
-add_subdirectory(timers)
-add_subdirectory(parameters)
 
+foreach(dir
+    listener
+    notify_connect
+    talker
+    babbler
+    add_two_ints_client
+    add_two_ints_server
+    add_two_ints_server_class
+    anonymous_listener
+    listener_with_userdata
+    time_api
+    listener_multiple
+    listener_threaded_spin
+    listener_async_spin
+    # listener_single_message
+    listener_with_tracked_object
+    listener_unreliable
+    listener_class
+    node_handle_namespaces
+    custom_callback_processing
+    timers
+    parameters)
+  add_subdirectory(${dir})
+endforeach()
