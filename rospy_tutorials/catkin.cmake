@@ -17,6 +17,11 @@ foreach(T
   rosbuild_add_rostest(${T})
 endforeach()
 
+install(DIRECTORY .
+  DESTINATION share/rospy_tutorials
+  PATTERN CMakeLists.txt EXCLUDE
+  PATTERN catkin.cmake EXCLUDE
+  )
 enable_python(rospy_tutorials)
 
 

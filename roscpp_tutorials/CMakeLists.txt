@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.4.6)
 rosbuild_catkinize()
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+
 rosbuild_init()
 rosbuild_gensrv()
 include_directories(${PROJECT_SOURCE_DIR}/srv/cpp)
