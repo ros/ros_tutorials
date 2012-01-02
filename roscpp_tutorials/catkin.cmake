@@ -44,5 +44,5 @@ add_executable(time_api_sleep time_api/sleep/sleep.cpp)
 target_link_libraries(time_api_sleep ${ROS_LIBRARIES})
 install(TARGETS time_api_sleep RUNTIME DESTINATION share/roscpp_tutorials/bin)
 
-install_cmake_infrastructure(roscpp_tutorials)
+catkin_project(roscpp_tutorials)
 
