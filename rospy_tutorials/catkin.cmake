@@ -21,7 +21,7 @@ install(DIRECTORY .
   DESTINATION share/rospy_tutorials
   PATTERN CMakeLists.txt EXCLUDE
   PATTERN catkin.cmake EXCLUDE
+  PATTERN .svn EXCLUDE
   )
 enable_python(rospy_tutorials)
-
 
