@@ -1,1 +1,2 @@
-rosbuild_add_executable(add_two_ints_client add_two_ints_client.cpp)
+add_executable(add_two_ints_client add_two_ints_client.cpp)
+target_link_libraries(add_two_ints_client ${ROS_LIBRARIES})
