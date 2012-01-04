@@ -23,5 +23,5 @@ install(DIRECTORY .
   PATTERN catkin.cmake EXCLUDE
   PATTERN .svn EXCLUDE
   )
-enable_python(rospy_tutorials)
 
+catkin_export_python()
