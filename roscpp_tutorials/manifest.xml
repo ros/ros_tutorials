@@ -17,19 +17,5 @@
   <platform os="ubuntu" version="9.10"/>
   <platform os="ubuntu" version="10.04"/>
 
-  <rosbuild2>
-    <depend package="roscpp"/>
-    <depend package="std_srvs"/>
-    <depend package="std_msgs"/>
-
-    <!-- Remove this later once roscpp is properly exporting -I's and -L's for rosdeps -->
-    <depend thirdparty="log4cxx"/>
-
-    <export>
-    </export>
-    <srvs>srv/TwoInts.srv</srvs>
-  </rosbuild2>
-
-
 </package>
 
