@@ -3,13 +3,21 @@ project(ros_tutorials)
 
 find_package(catkin)
 find_package(ROS REQUIRED COMPONENTS
-  roscpp_serialization std_msgs sensor_msgs roscpp rosconsole rostime cpp_common roscpp_traits
-  XmlRpc)
+  roscpp_serialization
+  std_msgs
+  sensor_msgs
+  roscpp
+  rosconsole
+  rostime
+  cpp_common
+  roscpp_traits
+  xmlrpcpp
+  )
 
 foreach(subdir
     rospy_tutorials
-    roscpp_tutorials)
+    roscpp_tutorials
+    )
   add_subdirectory(${subdir})
 endforeach()
-
 
