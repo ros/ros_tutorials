@@ -1,4 +1,5 @@
 <package>
+  <catkin />
   <description brief="Shows the features of ROS step-by-step">
     This package attempts to show the features of ROS step-by-step,
     including using messages, servers, parameters, etc.

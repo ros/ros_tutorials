@@ -1,4 +1,5 @@
 <package>
+  <catkin />
   <description brief="turtlesim">
 
      turtlesim is a tool made for teaching ROS and ROS-PKGS.
@@ -8,21 +9,12 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/turtlesim</url>
-  <depend package="roscpp"/>
-  <depend package="roslib"/>
-  <depend package="rosconsole"/>
-  <depend package="std_srvs"/>
 
   <rosdep name="wxwidgets"/>
 
   <export>
     <cpp cflags="-I${prefix}/msg/cpp -I${prefix}/srv/cpp"/>
   </export>
-
-  <platform os="ubuntu" version="9.04"/>
-  <platform os="ubuntu" version="9.10"/>
-  <platform os="ubuntu" version="10.04"/>
-
 </package>
 
 
