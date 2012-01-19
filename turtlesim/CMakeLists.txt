@@ -3,7 +3,12 @@ project(turtlesim)
 find_package(ROS COMPONENTS catkin roscpp roslib rosconsole std_srvs)
 catkin_project(${PROJECT_NAME})
 
-find_package(wxWidgets REQUIRED)
+find_package(wxWidgets)
+if(NOT wxWidgets_FOUND)
+  message("TODO: wx not found; skipping turtlesim")
+  return()
+endif()
+
 include(${wxWidgets_USE_FILE})
 find_package(Boost COMPONENTS thread)
 
