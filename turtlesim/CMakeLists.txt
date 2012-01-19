@@ -1,33 +1,38 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
-
-rosbuild_init()
-
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
-rosbuild_genmsg()
-rosbuild_gensrv()
+cmake_minimum_required(VERSION 2.8)
+project(turtlesim)
+find_package(ROS COMPONENTS catkin roscpp roslib rosconsole std_srvs)
+catkin_project(${PROJECT_NAME})
 
 find_package(wxWidgets REQUIRED)
 include(${wxWidgets_USE_FILE})
-include_directories( ${wxWidgets_INCLUDE_DIRS} )
+find_package(Boost COMPONENTS thread)
 
-rosbuild_add_boost_directories()
-rosbuild_add_executable(turtlesim_node src/turtlesim.cpp src/turtle.cpp src/turtle_frame.cpp)
-rosbuild_link_boost(turtlesim_node thread)
-target_link_libraries(turtlesim_node ${wxWidgets_LIBRARIES})
+include_directories(include ${ROS_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${wxWidgets_INCLUDE_DIRS})
 
-rosbuild_add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
-rosbuild_add_executable(draw_square tutorials/draw_square.cpp)
-rosbuild_add_executable(mimic tutorials/mimic.cpp)
+add_message_files(DIRECTORY msg FILES 
+                  Color.msg Pose.msg Velocity.msg)
+add_service_files(DIRECTORY srv FILES
+                  Kill.srv
+                  SetPen.srv
+                  Spawn.srv
+                  TeleportAbsolute.srv
+                  TeleportRelative.srv)
+generate_messages(DEPENDENCIES std_msgs std_srvs)
+
+
+add_executable(turtlesim_node src/turtlesim.cpp src/turtle.cpp src/turtle_frame.cpp)
+target_link_libraries(turtlesim_node ${wxWidgets_LIBRARIES} ${ROS_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(turtlesim_node turtlesim_gencpp)
+
+add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
+target_link_libraries(turtle_teleop_key ${wxWidgets_LIBRARIES} ${ROS_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(turtle_teleop_key turtlesim_gencpp)
+add_executable(draw_square tutorials/draw_square.cpp)
+target_link_libraries(draw_square ${wxWidgets_LIBRARIES} ${ROS_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(draw_square turtlesim_gencpp)
+add_executable(mimic tutorials/mimic.cpp)
+target_link_libraries(mimic ${wxWidgets_LIBRARIES} ${ROS_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(mimic turtlesim_gencpp)
+
+install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
+        RUNTIME DESTINATION share/${PROJECT_NAME})
