@@ -1,5 +1,5 @@
 Catkin-ProjectName: ros_tutorials
-Version: 0.0.0
+Version: 0.2.7
 Depends: catkin, std_msgs, ros_comm, roscpp_core, common_msgs
 Description:
 Author: 
