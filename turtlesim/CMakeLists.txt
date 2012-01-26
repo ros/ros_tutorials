@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(turtlesim)
-find_package(ROS COMPONENTS catkin roscpp roslib rosconsole std_srvs)
+find_package(ROS COMPONENTS catkin roscpp roslib rosconsole std_srvs rostime roscpp_serialization)
 catkin_project(${PROJECT_NAME})
 
 find_package(wxWidgets REQUIRED)
