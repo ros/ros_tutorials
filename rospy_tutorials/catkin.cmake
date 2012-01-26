@@ -1,5 +1,6 @@
 project(rospy_tutorials)
 find_package(ROS COMPONENTS catkin genmsg)
+catkin_project(${PROJECT_NAME})
 
 add_message_files(DIRECTORY msg FILES Floats.msg HeaderString.msg)
 add_service_files(DIRECTORY srv FILES AddTwoInts.srv BadTwoInts.srv)

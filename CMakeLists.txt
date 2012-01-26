@@ -12,6 +12,8 @@ find_package(ROS REQUIRED COMPONENTS
   cpp_common
   roscpp_traits
   xmlrpcpp
+  genmsg
+  rostest
   )
 
 foreach(subdir
