@@ -1,1 +1,0 @@
-rosbuild_add_executable(notify_connect notify_connect.cpp)
