@@ -13,8 +13,10 @@
   <rosdep name="wxwidgets"/>
 
   <export>
-    <cpp cflags="-I${prefix}/msg/cpp -I${prefix}/srv/cpp"/>
+    <cpp cflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --cflags turtlesim`"
+         lflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --libs turtlesim`"/>
   </export>
+
 </package>
 
 
