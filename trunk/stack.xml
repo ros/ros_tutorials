@@ -1,0 +1,14 @@
+<stack>
+  <description brief="ros_tutorials">
+
+    ros_tutorials contains packages that demonstrate various features of ROS, as well as support packages which help demonstrate those features.
+
+  </description>
+  <author>Maintained by Josh Faust, Ken Conley</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/ros_tutorials</url>
+  <depend stack="ros" /> <!-- roslib -->
+  <depend stack="ros_comm" /> <!-- rosconsole, std_srvs, roscpp, std_msgs, rostest, rospy -->
+
+</stack>

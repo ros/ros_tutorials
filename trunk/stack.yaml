@@ -1,0 +1,11 @@
+Catkin-ProjectName: ros_tutorials
+Version: 0.2.10
+Depends: catkin, std_msgs, ros_comm, roscpp_core, common_msgs, wxwidgets
+Description: ros_tutorials contains packages that demonstrate various features of ROS, as well as support packages which help demonstrate those features.
+Author: Ken Conley
+Maintainer: Ken Conley <kwc@willowgarage.com>
+Homepage: http://ros.org/wiki/ros_tutorials
+
+
+Catkin-CopyrightType: willowgarage
+Catkin-DebRulesType: cmake

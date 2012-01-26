@@ -1,0 +1,1 @@
+rosbuild_add_executable(node_handle_namespaces node_handle_namespaces.cpp)
