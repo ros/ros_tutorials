@@ -1,3 +1,4 @@
+#include <boost/bind.hpp>
 #include <ros/ros.h>
 #include <turtlesim/Pose.h>
 #include <turtlesim/Velocity.h>

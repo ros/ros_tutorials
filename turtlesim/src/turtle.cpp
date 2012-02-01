@@ -29,7 +29,8 @@
 
 #include "turtlesim/turtle.h"
 
-#include <wx/wx.h>
+#include <QColor>
+#include <QRgb>
 
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
@@ -38,7 +39,7 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vector2& pos, float orient)
+Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient)
 : nh_(nh)
 , turtle_image_(turtle_image)
 , pos_(pos)
@@ -46,10 +47,9 @@ Turtle::Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vec
 , lin_vel_(0.0)
 , ang_vel_(0.0)
 , pen_on_(true)
-, pen_(wxColour(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
+, pen_(QColor(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
 {
-  pen_.SetWidth(3);
-  turtle_ = wxBitmap(turtle_image_);
+  pen_.setWidth(3);
 
   velocity_sub_ = nh_.subscribe("command_velocity", 1, &Turtle::velocityCallback, this);
   pose_pub_ = nh_.advertise<Pose>("pose", 1);
@@ -58,7 +58,8 @@ Turtle::Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vec
   teleport_relative_srv_ = nh_.advertiseService("teleport_relative", &Turtle::teleportRelativeCallback, this);
   teleport_absolute_srv_ = nh_.advertiseService("teleport_absolute", &Turtle::teleportAbsoluteCallback, this);
 
-  meter_ = turtle_.GetHeight();
+  meter_ = turtle_image_.height();
+  rotateImage();
 }
 
 
@@ -77,10 +78,10 @@ bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::
     return true;
   }
 
-  wxPen pen(wxColour(req.r, req.g, req.b));
+  QPen pen(QColor(req.r, req.g, req.b));
   if (req.width != 0)
   {
-    pen.SetWidth(req.width);
+    pen.setWidth(req.width);
   }
 
   pen_ = pen;
@@ -99,8 +100,18 @@ bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req,
   return true;
 }
 
-void Turtle::update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, wxColour background_color, float canvas_width, float canvas_height)
+void Turtle::rotateImage()
 {
+  QTransform transform;
+  transform.rotate(-orient_ * 180.0 / PI + 90.0);
+  turtle_rotated_image_ = turtle_image_.transformed(transform);
+}
+
+bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height)
+{
+  bool modified = false;
+  qreal old_orient = orient_;
+
   // first process any teleportation requests, in order
   V_TeleportRequest::iterator it = teleport_requests_.begin();
   V_TeleportRequest::iterator end = teleport_requests_.end();
@@ -108,71 +119,53 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, w
   {
     const TeleportRequest& req = *it;
 
-    Vector2 old_pos = pos_;
+    QPointF old_pos = pos_;
     if (req.relative)
     {
       orient_ += req.theta;
-      pos_.x += sin(orient_ + PI/2.0) * req.linear;
-      pos_.y += cos(orient_ + PI/2.0) * req.linear;
+      pos_.rx() += sin(orient_ + PI/2.0) * req.linear;
+      pos_.ry() += cos(orient_ + PI/2.0) * req.linear;
     }
     else
     {
-      pos_.x = req.pos.x;
-      pos_.y = std::max(0.0f, canvas_height - req.pos.y);
+      pos_.setX(req.pos.x());
+      pos_.setY(std::max(0.0, canvas_height - req.pos.y()));
       orient_ = req.theta;
     }
 
-    path_dc.SetPen(pen_);
-    path_dc.DrawLine(pos_.x * meter_, pos_.y * meter_, old_pos.x * meter_, old_pos.y * meter_);
+    path_painter.setPen(pen_);
+    path_painter.drawLine(pos_ * meter_, old_pos * meter_);
+    modified = true;
   }
 
   teleport_requests_.clear();
 
   if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
   {
-    lin_vel_ = 0.0f;
-    ang_vel_ = 0.0f;
+    lin_vel_ = 0.0;
+    ang_vel_ = 0.0;
   }
 
-  Vector2 old_pos = pos_;
+  QPointF old_pos = pos_;
 
   orient_ = fmod(orient_ + ang_vel_ * dt, 2*PI);
-  pos_.x += sin(orient_ + PI/2.0) * lin_vel_ * dt;
-  pos_.y += cos(orient_ + PI/2.0) * lin_vel_ * dt;
+  pos_.rx() += sin(orient_ + PI/2.0) * lin_vel_ * dt;
+  pos_.ry() += cos(orient_ + PI/2.0) * lin_vel_ * dt;
 
   // Clamp to screen size
-  if (pos_.x < 0 || pos_.x >= canvas_width
-      || pos_.y < 0 || pos_.y >= canvas_height)
+  if (pos_.x() < 0 || pos_.x() > canvas_width ||
+      pos_.y() < 0 || pos_.y() > canvas_height)
   {
-    ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x, pos_.y);
+    ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
   }
 
-  pos_.x = std::min(std::max(pos_.x, 0.0f), canvas_width);
-  pos_.y = std::min(std::max(pos_.y, 0.0f), canvas_height);
+  pos_.setX(std::min(std::max(pos_.x(), 0.0), canvas_width));
+  pos_.setY(std::min(std::max(pos_.y(), 0.0), canvas_height));
 
-  int canvas_x = pos_.x * meter_;
-  int canvas_y = pos_.y * meter_;
-
-  {
-    wxImage rotated_image = turtle_image_.Rotate(orient_ - PI/2.0, wxPoint(turtle_image_.GetWidth() / 2, turtle_image_.GetHeight() / 2), false);
-
-    for (int y = 0; y < rotated_image.GetHeight(); ++y)
-    {
-      for (int x = 0; x < rotated_image.GetWidth(); ++x)
-      {
-        if (rotated_image.GetRed(x, y) == 255 && rotated_image.GetBlue(x, y) == 255 && rotated_image.GetGreen(x, y) == 255)
-        {
-          rotated_image.SetAlpha(x, y, 0);
-        }
-      }
-    }
-
-    turtle_ = wxBitmap(rotated_image);
-  }
-
+  // Publish pose of the turtle
   Pose p;
-  p.x = pos_.x;
-  p.y = canvas_height - pos_.y;
+  p.x = pos_.x();
+  p.y = canvas_height - pos_.y();
   p.theta = orient_;
   p.linear_velocity = lin_vel_;
   p.angular_velocity = ang_vel_;
@@ -180,30 +173,40 @@ void Turtle::update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, w
 
   // Figure out (and publish) the color underneath the turtle
   {
-    wxSize turtle_size = wxSize(turtle_.GetWidth(), turtle_.GetHeight());
     Color color;
-    color.r = path_image.GetRed(canvas_x, canvas_y);
-    color.g = path_image.GetGreen(canvas_x, canvas_y);
-    color.b = path_image.GetBlue(canvas_x, canvas_y);
+    QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
+    color.r = qRed(pixel);
+    color.g = qGreen(pixel);
+    color.b = qBlue(pixel);
     color_pub_.publish(color);
   }
 
-  ROS_DEBUG("[%s]: pos_x: %f pos_y: %f theta: %f", nh_.getNamespace().c_str(), pos_.x, pos_.y, orient_);
+  ROS_DEBUG("[%s]: pos_x: %f pos_y: %f theta: %f", nh_.getNamespace().c_str(), pos_.x(), pos_.y(), orient_);
 
-  if (pen_on_)
+  if (orient_ != old_orient)
   {
-    if (pos_ != old_pos)
-    {
-      path_dc.SetPen(pen_);
-      path_dc.DrawLine(pos_.x * meter_, pos_.y * meter_, old_pos.x * meter_, old_pos.y * meter_);
-    }
+    rotateImage();
+    modified = true;
   }
+  if (pos_ != old_pos)
+  {
+    if (pen_on_)
+    {
+      path_painter.setPen(pen_);
+      path_painter.drawLine(pos_ * meter_, old_pos * meter_);
+    }
+    modified = true;
+  }
+
+  return modified;
 }
 
-void Turtle::paint(wxDC& dc)
+void Turtle::paint(QPainter& painter)
 {
-  wxSize turtle_size = wxSize(turtle_.GetWidth(), turtle_.GetHeight());
-  dc.DrawBitmap(turtle_, pos_.x * meter_ - (turtle_size.GetWidth() / 2), pos_.y * meter_ - (turtle_size.GetHeight() / 2), true);
+  QPointF p = pos_ * meter_;
+  p.rx() -= 0.5 * turtle_rotated_image_.width();
+  p.ry() -= 0.5 * turtle_rotated_image_.height();
+  painter.drawImage(p, turtle_rotated_image_);
 }
 
 }

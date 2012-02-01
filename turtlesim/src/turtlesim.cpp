@@ -27,70 +27,36 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <wx/app.h>
-#include <wx/timer.h>
+#include <QApplication>
 
 #include <ros/ros.h>
 
-#include <boost/thread.hpp>
-
 #include "turtlesim/turtle_frame.h"
 
-#ifdef __WXMAC__
-#include <ApplicationServices/ApplicationServices.h>
-#endif
-
-class TurtleApp : public wxApp
+class TurtleApp : public QApplication
 {
 public:
-  char** local_argv_;
   ros::NodeHandlePtr nh_;
 
-  TurtleApp()
+  TurtleApp(int argc, char** argv)
+    : QApplication(argc, argv)
   {
-  }
-
-  bool OnInit()
-  {
-#ifdef __WXMAC__
-    ProcessSerialNumber PSN;
-    GetCurrentProcess(&PSN);
-    TransformProcessType(&PSN,kProcessTransformToForegroundApplication);
-    SetFrontProcess(&PSN);
-#endif
-
-    // create our own copy of argv, with regular char*s.
-    local_argv_ =  new char*[ argc ];
-    for ( int i = 0; i < argc; ++i )
-    {
-      local_argv_[ i ] = strdup( wxString( argv[ i ] ).mb_str() );
-    }
-
-    ros::init(argc, local_argv_, "turtlesim");
+    ros::init(argc, argv, "turtlesim", ros::init_options::NoSigintHandler);
     nh_.reset(new ros::NodeHandle);
-
-    wxInitAllImageHandlers();
-
-    turtlesim::TurtleFrame* frame = new turtlesim::TurtleFrame(NULL);
-
-    SetTopWindow(frame);
-    frame->Show();
-
-    return true;
   }
 
-  int OnExit()
+  int exec()
   {
-    for ( int i = 0; i < argc; ++i )
-    {
-      free( local_argv_[ i ] );
-    }
-    delete [] local_argv_;
+    turtlesim::TurtleFrame frame;
+    frame.show();
 
-    return 0;
+    return QApplication::exec();
   }
 };
 
-DECLARE_APP(TurtleApp);
-IMPLEMENT_APP(TurtleApp);
+int main(int argc, char** argv)
+{
+  TurtleApp app(argc, argv);
+  return app.exec();
+}
 

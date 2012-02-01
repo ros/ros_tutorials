@@ -40,64 +40,43 @@
 #include <turtlesim/TeleportAbsolute.h>
 #include <turtlesim/Color.h>
 
-#include <wx/wx.h>
+#include <QImage>
+#include <QPainter>
+#include <QPen>
+#include <QPointF>
 
 #define PI 3.14159265
 
 namespace turtlesim
 {
 
-struct Vector2
-{
-  Vector2()
-  : x(0.0)
-  , y(0.0)
-  {}
-
-  Vector2(float _x, float _y)
-  : x(_x)
-  , y(_y)
-  {}
-
-  bool operator==(const Vector2& rhs)
-  {
-    return x == rhs.x && y == rhs.y;
-  }
-
-  bool operator!=(const Vector2& rhs)
-  {
-    return x != rhs.x || y != rhs.y;
-  }
-
-  float x;
-  float y;
-};
-
 class Turtle
 {
 public:
-  Turtle(const ros::NodeHandle& nh, const wxImage& turtle_image, const Vector2& pos, float orient);
+  Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient);
 
-  void update(double dt, wxMemoryDC& path_dc, const wxImage& path_image, wxColour background_color, float canvas_width, float canvas_height);
-  void paint(wxDC& dc);
+  bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
+  void paint(QPainter &painter);
 private:
   void velocityCallback(const VelocityConstPtr& vel);
   bool setPenCallback(turtlesim::SetPen::Request&, turtlesim::SetPen::Response&);
   bool teleportRelativeCallback(turtlesim::TeleportRelative::Request&, turtlesim::TeleportRelative::Response&);
   bool teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request&, turtlesim::TeleportAbsolute::Response&);
 
+  void rotateImage();
+
   ros::NodeHandle nh_;
 
-  wxImage turtle_image_;
-  wxBitmap turtle_;
+  QImage turtle_image_;
+  QImage turtle_rotated_image_;
 
-  Vector2 pos_;
-  float orient_;
+  QPointF pos_;
+  qreal orient_;
 
-  float lin_vel_;
-  float ang_vel_;
+  qreal lin_vel_;
+  qreal ang_vel_;
   bool pen_on_;
-  wxPen pen_;
+  QPen pen_;
 
   ros::Subscriber velocity_sub_;
   ros::Publisher pose_pub_;
@@ -112,16 +91,16 @@ private:
 
   struct TeleportRequest
   {
-    TeleportRequest(float x, float y, float _theta, float _linear, bool _relative)
+    TeleportRequest(float x, float y, qreal _theta, qreal _linear, bool _relative)
     : pos(x, y)
     , theta(_theta)
     , linear(_linear)
     , relative(_relative)
     {}
 
-    Vector2 pos;
-    float theta;
-    float linear;
+    QPointF pos;
+    qreal theta;
+    qreal linear;
     bool relative;
   };
   typedef std::vector<TeleportRequest> V_TeleportRequest;

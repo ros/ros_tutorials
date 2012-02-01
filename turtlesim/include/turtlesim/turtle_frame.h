@@ -27,9 +27,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <wx/wx.h>
-#include <wx/event.h>
-#include <wx/timer.h>
+#include <QFrame>
+#include <QImage>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QTimer>
+#include <QVector>
 
 #include <ros/ros.h>
 
@@ -40,23 +43,25 @@
 
 #include "turtle.h"
 
-#define TURTLESIM_NUM_TURTLES 5
-
 namespace turtlesim
 {
 
-class TurtleFrame : public wxFrame
+class TurtleFrame : public QFrame
 {
+  Q_OBJECT
 public:
-  TurtleFrame(wxWindow* parent);
+  TurtleFrame(QWidget* parent = 0, Qt::WindowFlags f = 0);
   ~TurtleFrame();
 
   std::string spawnTurtle(const std::string& name, float x, float y, float angle);
 
-private:
-  void onUpdate(wxTimerEvent& evt);
-  void onPaint(wxPaintEvent& evt);
+protected:
+  void paintEvent(QPaintEvent* event);
 
+private slots:
+  void onUpdate();
+
+private:
   void updateTurtles();
   void clear();
   bool hasTurtle(const std::string& name);
@@ -67,10 +72,9 @@ private:
   bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
 
   ros::NodeHandle nh_;
-  wxTimer* update_timer_;
-  wxBitmap path_bitmap_;
-  wxImage path_image_;
-  wxMemoryDC path_dc_;
+  QTimer* update_timer_;
+  QImage path_image_;
+  QPainter path_painter_;
 
   uint64_t frame_count_;
 
@@ -85,7 +89,7 @@ private:
   M_Turtle turtles_;
   uint32_t id_counter_;
 
-  wxImage turtle_images_[TURTLESIM_NUM_TURTLES];
+  QVector<QImage> turtle_images_;
 
   float meter_;
   float width_in_meters_;

@@ -29,6 +29,8 @@
 
 #include "turtlesim/turtle_frame.h"
 
+#include <QPointF>
+
 #include <ros/package.h>
 #include <cstdlib>
 #include <ctime>
@@ -40,44 +42,45 @@
 namespace turtlesim
 {
 
-TurtleFrame::TurtleFrame(wxWindow* parent)
-: wxFrame(parent, wxID_ANY, wxT("TurtleSim"), wxDefaultPosition, wxSize(500, 500), wxDEFAULT_FRAME_STYLE & ~wxRESIZE_BORDER)
+TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
+: QFrame(parent, f)
+, path_image_(500, 500, QImage::Format_ARGB32)
+, path_painter_(&path_image_)
 , frame_count_(0)
 , id_counter_(0)
 {
+  setFixedSize(500, 500);
+  setWindowTitle("TurtleSim");
+
   srand(time(NULL));
 
-  update_timer_ = new wxTimer(this);
-  update_timer_->Start(16);
+  update_timer_ = new QTimer(this);
+  update_timer_->setInterval(16);
+  update_timer_->start();
 
-  Connect(update_timer_->GetId(), wxEVT_TIMER, wxTimerEventHandler(TurtleFrame::onUpdate), NULL, this);
-  Connect(wxEVT_PAINT, wxPaintEventHandler(TurtleFrame::onPaint), NULL, this);
+  connect(update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
 
   nh_.setParam("background_r", DEFAULT_BG_R);
   nh_.setParam("background_g", DEFAULT_BG_G);
   nh_.setParam("background_b", DEFAULT_BG_B);
 
-  std::string turtles[TURTLESIM_NUM_TURTLES] = 
-  {
-    "box-turtle.png",
-    "robot-turtle.png",
-    "sea-turtle.png",
-    "diamondback.png",
-    "electric.png"
-  };
+  QVector<QString> turtles;
+  turtles.append("box-turtle.png");
+  turtles.append("robot-turtle.png");
+  turtles.append("sea-turtle.png");
+  turtles.append("diamondback.png");
+  turtles.append("electric.png");
 
-  std::string images_path = ros::package::getPath("turtlesim") + "/images/";
-  for (size_t i = 0; i < TURTLESIM_NUM_TURTLES; ++i)
+  QString images_path = (ros::package::getPath("turtlesim") + "/images/").c_str();
+  for (size_t i = 0; i < turtles.size(); ++i)
   {
-    turtle_images_[i].LoadFile(wxString::FromAscii((images_path + turtles[i]).c_str()));
-    turtle_images_[i].SetMask(true);
-    turtle_images_[i].SetMaskColour(255, 255, 255);
+    QImage img;
+    img.load(images_path + turtles[i]);
+    turtle_images_.append(img);
   }
 
-  meter_ = turtle_images_[0].GetHeight();
+  meter_ = turtle_images_[0].height();
 
-  path_bitmap_ = wxBitmap(GetSize().GetWidth(), GetSize().GetHeight());
-  path_dc_.SelectObject(path_bitmap_);
   clear();
 
   clear_srv_ = nh_.advertiseService("clear", &TurtleFrame::clearCallback, this);
@@ -87,8 +90,8 @@ TurtleFrame::TurtleFrame(wxWindow* parent)
 
   ROS_INFO("Starting turtlesim with node name %s", ros::this_node::getName().c_str()) ;
 
-  width_in_meters_ = GetSize().GetWidth() / meter_;
-  height_in_meters_ = GetSize().GetHeight() / meter_;
+  width_in_meters_ = (width() - 1) / meter_;
+  height_in_meters_ = (height() - 1) / meter_;
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
 }
 
@@ -121,6 +124,7 @@ bool TurtleFrame::killCallback(turtlesim::Kill::Request& req, turtlesim::Kill::R
   }
 
   turtles_.erase(it);
+  update();
 
   return true;
 }
@@ -150,8 +154,9 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
     }
   }
 
-  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[rand() % TURTLESIM_NUM_TURTLES], Vector2(x, y), angle));
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[rand() % turtle_images_.size()], QPointF(x, y), angle));
   turtles_[real_name] = t;
+  update();
 
   ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
 
@@ -168,11 +173,11 @@ void TurtleFrame::clear()
   nh_.param("background_g", g, g);
   nh_.param("background_b", b, b);
 
-  path_dc_.SetBackground(wxBrush(wxColour(r, g, b)));
-  path_dc_.Clear();
+  path_image_.fill(qRgb(r, g, b));
+  update();
 }
 
-void TurtleFrame::onUpdate(wxTimerEvent& evt)
+void TurtleFrame::onUpdate()
 {
   ros::spinOnce();
 
@@ -180,21 +185,21 @@ void TurtleFrame::onUpdate(wxTimerEvent& evt)
 
   if (!ros::ok())
   {
-    Close();
+    close();
   }
 }
 
-void TurtleFrame::onPaint(wxPaintEvent& evt)
+void TurtleFrame::paintEvent(QPaintEvent* event)
 {
-  wxPaintDC dc(this);
+  QPainter painter(this);
 
-  dc.DrawBitmap(path_bitmap_, 0, 0, true);
+  painter.drawImage(QPoint(0, 0), path_image_);
 
   M_Turtle::iterator it = turtles_.begin();
   M_Turtle::iterator end = turtles_.end();
   for (; it != end; ++it)
   {
-    it->second->paint(dc);
+    it->second->paint(painter);
   }
 }
 
@@ -206,17 +211,16 @@ void TurtleFrame::updateTurtles()
     return;
   }
 
-  if (frame_count_ % 3 == 0)
-  {
-    path_image_ = path_bitmap_.ConvertToImage();
-    Refresh();
-  }
-
+  bool modified = false;
   M_Turtle::iterator it = turtles_.begin();
   M_Turtle::iterator end = turtles_.end();
   for (; it != end; ++it)
   {
-    it->second->update(0.016, path_dc_, path_image_, path_dc_.GetBackground().GetColour(), width_in_meters_, height_in_meters_);
+    modified |= it->second->update(0.001 * update_timer_->interval(), path_painter_, path_image_, width_in_meters_, height_in_meters_);
+  }
+  if (modified)
+  {
+    update();
   }
 
   ++frame_count_;
