@@ -10,7 +10,8 @@
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/turtlesim</url>
 
-  <rosdep name="wxwidgets"/>
+  <rosdep name="libqt4-dev"/>
+  <rosdep name="qt4-qmake"/>
 
   <export>
     <cpp cflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --cflags turtlesim`"
