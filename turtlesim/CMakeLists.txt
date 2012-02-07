@@ -5,7 +5,7 @@ catkin_project(${PROJECT_NAME})
 
 find_package(Qt4 4.6 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
-find_package(Boost COMPONENTS bind shared_ptr)
+find_package(Boost COMPONENTS thread)
 
 include_directories(include ${ROS_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${QT_INCLUDE_DIRS})
 
