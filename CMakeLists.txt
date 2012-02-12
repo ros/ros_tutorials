@@ -15,6 +15,7 @@ find_package(ROS REQUIRED COMPONENTS
   genmsg
   rostest
   )
+catkin_stack()
 
 foreach(subdir
     rospy_tutorials
