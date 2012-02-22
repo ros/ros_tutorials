@@ -24,5 +24,3 @@ install(DIRECTORY .
   PATTERN catkin.cmake EXCLUDE
   PATTERN .svn EXCLUDE
   )
-
-catkin_export_python()
