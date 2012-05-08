@@ -19,6 +19,7 @@ endforeach()
 
 install(DIRECTORY .
   DESTINATION share/rospy_tutorials
+  USE_SOURCE_PERMISSIONS
   PATTERN CMakeLists.txt EXCLUDE
   PATTERN catkin.cmake EXCLUDE
   PATTERN .svn EXCLUDE
