@@ -1,5 +1,4 @@
 <package>
-  <catkin />
   <description brief="turtlesim">
 
      turtlesim is a tool made for teaching ROS and ROS-PKGS.
