@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(ros_tutorials)
 
-find_package(catkin)
+find_package(catkin REQUIRED)
 find_package(ROS REQUIRED COMPONENTS
   roscpp_serialization
   std_msgs
