@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 project(turtlesim)
-find_package(ROS COMPONENTS catkin roscpp roslib rosconsole std_srvs rostime roscpp_serialization)
+find_package(catkin REQUIRED)
+find_package(ROS REQUIRED COMPONENTS roscpp roslib rosconsole std_srvs rostime roscpp_serialization)
 catkin_project(${PROJECT_NAME})
 
-find_package(Qt4 4.6 COMPONENTS QtCore QtGui REQUIRED)
+find_package(Qt4 4.6 REQUIRED COMPONENTS QtCore QtGui)
 include(${QT_USE_FILE})
-find_package(Boost COMPONENTS thread)
+find_package(Boost REQUIRED COMPONENTS thread)
 
 include_directories(include ${ROS_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${QT_INCLUDE_DIRS})
 

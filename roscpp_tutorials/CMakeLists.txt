@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(roscpp_tutorials)
-find_package(Boost COMPONENTS date_time thread)
-find_package(ROS COMPONENTS catkin genmsg roscpp)
+find_package(Boost REQUIRED COMPONENTS date_time thread)
+find_package(catkin REQUIRED)
+find_package(ROS REQUIRED COMPONENTS rostime roscpp rosconsole roscpp_serialization)
 include_directories(${ROS_INCLUDE_DIRS})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
@@ -11,7 +12,6 @@ generate_messages(DEPENDENCIES std_msgs)
 
 macro(rostutorial T)
   add_executable(${T} ${T}/${T}.cpp)
-  find_package(ROS COMPONENTS catkin genmsg rostime roscpp rosconsole roscpp_serialization)
   target_link_libraries(${T} ${ROS_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(${T} roscpp_tutorials_gencpp)
   install(TARGETS ${T} RUNTIME DESTINATION share/roscpp_tutorials/bin)
