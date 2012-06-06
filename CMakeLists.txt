@@ -5,7 +5,6 @@ find_package(catkin REQUIRED)
 find_package(ROS REQUIRED COMPONENTS
   roscpp_serialization
   std_msgs
-  sensor_msgs
   roscpp
   rosconsole
   rostime
