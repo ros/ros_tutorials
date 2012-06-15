@@ -14,15 +14,14 @@
 
   <build_depends>catkin</build_depends>
   <build_depends>genmsg</build_depends>
-  <build_depends>langs</build_depends>
+  <build_depends>langs-dev</build_depends>
   <build_depends>libqt4-dev</build_depends>
   <build_depends>qt4-qmake</build_depends>
   <build_depends>ros_comm</build_depends>
-  <build_depends>roscpp_core</build_depends>
   <build_depends>std_msgs</build_depends>
 
+  <depends>langs</depends>
   <depends>libqtgui4</depends>
   <depends>ros_comm</depends>
-  <depends>roscpp_core</depends>
   <depends>std_msgs</depends>
 </stack>
