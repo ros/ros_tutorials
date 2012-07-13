@@ -123,13 +123,13 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
     if (req.relative)
     {
       orient_ += req.theta;
-      pos_.rx() += sin(orient_ + PI/2.0) * req.linear;
-      pos_.ry() += cos(orient_ + PI/2.0) * req.linear;
+      pos_.rx() += std::sin(orient_ + PI/2.0) * req.linear;
+      pos_.ry() += std::cos(orient_ + PI/2.0) * req.linear;
     }
     else
     {
       pos_.setX(req.pos.x());
-      pos_.setY(std::max(0.0, canvas_height - req.pos.y()));
+      pos_.setY(std::max(0.0, static_cast<double>(canvas_height - req.pos.y())));
       orient_ = req.theta;
     }
 
@@ -148,9 +148,9 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   QPointF old_pos = pos_;
 
-  orient_ = fmod(orient_ + ang_vel_ * dt, 2*PI);
-  pos_.rx() += sin(orient_ + PI/2.0) * lin_vel_ * dt;
-  pos_.ry() += cos(orient_ + PI/2.0) * lin_vel_ * dt;
+  orient_ = std::fmod(orient_ + ang_vel_ * dt, 2*PI);
+  pos_.rx() += std::sin(orient_ + PI/2.0) * lin_vel_ * dt;
+  pos_.ry() += std::cos(orient_ + PI/2.0) * lin_vel_ * dt;
 
   // Clamp to screen size
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
@@ -159,8 +159,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
     ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
   }
 
-  pos_.setX(std::min(std::max(pos_.x(), 0.0), canvas_width));
-  pos_.setY(std::min(std::max(pos_.y(), 0.0), canvas_height));
+  pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
+  pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
   // Publish pose of the turtle
   Pose p;
