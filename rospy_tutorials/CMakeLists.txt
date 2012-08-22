@@ -1,6 +1,5 @@
 project(rospy_tutorials)
-find_package(catkin REQUIRED)
-find_package(ROS REQUIRED COMPONENTS genmsg)
+find_package(catkin REQUIRED COMPONENTS genmsg)
 catkin_project(${PROJECT_NAME})
 
 add_message_files(DIRECTORY msg FILES Floats.msg HeaderString.msg)
