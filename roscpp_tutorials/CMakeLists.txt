@@ -6,6 +6,8 @@ include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
+catkin_project(roscpp_tutorials)
+
 add_service_files(DIRECTORY srv FILES TwoInts.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
@@ -44,5 +46,3 @@ endforeach()
 add_executable(time_api_sleep time_api/sleep/sleep.cpp)
 target_link_libraries(time_api_sleep ${catkin_LIBRARIES})
 install(TARGETS time_api_sleep RUNTIME DESTINATION share/roscpp_tutorials/bin)
-
-catkin_project(roscpp_tutorials)
