@@ -47,8 +47,8 @@ target_link_libraries(mimic ${catkin_LIBRARIES})
 add_dependencies(mimic turtlesim_gencpp)
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
-        RUNTIME DESTINATION share/${PROJECT_NAME})
-install(DIRECTORY images/
-  DESTINATION share/turtlesim/images/
-  FILES_MATCHING PATTERN "*.png"
-  PATTERN ".svn" EXCLUDE)
+  RUNTIME DESTINATION ${PROJECT_LIBEXEC_DESTINATION})
+
+install(DIRECTORY images
+  DESTINATION ${PROJECT_SHARE_DESTINATION}
+  FILES_MATCHING PATTERN "*.png")

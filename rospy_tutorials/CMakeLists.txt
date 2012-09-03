@@ -19,9 +19,6 @@ foreach(T
 endforeach()
 
 install(DIRECTORY .
-  DESTINATION share/rospy_tutorials
+  DESTINATION ${PROJECT_SHARE_DESTINATION}
   USE_SOURCE_PERMISSIONS
-  PATTERN CMakeLists.txt EXCLUDE
-  PATTERN catkin.cmake EXCLUDE
-  PATTERN .svn EXCLUDE
-  )
+  PATTERN CMakeLists.txt EXCLUDE)
