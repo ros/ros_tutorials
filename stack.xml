@@ -1,6 +1,6 @@
 <stack>
   <name>ros_tutorials</name>
-  <version>0.3.1</version>
+  <version>0.3.2</version>
   <description>
     ros_tutorials contains packages that demonstrate various features of ROS,
     as well as support packages which help demonstrate those features.
