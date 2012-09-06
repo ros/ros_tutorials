@@ -13,8 +13,8 @@
   <rosdep name="qt4-qmake"/>
 
   <export>
-    <cpp cflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --cflags turtlesim`"
-         lflags="`PKG_CONFIG_PATH=${prefix}/../../lib/pkgconfig pkg-config --libs turtlesim`"/>
+    <cpp cflags="`pkg-config --cflags turtlesim`"
+         lflags="`pkg-config --libs turtlesim`"/>
   </export>
 
 </package>
