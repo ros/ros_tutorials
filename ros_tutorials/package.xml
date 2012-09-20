@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>ros_tutorials</name>
+  <version>0.3.2</version>
+  <description>
+    ros_tutorials contains packages that demonstrate various features of ROS,
+    as well as support packages which help demonstrate those features.
+  </description>
+  <maintainer email="dthomas@willowgarage.com">Dirk Thomas</maintainer>
+
+  <url type="website">http://www.ros.org/wiki/ros_tutorials</url>
+  <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
+  <url type="repository">https://github.com/ros/ros_tutorials</url>
+
+  <author>Josh Faust</author>
+  <author>Ken Conley</author>
+  <license>BSD</license>
+  <copyright>Willow Garage</copyright>
+
+  <build_depends>catkin</build_depends>
+
+  <run_depends>roscpp_tutorials</run_depends>
+  <run_depends>rospy_tutorials</run_depends>
+  <run_depends>turtlesim</run_depends>
+
+  <export>
+    <meta_package/>
+  </export>
+</package>
