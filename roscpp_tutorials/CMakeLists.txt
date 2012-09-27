@@ -5,7 +5,7 @@ find_package(catkin REQUIRED COMPONENTS rostime roscpp rosconsole roscpp_seriali
 include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
-catkin_project(roscpp_tutorials)
+catkin_package()
 
 add_service_files(DIRECTORY srv FILES TwoInts.srv)
 generate_messages(DEPENDENCIES std_msgs)
@@ -15,7 +15,7 @@ macro(rostutorial T)
   target_link_libraries(${T} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(${T} roscpp_tutorials_gencpp)
   install(TARGETS ${T}
-    RUNTIME DESTINATION ${CATKIN_PROJECT_BIN_DESTINATION})
+    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 endmacro()
 
 foreach(dir
@@ -46,4 +46,4 @@ endforeach()
 add_executable(time_api_sleep time_api/sleep/sleep.cpp)
 target_link_libraries(time_api_sleep ${catkin_LIBRARIES})
 install(TARGETS time_api_sleep
-  RUNTIME DESTINATION ${CATKIN_PROJECT_BIN_DESTINATION})
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
