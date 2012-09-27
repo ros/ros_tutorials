@@ -1,6 +1,6 @@
 project(rospy_tutorials)
 find_package(catkin REQUIRED COMPONENTS genmsg)
-catkin_project(${PROJECT_NAME})
+catkin_package()
 
 add_message_files(DIRECTORY msg FILES Floats.msg HeaderString.msg)
 add_service_files(DIRECTORY srv FILES AddTwoInts.srv BadTwoInts.srv)
@@ -19,6 +19,6 @@ foreach(T
 endforeach()
 
 install(DIRECTORY .
-  DESTINATION ${CATKIN_PROJECT_SHARE_DESTINATION}
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   USE_SOURCE_PERMISSIONS
   PATTERN CMakeLists.txt EXCLUDE)
