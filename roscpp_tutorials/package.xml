@@ -2,7 +2,7 @@
 <package>
   <name>roscpp_tutorials</name>
   <version>0.3.2</version>
-  <description brief="Shows the features of ROS step-by-step">
+  <description>
     This package attempts to show the features of ROS step-by-step,
     including using messages, servers, parameters, etc.
   </description>

@@ -24,6 +24,6 @@
   <run_depends>turtlesim</run_depends>
 
   <export>
-    <meta_package/>
+    <metapackage/>
   </export>
 </package>
