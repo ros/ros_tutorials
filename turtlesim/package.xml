@@ -6,18 +6,28 @@
     turtlesim is a tool made for teaching ROS and ROS packages.
   </description>
   <maintainer email="dthomas@willowgarage.com">Dirk Thomas</maintainer>
+  <license>BSD</license>
 
   <url type="website">http://www.ros.org/wiki/turtlesim</url>
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
-
   <author>Josh Faust</author>
-  <license>BSD</license>
-  <copyright>Willow Garage</copyright>
 
   <build_depend>catkin</build_depend>
   <build_depend>libqt4-dev</build_depend>
   <build_depend>qt4-qmake</build_depend>
+  <build_depend>rosconsole</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>roscpp_serialization</build_depend>
+  <build_depend>roslib</build_depend>
+  <build_depend>rostime</build_depend>
+  <build_depend>std_srvs</build_depend>
 
   <run_depend>libqt4</run_depend>
+  <run_depend>rosconsole</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>roscpp_serialization</run_depend>
+  <run_depend>roslib</run_depend>
+  <run_depend>rostime</run_depend>
+  <run_depend>std_srvs</run_depend>
 </package>

@@ -7,14 +7,12 @@
     including using messages, servers, parameters, etc.
   </description>
   <maintainer email="dthomas@willowgarage.com">Dirk Thomas</maintainer>
+  <license>BSD</license>
 
   <url type="website">http://www.ros.org/wiki/roscpp_tutorials</url>
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
-
   <author>Morgan Quigley</author>
-  <license>BSD</license>
-  <copyright>Willow Garage</copyright>
 
   <build_depend>catkin</build_depend>
   <build_depend>genmsg</build_depend>
