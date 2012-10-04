@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(roscpp_tutorials)
 find_package(Boost REQUIRED COMPONENTS date_time thread)
-find_package(catkin REQUIRED COMPONENTS rostime roscpp rosconsole roscpp_serialization)
+find_package(catkin REQUIRED COMPONENTS genmsg rostime roscpp rosconsole roscpp_serialization)
 include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 

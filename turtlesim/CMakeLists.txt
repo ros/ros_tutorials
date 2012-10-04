@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(turtlesim)
-find_package(catkin REQUIRED COMPONENTS roscpp roslib rosconsole std_srvs rostime roscpp_serialization)
+find_package(catkin REQUIRED COMPONENTS genmsg roscpp roslib rosconsole std_srvs rostime roscpp_serialization)
 catkin_package()
 
 find_package(Qt4 4.6 REQUIRED COMPONENTS QtCore QtGui)

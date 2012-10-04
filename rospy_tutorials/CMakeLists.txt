@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(rospy_tutorials)
-find_package(catkin REQUIRED COMPONENTS genmsg)
+find_package(catkin REQUIRED COMPONENTS genmsg std_msgs)
 catkin_package()
 
 add_message_files(DIRECTORY msg FILES Floats.msg HeaderString.msg)
