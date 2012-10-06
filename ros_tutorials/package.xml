@@ -17,11 +17,11 @@
   <license>BSD</license>
   <copyright>Willow Garage</copyright>
 
-  <build_depends>catkin</build_depends>
+  <build_depend>catkin</build_depend>
 
-  <run_depends>roscpp_tutorials</run_depends>
-  <run_depends>rospy_tutorials</run_depends>
-  <run_depends>turtlesim</run_depends>
+  <run_depend>roscpp_tutorials</run_depend>
+  <run_depend>rospy_tutorials</run_depend>
+  <run_depend>turtlesim</run_depend>
 
   <export>
     <metapackage/>
