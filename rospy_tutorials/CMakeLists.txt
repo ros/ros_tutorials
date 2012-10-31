@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(rospy_tutorials)
+
 find_package(catkin REQUIRED COMPONENTS genmsg rostest std_msgs)
-catkin_package()
 
 add_message_files(DIRECTORY msg FILES Floats.msg HeaderString.msg)
 add_service_files(DIRECTORY srv FILES AddTwoInts.srv BadTwoInts.srv)
 
 generate_messages(DEPENDENCIES std_msgs)
+
+catkin_package()
 
 foreach(T
     test/test-add-two-ints.launch
