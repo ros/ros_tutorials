@@ -8,7 +8,7 @@ add_service_files(DIRECTORY srv FILES AddTwoInts.srv BadTwoInts.srv)
 
 generate_messages(DEPENDENCIES std_msgs)
 
-catkin_package(CATKIN_DEPENDS message_runtime)
+catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 
 foreach(T
     test/test-add-two-ints.launch

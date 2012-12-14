@@ -10,7 +10,7 @@ link_directories(${catkin_LIBRARY_DIRS})
 add_service_files(DIRECTORY srv FILES TwoInts.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
-catkin_package(CATKIN_DEPENDS message_runtime)
+catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 
 macro(rostutorial T)
   add_executable(${T} ${T}/${T}.cpp)
