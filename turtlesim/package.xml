@@ -14,8 +14,7 @@
   <author>Josh Faust</author>
 
   <build_depend>catkin</build_depend>
-  <build_depend>genmsg</build_depend>
-  <build_depend>langs-dev</build_depend>
+  <build_depend>message_generation</build_depend>
   <build_depend>libqt4-dev</build_depend>
   <build_depend>qt4-qmake</build_depend>
   <build_depend>rosconsole</build_depend>
@@ -25,8 +24,8 @@
   <build_depend>rostime</build_depend>
   <build_depend>std_srvs</build_depend>
 
-  <run_depend>langs</run_depend>
   <run_depend>libqt4</run_depend>
+  <run_depend>message_runtime</run_depend>
   <run_depend>rosconsole</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>roscpp_serialization</run_depend>
