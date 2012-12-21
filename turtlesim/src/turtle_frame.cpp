@@ -71,6 +71,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   turtles.append("diamondback.png");
   turtles.append("electric.png");
   turtles.append("fuerte.png");
+  turtles.append("groovy.png");
 
   QString images_path = (ros::package::getPath("turtlesim") + "/images/").c_str();
   for (size_t i = 0; i < turtles.size(); ++i)
