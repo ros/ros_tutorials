@@ -15,8 +15,6 @@
   <author>Josh Faust</author>
   <author>Ken Conley</author>
 
-  <buildtool_depend>catkin</buildtool_depend>
-
   <run_depend>roscpp_tutorials</run_depend>
   <run_depend>rospy_tutorials</run_depend>
   <run_depend>turtlesim</run_depend>
