@@ -34,7 +34,7 @@ TeleopTurtle::TeleopTurtle():
   nh_.param("scale_angular", a_scale_, a_scale_);
   nh_.param("scale_linear", l_scale_, l_scale_);
 
-  twist_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle1/command_velocity", 1);
+  twist_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 1);
 }
 
 int kfd = 0;

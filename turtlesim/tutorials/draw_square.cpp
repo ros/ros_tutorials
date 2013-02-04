@@ -150,7 +150,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "draw_square");
   ros::NodeHandle nh;
   ros::Subscriber pose_sub = nh.subscribe("turtle1/pose", 1, poseCallback);
-  ros::Publisher twist_pub = nh.advertise<geometry_msgs::Twist>("turtle1/command_velocity", 1);
+  ros::Publisher twist_pub = nh.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 1);
   ros::ServiceClient reset = nh.serviceClient<std_srvs::Empty>("reset");
   ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, _1, twist_pub));
 
