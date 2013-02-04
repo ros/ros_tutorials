@@ -11,7 +11,7 @@ include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} ${QT_IN
 link_directories(${catkin_LIBRARY_DIRS})
 
 add_message_files(DIRECTORY msg FILES 
-                  Color.msg Pose.msg Velocity.msg)
+                  Color.msg Pose.msg)
 add_service_files(DIRECTORY srv FILES
                   Kill.srv
                   SetPen.srv

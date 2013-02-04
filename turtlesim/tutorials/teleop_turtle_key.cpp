@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <turtlesim/Velocity.h>
+#include <geometry_msgs/Twist.h>
 #include <signal.h>
 #include <termios.h>
 #include <stdio.h>
@@ -21,7 +21,7 @@ private:
   
   ros::NodeHandle nh_;
   double linear_, angular_, l_scale_, a_scale_;
-  ros::Publisher vel_pub_;
+  ros::Publisher twist_pub_;
   
 };
 
@@ -34,7 +34,7 @@ TeleopTurtle::TeleopTurtle():
   nh_.param("scale_angular", a_scale_, a_scale_);
   nh_.param("scale_linear", l_scale_, l_scale_);
 
-  vel_pub_ = nh_.advertise<turtlesim::Velocity>("turtle1/command_velocity", 1);
+  twist_pub_ = nh_.advertise<geometry_msgs::Twist>("turtle1/command_velocity", 1);
 }
 
 int kfd = 0;
@@ -118,12 +118,12 @@ void TeleopTurtle::keyLoop()
     }
    
 
-    turtlesim::Velocity vel;
-    vel.angular = a_scale_*angular_;
-    vel.linear = l_scale_*linear_;
+    geometry_msgs::Twist twist;
+    twist.angular.z = a_scale_*angular_;
+    twist.linear.x = l_scale_*linear_;
     if(dirty ==true)
     {
-      vel_pub_.publish(vel);    
+      twist_pub_.publish(twist);    
       dirty=false;
     }
   }

@@ -1,7 +1,7 @@
 #include <boost/bind.hpp>
 #include <ros/ros.h>
 #include <turtlesim/Pose.h>
-#include <turtlesim/Velocity.h>
+#include <geometry_msgs/Twist.h>
 #include <std_srvs/Empty.h>
 
 turtlesim::PoseConstPtr g_pose;
@@ -41,15 +41,15 @@ void printGoal()
   ROS_INFO("New goal [%f %f, %f]", g_goal.x, g_goal.y, g_goal.theta);
 }
 
-void commandTurtle(ros::Publisher vel_pub, float linear, float angular)
+void commandTurtle(ros::Publisher twist_pub, float linear, float angular)
 {
-  turtlesim::Velocity vel;
-  vel.linear = linear;
-  vel.angular = angular;
-  vel_pub.publish(vel);
+  geometry_msgs::Twist twist;
+  twist.linear.x = linear;
+  twist.angular.z = angular;
+  twist_pub.publish(twist);
 }
 
-void stopForward(ros::Publisher vel_pub)
+void stopForward(ros::Publisher twist_pub)
 {
   if (hasStopped())
   {
@@ -62,11 +62,11 @@ void stopForward(ros::Publisher vel_pub)
   }
   else
   {
-    commandTurtle(vel_pub, 0, 0);
+    commandTurtle(twist_pub, 0, 0);
   }
 }
 
-void stopTurn(ros::Publisher vel_pub)
+void stopTurn(ros::Publisher twist_pub)
 {
   if (hasStopped())
   {
@@ -79,38 +79,38 @@ void stopTurn(ros::Publisher vel_pub)
   }
   else
   {
-    commandTurtle(vel_pub, 0, 0);
+    commandTurtle(twist_pub, 0, 0);
   }
 }
 
 
-void forward(ros::Publisher vel_pub)
+void forward(ros::Publisher twist_pub)
 {
   if (hasReachedGoal())
   {
     g_state = STOP_FORWARD;
-    commandTurtle(vel_pub, 0, 0);
+    commandTurtle(twist_pub, 0, 0);
   }
   else
   {
-    commandTurtle(vel_pub, 1.0, 0.0);
+    commandTurtle(twist_pub, 1.0, 0.0);
   }
 }
 
-void turn(ros::Publisher vel_pub)
+void turn(ros::Publisher twist_pub)
 {
   if (hasReachedGoal())
   {
     g_state = STOP_TURN;
-    commandTurtle(vel_pub, 0, 0);
+    commandTurtle(twist_pub, 0, 0);
   }
   else
   {
-    commandTurtle(vel_pub, 0.0, 0.4);
+    commandTurtle(twist_pub, 0.0, 0.4);
   }
 }
 
-void timerCallback(const ros::TimerEvent&, ros::Publisher vel_pub)
+void timerCallback(const ros::TimerEvent&, ros::Publisher twist_pub)
 {
   if (!g_pose)
   {
@@ -129,19 +129,19 @@ void timerCallback(const ros::TimerEvent&, ros::Publisher vel_pub)
 
   if (g_state == FORWARD)
   {
-    forward(vel_pub);
+    forward(twist_pub);
   }
   else if (g_state == STOP_FORWARD)
   {
-    stopForward(vel_pub);
+    stopForward(twist_pub);
   }
   else if (g_state == TURN)
   {
-    turn(vel_pub);
+    turn(twist_pub);
   }
   else if (g_state == STOP_TURN)
   {
-    stopTurn(vel_pub);
+    stopTurn(twist_pub);
   }
 }
 
@@ -150,9 +150,9 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "draw_square");
   ros::NodeHandle nh;
   ros::Subscriber pose_sub = nh.subscribe("turtle1/pose", 1, poseCallback);
-  ros::Publisher vel_pub = nh.advertise<turtlesim::Velocity>("turtle1/command_velocity", 1);
+  ros::Publisher twist_pub = nh.advertise<geometry_msgs::Twist>("turtle1/command_velocity", 1);
   ros::ServiceClient reset = nh.serviceClient<std_srvs::Empty>("reset");
-  ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, _1, vel_pub));
+  ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, _1, twist_pub));
 
   std_srvs::Empty empty;
   reset.call(empty);
