@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <turtlesim/Pose.h>
-#include <turtlesim/Velocity.h>
+#include <geometry_msgs/Twist.h>
 
 class Mimic
 {
@@ -10,7 +10,7 @@ public:
 private:
   void poseCallback(const turtlesim::PoseConstPtr& pose);
 
-  ros::Publisher vel_pub_;
+  ros::Publisher twist_pub_;
   ros::Subscriber pose_sub_;
 };
 
@@ -18,16 +18,16 @@ Mimic::Mimic()
 {
   ros::NodeHandle input_nh("input");
   ros::NodeHandle output_nh("output");
-  vel_pub_ = output_nh.advertise<turtlesim::Velocity>("command_velocity", 1);
+  twist_pub_ = output_nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
   pose_sub_ = input_nh.subscribe<turtlesim::Pose>("pose", 1, &Mimic::poseCallback, this);
 }
 
 void Mimic::poseCallback(const turtlesim::PoseConstPtr& pose)
 {
-  turtlesim::Velocity vel;
-  vel.angular = pose->angular_velocity;
-  vel.linear = pose->linear_velocity;
-  vel_pub_.publish(vel);
+  geometry_msgs::Twist twist;
+  twist.angular.z = pose->angular_velocity;
+  twist.linear.x = pose->linear_velocity;
+  twist_pub_.publish(twist);
 }
 
 int main(int argc, char** argv)

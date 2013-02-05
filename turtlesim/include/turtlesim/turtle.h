@@ -34,7 +34,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include <turtlesim/Pose.h>
-#include <turtlesim/Velocity.h>
+#include <geometry_msgs/Twist.h>
 #include <turtlesim/SetPen.h>
 #include <turtlesim/TeleportRelative.h>
 #include <turtlesim/TeleportAbsolute.h>
@@ -58,7 +58,7 @@ public:
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
 private:
-  void velocityCallback(const VelocityConstPtr& vel);
+  void velocityCallback(const geometry_msgs::Twist::ConstPtr& vel);
   bool setPenCallback(turtlesim::SetPen::Request&, turtlesim::SetPen::Response&);
   bool teleportRelativeCallback(turtlesim::TeleportRelative::Request&, turtlesim::TeleportRelative::Response&);
   bool teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request&, turtlesim::TeleportAbsolute::Response&);

@@ -51,7 +51,7 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 {
   pen_.setWidth(3);
 
-  velocity_sub_ = nh_.subscribe("command_velocity", 1, &Turtle::velocityCallback, this);
+  velocity_sub_ = nh_.subscribe("cmd_vel", 1, &Turtle::velocityCallback, this);
   pose_pub_ = nh_.advertise<Pose>("pose", 1);
   color_pub_ = nh_.advertise<Color>("color_sensor", 1);
   set_pen_srv_ = nh_.advertiseService("set_pen", &Turtle::setPenCallback, this);
@@ -63,11 +63,11 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 }
 
 
-void Turtle::velocityCallback(const VelocityConstPtr& vel)
+void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
 {
   last_command_time_ = ros::WallTime::now();
-  lin_vel_ = vel->linear;
-  ang_vel_ = vel->angular;
+  lin_vel_ = vel->linear.x;
+  ang_vel_ = vel->angular.z;
 }
 
 bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::Response&)
