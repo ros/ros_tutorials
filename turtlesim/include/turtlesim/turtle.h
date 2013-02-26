@@ -30,18 +30,15 @@
 #ifndef TURTLESIM_TURTLE_H
 #define TURTLESIM_TURTLE_H
 
-// This prevents a MOC error with versions of boost >= 1.48
-#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <ros/ros.h>
-# include <boost/shared_ptr.hpp>
+#include <ros/ros.h>
+#include <boost/shared_ptr.hpp>
 
-# include <turtlesim/Pose.h>
-# include <turtlesim/Velocity.h>
-# include <turtlesim/SetPen.h>
-# include <turtlesim/TeleportRelative.h>
-# include <turtlesim/TeleportAbsolute.h>
-# include <turtlesim/Color.h>
-#endif
+#include <turtlesim/Pose.h>
+#include <geometry_msgs/Twist.h>
+#include <turtlesim/SetPen.h>
+#include <turtlesim/TeleportRelative.h>
+#include <turtlesim/TeleportAbsolute.h>
+#include <turtlesim/Color.h>
 
 #include <QImage>
 #include <QPainter>

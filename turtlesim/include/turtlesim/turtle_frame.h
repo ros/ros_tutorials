@@ -34,14 +34,11 @@
 #include <QTimer>
 #include <QVector>
 
-// This prevents a MOC error with versions of boost >= 1.48
-#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <ros/ros.h>
+#include <ros/ros.h>
 
-# include <std_srvs/Empty.h>
-# include <turtlesim/Spawn.h>
-# include <turtlesim/Kill.h>
-#endif
+#include <std_srvs/Empty.h>
+#include <turtlesim/Spawn.h>
+#include <turtlesim/Kill.h>
 #include <map>
 
 #include "turtle.h"
