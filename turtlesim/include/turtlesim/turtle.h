@@ -36,7 +36,7 @@
 # include <boost/shared_ptr.hpp>
 
 # include <turtlesim/Pose.h>
-# include <turtlesim/Velocity.h>
+# include <geometry_msgs/Twist.h>
 # include <turtlesim/SetPen.h>
 # include <turtlesim/TeleportRelative.h>
 # include <turtlesim/TeleportAbsolute.h>
@@ -47,8 +47,6 @@
 #include <QPainter>
 #include <QPen>
 #include <QPointF>
-
-#include <geometry_msgs/Twist.h>
 
 #define PI 3.14159265
 
