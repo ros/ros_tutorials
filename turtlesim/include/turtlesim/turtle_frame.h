@@ -41,10 +41,10 @@
 # include <std_srvs/Empty.h>
 # include <turtlesim/Spawn.h>
 # include <turtlesim/Kill.h>
-#endif
-#include <map>
+# include <map>
 
-#include "turtle.h"
+# include "turtle.h"
+#endif
 
 namespace turtlesim
 {
