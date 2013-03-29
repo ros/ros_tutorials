@@ -63,11 +63,11 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 }
 
 
-void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
+void Turtle::velocityCallback(const VelocityConstPtr& vel)
 {
   last_command_time_ = ros::WallTime::now();
-  lin_vel_ = vel->linear.x;
-  ang_vel_ = vel->angular.z;
+  lin_vel_ = vel->linear;
+  ang_vel_ = vel->angular;
 }
 
 bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::Response&)
