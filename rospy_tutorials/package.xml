@@ -14,7 +14,7 @@
   <url type="repository">https://github.com/ros/ros_tutorials</url>
   <author>Ken Conley</author>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend version_gte="0.5.68">catkin</buildtool_depend>
 
   <build_depend>message_generation</build_depend>
   <build_depend>rostest</build_depend>
