@@ -10,17 +10,6 @@ generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 
-foreach(T
-    test/test-add-two-ints.launch
-    test/test-peer-subscribe-notify.launch
-    test/test-add-two-ints-with-roscpp-server.launch
-    test/test-talker-listener.launch
-    test/test-talker-listener-with-roscpp.launch
-    test/test-on-shutdown.launch
-    test/test-connection-header.launch)
-  add_rostest(${T})
-endforeach()
-
 # do not wildcard install files since the root folder of the package will contain a debian folder for releasing
 foreach(T
     001_talker_listener
@@ -36,3 +25,16 @@ foreach(T
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
     USE_SOURCE_PERMISSIONS)
 endforeach()
+
+if(CATKIN_ENABLE_TESTING)
+  foreach(T
+      test/test-add-two-ints.launch
+      test/test-peer-subscribe-notify.launch
+      test/test-add-two-ints-with-roscpp-server.launch
+      test/test-talker-listener.launch
+      test/test-talker-listener-with-roscpp.launch
+      test/test-on-shutdown.launch
+      test/test-connection-header.launch)
+     add_rostest(${T})
+  endforeach()
+endif()
