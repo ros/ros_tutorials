@@ -38,7 +38,7 @@ class TurtleApp : public QApplication
 public:
   ros::NodeHandlePtr nh_;
 
-  TurtleApp(int argc, char** argv)
+  TurtleApp(int& argc, char** argv)
     : QApplication(argc, argv)
   {
     ros::init(argc, argv, "turtlesim", ros::init_options::NoSigintHandler);
