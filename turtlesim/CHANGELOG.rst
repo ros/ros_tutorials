@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2013-09-06)
+------------------
 * Adding png version of hydro for wiki linking
 * TurtleApp accepts argc by reference
 * Restoring all the changes appropriate for Hydro
