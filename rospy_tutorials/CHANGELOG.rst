@@ -2,8 +2,8 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.1 (2013-09-11)
+------------------
 * check for CATKIN_ENABLE_TESTING
 
 0.4.0 (2013-09-06)
