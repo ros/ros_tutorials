@@ -53,4 +53,4 @@ install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
 
 install(DIRECTORY images
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  FILES_MATCHING PATTERN "*.png")
+  FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")

@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix missing install of hydro.svg (`#12 <https://github.com/ros/ros_tutorials/issues/12>`_)
+
 0.4.1 (2013-09-11)
 ------------------
 * add hydro image to turtlesim
