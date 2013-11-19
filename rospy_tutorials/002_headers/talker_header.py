@@ -36,9 +36,6 @@
 ## talker_header publishes HeaderString messages to the 'chatter_header'
 ## topic.
 
-PKG = 'rospy_tutorials'
-import roslib; roslib.load_manifest(PKG)
-
 import sys
 
 import rospy

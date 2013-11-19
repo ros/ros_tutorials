@@ -38,8 +38,6 @@
 PKG = 'rospy_tutorials'
 NAME = 'add_two_ints_test'
 
-import roslib; roslib.load_manifest(PKG)
-
 import sys
 import unittest
 

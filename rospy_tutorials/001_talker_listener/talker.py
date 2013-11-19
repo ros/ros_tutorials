@@ -36,8 +36,6 @@
 ## Simple talker demo that published std_msgs/Strings messages
 ## to the 'chatter' topic
 
-import roslib; roslib.load_manifest('rospy_tutorials')
-
 import rospy
 from std_msgs.msg import String
 

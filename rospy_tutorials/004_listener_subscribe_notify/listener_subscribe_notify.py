@@ -35,10 +35,7 @@
 
 ## talker that receives notification of new subscriptions
 
-PKG = 'rospy_tutorials' # this package name
 NAME = 'talker_callback'
-
-import roslib; roslib.load_manifest(PKG) 
 
 import sys
 

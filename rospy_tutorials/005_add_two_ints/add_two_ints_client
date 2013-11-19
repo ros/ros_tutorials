@@ -36,10 +36,6 @@
 ## Simple demo of a rospy service client that calls a service to add
 ## two integers. 
 
-PKG = 'rospy_tutorials' # this package name
-
-import roslib; roslib.load_manifest(PKG) 
-
 import sys
 import os
 

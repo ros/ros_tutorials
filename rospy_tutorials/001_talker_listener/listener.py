@@ -36,9 +36,6 @@
 ## Simple talker demo that listens to std_msgs/Strings published 
 ## to the 'chatter' topic
 
-PKG = 'rospy_tutorials' # this package name
-import roslib; roslib.load_manifest(PKG)
-
 import rospy
 from std_msgs.msg import String
 

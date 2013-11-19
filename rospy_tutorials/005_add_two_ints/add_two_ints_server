@@ -35,10 +35,7 @@
 
 ## Simple demo of a rospy service that add two integers
 
-PKG = 'rospy_tutorials' # this package name
 NAME = 'add_two_ints_server'
-
-import roslib; roslib.load_manifest(PKG) 
 
 # import the AddTwoInts service
 from rospy_tutorials.srv import *

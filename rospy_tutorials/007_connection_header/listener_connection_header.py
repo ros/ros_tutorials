@@ -36,9 +36,6 @@
 ## listener_connection_header looks at the connection header
 ## from the received message to determine who it is talking to.
 
-PKG = 'rospy_tutorials'
-import roslib; roslib.load_manifest(PKG)
-
 import sys 
 
 import rospy

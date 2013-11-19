@@ -38,8 +38,6 @@
 ##   rostopic echo color
 ## this demo shows some of the more advanced APIs in rospy.
 
-import roslib; roslib.load_manifest('rospy_tutorials')
-
 import rospy
 from std_msgs.msg import ColorRGBA
 

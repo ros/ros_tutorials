@@ -38,7 +38,6 @@
 
 PKG = 'rospy_tutorials'
 NAME = 'test_client_connection_header'
-import roslib; roslib.load_manifest(PKG)
 
 import sys
 import unittest

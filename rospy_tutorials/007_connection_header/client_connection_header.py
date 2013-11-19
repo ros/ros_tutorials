@@ -36,8 +36,6 @@
 ## Extended version of add_two_int_client that shows how to use
 ## connection header to pass in metadata to service.
 
-import roslib; roslib.load_manifest('rospy_tutorials')
-
 import sys
 
 import rospy

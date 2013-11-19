@@ -36,10 +36,7 @@
 ## Simple listener demo that demonstrates how to register additional
 ## arguments to be passed to a subscription callback
 
-PKG = 'rospy_tutorials' # this package name
 NAME = 'listener_with_user_data'
-
-import roslib; roslib.load_manifest(PKG) 
 
 import sys
 

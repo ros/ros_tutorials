@@ -37,7 +37,6 @@
 
 PKG = 'rospy_tutorials'
 NAME = 'peer_subscribe_notify_test'
-import roslib; roslib.load_manifest(PKG)
 
 import sys 
 import time

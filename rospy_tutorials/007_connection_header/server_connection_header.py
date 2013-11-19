@@ -36,10 +36,7 @@
 ## Extended version of add_two_ints_server demo that shows how
 ## to access connection header information
 
-PKG = 'rospy_tutorials' # this package name
 NAME = 'add_two_ints_server'
-
-import roslib; roslib.load_manifest(PKG) 
 
 # import the AddTwoInts service
 from rospy_tutorials.srv import *
