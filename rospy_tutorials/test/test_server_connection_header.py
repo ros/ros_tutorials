@@ -36,6 +36,8 @@
 ## Extended version of add_two_int_client that shows how to use
 ## connection header to pass in metadata to service.
 
+from __future__ import print_function
+
 PKG = 'rospy_tutorials'
 NAME = 'test_server_connection_header'
 
@@ -56,7 +58,7 @@ class TestServerConnectionHeader(unittest.TestCase):
         
     def handle_request(self, req):
         if 'cookies' in req._connection_header:
-            print "GOT", req._connection_header['cookies'] 
+            print("GOT", req._connection_header['cookies'])
             self.success = req._connection_header['cookies'] == 'peanut butter'
         return AddTwoIntsResponse(3)
 

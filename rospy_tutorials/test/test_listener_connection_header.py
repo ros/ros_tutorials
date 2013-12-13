@@ -60,7 +60,7 @@ class TestListenerConnectionHeader(unittest.TestCase):
             self.success = True
         else:
             who = 'unknown'
-        print "I just heard %s from %s"%(chatter, who)
+        print("I just heard %s from %s" % (chatter, who))
 
     def test_notify(self):
         rospy.Subscriber("chatter", String, self.callback)
