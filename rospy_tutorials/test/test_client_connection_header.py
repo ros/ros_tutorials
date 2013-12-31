@@ -36,6 +36,8 @@
 ## Extended version of add_two_int_client that shows how to use
 ## connection header to pass in metadata to service.
 
+from __future__ import print_function
+
 PKG = 'rospy_tutorials'
 NAME = 'test_client_connection_header'
 
@@ -65,16 +67,16 @@ class TestClientConnectionHeader(unittest.TestCase):
             metadata = { 'cookies' : 'peanut butter' } 
             add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts, headers=metadata)
 
-            print "Requesting %s+%s with cookies=%s"%(x, y, metadata['cookies'])
+            print("Requesting %s+%s with cookies=%s" % (x, y, metadata['cookies']))
         
             # simplified style
             resp = add_two_ints(x, y)
-            print "Server's connection headers were", resp._connection_header
+            print("Server's connection headers were", resp._connection_header)
             self.assert_('callerid' in resp._connection_header)
 
             return resp.sum
-        except rospy.ServiceException, e:
-            print "Service call failed: %s"%e
+        except rospy.ServiceException as e:
+            print("Service call failed: %s" % e)
             raise #fail
         
 if __name__ == '__main__':
@@ -92,7 +94,7 @@ if __name__ == '__main__':
                 resp = add_two_ints(1, 2)
                 # call at 10hz until test is over
                 rospy.sleep(0.1)
-        except rospy.ServiceException, e:
+        except rospy.ServiceException as e:
             pass # happens when test is over
     else:
         rostest.rosrun(PKG, NAME, TestClientConnectionHeader, sys.argv)

@@ -34,6 +34,7 @@
 # Revision $Id: test_peer_subscribe_notify.py 3803 2009-02-11 02:04:39Z rob_wheeler $
 
 ## Integration test for peer_subscribe_notify
+from __future__ import print_function
 
 PKG = 'rospy_tutorials'
 NAME = 'peer_subscribe_notify_test'
@@ -54,7 +55,7 @@ class TestOnShutdown(unittest.TestCase):
         self.success = False
         
     def callback(self, data):
-        print rospy.get_caller_id(), "I heard %s"%data.data
+        print(rospy.get_caller_id(), "I heard %s"%data.data_)
         #greetings is only sent over peer_publish callback, so hearing it is a success condition
         if "I'm dead" in data.data:
             self.success = True
