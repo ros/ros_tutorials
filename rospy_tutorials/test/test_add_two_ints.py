@@ -35,6 +35,8 @@
 
 ## Integration test for add_two_ints 
 
+from __future__ import print_function
+
 PKG = 'rospy_tutorials'
 NAME = 'add_two_ints_test'
 
@@ -44,7 +46,6 @@ import unittest
 import rospy
 import rostest
 from rospy_tutorials.srv import *
-
 
 class TestAddTwoInts(unittest.TestCase):
         
