@@ -2,6 +2,11 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* python 3 compatibility (`#13 <https://github.com/ros/ros_tutorials/issues/13>`_)
+* remove load_manifest calls
+
 0.4.2 (2013-10-04)
 ------------------
 
