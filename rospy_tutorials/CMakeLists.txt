@@ -12,19 +12,55 @@ catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 
 # do not wildcard install files since the root folder of the package will contain a debian folder for releasing
 foreach(T
-    001_talker_listener
-    002_headers
-    003_listener_with_user_data
-    004_listener_subscribe_notify
-    005_add_two_ints
-    006_parameters
-    007_connection_header
-    008_on_shutdown
-    009_advanced_publish)
-  install(DIRECTORY ${T}
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-    USE_SOURCE_PERMISSIONS)
+    001_talker_listener/listener
+    001_talker_listener/listener.py
+    001_talker_listener/talker
+    001_talker_listener/talker.py)
+  catkin_install_python(PROGRAMS ${T}
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/001_talker_listener)
 endforeach()
+
+foreach(T
+    002_headers/listener_header.py
+    002_headers/talker_header.py)
+  catkin_install_python(PROGRAMS ${T}
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/002_headers)
+endforeach()
+
+catkin_install_python(PROGRAMS 003_listener_with_user_data/listener_with_user_data.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/003_listener_with_user_data)
+
+catkin_install_python(PROGRAMS 004_listener_subscribe_notify/listener_subscribe_notify.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/004_listener_subscribe_notify)
+
+foreach(T
+    005_add_two_ints/add_two_ints_client
+    005_add_two_ints/add_two_ints_server)
+  catkin_install_python(PROGRAMS ${T}
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/005_add_two_ints)
+endforeach()
+
+catkin_install_python(PROGRAMS 006_parameters/param_talker.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/006_parameters)
+
+foreach(T
+    007_connection_header/client_connection_header.py
+    007_connection_header/listener_connection_header.py
+    007_connection_header/server_connection_header.py
+    007_connection_header/talker_connection_header.py)
+  catkin_install_python(PROGRAMS ${T}
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/007_connection_header)
+endforeach()
+
+catkin_install_python(PROGRAMS 008_on_shutdown/publish_on_shutdown.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/008_on_shutdown)
+
+catkin_install_python(PROGRAMS 009_advanced_publish/advanced_publish.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/009_advanced_publish)
+
+install(DIRECTORY ./
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  FILES_MATCHING PATTERN "*.launch" PATTERN "README")
 
 if(CATKIN_ENABLE_TESTING)
   foreach(T
