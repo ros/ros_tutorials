@@ -90,7 +90,7 @@ def param_talker():
     rospy.loginfo('found global_example parameter under key: %s'%param_name)
     
     # publish the value of utterance repeatedly
-    pub = rospy.Publisher(topic_name, String)
+    pub = rospy.Publisher(topic_name, String, queue_size=10)
     while not rospy.is_shutdown():
         pub.publish(utterance)
         rospy.loginfo(utterance)

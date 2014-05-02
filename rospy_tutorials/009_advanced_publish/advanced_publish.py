@@ -43,7 +43,7 @@ from std_msgs.msg import ColorRGBA
 
 def talker():
     topic = 'color'
-    pub = rospy.Publisher(topic, ColorRGBA)
+    pub = rospy.Publisher(topic, ColorRGBA, queue_size=10)
     rospy.init_node('color_talker', anonymous=True)
     print "\n\nNode running. To see messages, please type\n\t'rostopic echo %s'\nIn another window\n\n"%(rospy.resolve_name(topic))
     while not rospy.is_shutdown():

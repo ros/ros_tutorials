@@ -59,7 +59,7 @@ class ChatterListener(rospy.SubscribeListener):
             print("I have no friends")
     
 def talker_callback():
-    pub = rospy.Publisher("chatter", String, ChatterListener())
+    pub = rospy.Publisher("chatter", String, subscriber_listener=ChatterListener(), queue_size=10)
     rospy.init_node(NAME, anonymous=True)
     count = 0
     while not rospy.is_shutdown():

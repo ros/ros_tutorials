@@ -44,7 +44,7 @@ from rospy_tutorials.msg import HeaderString
 NAME = 'talker_header'
 
 def talker_header():
-    pub = rospy.Publisher("chatter_header", HeaderString)
+    pub = rospy.Publisher("chatter_header", HeaderString, queue_size=10)
 
     rospy.init_node(NAME) #blocks until registered with master
     count = 0
