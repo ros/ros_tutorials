@@ -44,6 +44,11 @@ pub = None
 def talker_shutdown():
     print("I'm dead!")
     pub.publish("I'm dead!")
+
+    # need to sleep a bit to ensure that the message is sent
+    # which happens asynchonously
+    import time
+    time.sleep(2.0)
     
 def talker():
     global pub
