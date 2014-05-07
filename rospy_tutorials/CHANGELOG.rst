@@ -2,8 +2,8 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.0 (2014-05-07)
+------------------
 * make rostest in CMakeLists optional (`ros/rosdistro#3010 <https://github.com/ros/rosdistro/issues/3010>`_)
 * use queue_size for rospy.Publisher (`ros/ros_comm#169 <https://github.com/ros/ros_comm/issues/169>`_)
 * use catkin_install_python() to install Python scripts (`#17 <https://github.com/ros/ros_tutorials/issues/17>`_)
