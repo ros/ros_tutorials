@@ -11,56 +11,92 @@ generate_messages(DEPENDENCIES std_msgs)
 catkin_package(CATKIN_DEPENDS message_runtime std_msgs)
 
 # do not wildcard install files since the root folder of the package will contain a debian folder for releasing
-foreach(T
-    001_talker_listener/listener
-    001_talker_listener/listener.py
-    001_talker_listener/talker
-    001_talker_listener/talker.py)
-  catkin_install_python(PROGRAMS ${T}
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/001_talker_listener)
-endforeach()
+catkin_install_python(PROGRAMS
+  001_talker_listener/listener
+  001_talker_listener/listener.py
+  001_talker_listener/talker
+  001_talker_listener/talker.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/001_talker_listener
+)
+install(FILES
+  001_talker_listener/README
+  001_talker_listener/talker_listener.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/001_talker_listener
+)
 
-foreach(T
-    002_headers/listener_header.py
-    002_headers/talker_header.py)
-  catkin_install_python(PROGRAMS ${T}
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/002_headers)
-endforeach()
+catkin_install_python(PROGRAMS
+  002_headers/listener_header.py
+  002_headers/talker_header.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/002_headers
+)
+install(FILES
+  002_headers/headers.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/002_headers
+)
 
-catkin_install_python(PROGRAMS 003_listener_with_user_data/listener_with_user_data.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/003_listener_with_user_data)
+catkin_install_python(PROGRAMS
+  003_listener_with_user_data/listener_with_user_data.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/003_listener_with_user_data
+)
+install(FILES
+  003_listener_with_user_data/listener_with_user_data.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/003_listener_with_user_data
+)
 
-catkin_install_python(PROGRAMS 004_listener_subscribe_notify/listener_subscribe_notify.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/004_listener_subscribe_notify)
+catkin_install_python(PROGRAMS
+  004_listener_subscribe_notify/listener_subscribe_notify.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/004_listener_subscribe_notify
+)
+install(FILES
+  004_listener_subscribe_notify/listener_subscribe_notify.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/004_listener_subscribe_notify
+)
 
-foreach(T
-    005_add_two_ints/add_two_ints_client
-    005_add_two_ints/add_two_ints_server)
-  catkin_install_python(PROGRAMS ${T}
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/005_add_two_ints)
-endforeach()
+catkin_install_python(PROGRAMS
+  005_add_two_ints/add_two_ints_client
+  005_add_two_ints/add_two_ints_server
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/005_add_two_ints
+)
 
-catkin_install_python(PROGRAMS 006_parameters/param_talker.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/006_parameters)
+catkin_install_python(PROGRAMS
+  006_parameters/param_talker.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/006_parameters
+)
+install(FILES
+  006_parameters/param_talker.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/006_parameters
+)
 
-foreach(T
-    007_connection_header/client_connection_header.py
-    007_connection_header/listener_connection_header.py
-    007_connection_header/server_connection_header.py
-    007_connection_header/talker_connection_header.py)
-  catkin_install_python(PROGRAMS ${T}
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/007_connection_header)
-endforeach()
+catkin_install_python(PROGRAMS
+  007_connection_header/client_connection_header.py
+  007_connection_header/listener_connection_header.py
+  007_connection_header/server_connection_header.py
+  007_connection_header/talker_connection_header.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/007_connection_header
+)
+install(FILES
+  007_connection_header/connection_header.launch
+  007_connection_header/README
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/007_connection_header
+)
 
-catkin_install_python(PROGRAMS 008_on_shutdown/publish_on_shutdown.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/008_on_shutdown)
+catkin_install_python(PROGRAMS
+  008_on_shutdown/publish_on_shutdown.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/008_on_shutdown
+)
+install(FILES
+  008_on_shutdown/on_shutdown.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/008_on_shutdown
+)
 
-catkin_install_python(PROGRAMS 009_advanced_publish/advanced_publish.py
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/009_advanced_publish)
-
-install(DIRECTORY ./
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-  FILES_MATCHING PATTERN "*.launch" PATTERN "README")
+catkin_install_python(PROGRAMS
+  009_advanced_publish/advanced_publish.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/009_advanced_publish
+)
+install(FILES
+  009_advanced_publish/advanced_publish.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/009_advanced_publish
+)
 
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest)
