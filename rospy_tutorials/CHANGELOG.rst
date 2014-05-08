@@ -2,8 +2,8 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2014-05-08)
+------------------
 * fix install when building Debian package
 
 0.5.0 (2014-05-07)
