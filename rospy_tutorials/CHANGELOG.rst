@@ -2,6 +2,10 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update code style of examples (`#18 <https://github.com/ros/ros_tutorials/pull/18>`_, `#19 <https://github.com/ros/ros_tutorials/pull/19>`_)
+
 0.5.1 (2014-05-08)
 ------------------
 * fix install when building Debian package
