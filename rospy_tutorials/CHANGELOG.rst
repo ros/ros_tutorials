@@ -2,6 +2,9 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.2 (2014-12-23)
 ------------------
 * update code style of examples (`#18 <https://github.com/ros/ros_tutorials/pull/18>`_, `#19 <https://github.com/ros/ros_tutorials/pull/19>`_)
