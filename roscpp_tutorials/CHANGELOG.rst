@@ -2,8 +2,8 @@
 Changelog for package roscpp_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.3 (2015-05-04)
+------------------
 * add talker_listener launch file (`#21 <https://github.com/ros/ros_tutorials/pull/21>`_)
 
 0.5.2 (2014-12-23)
