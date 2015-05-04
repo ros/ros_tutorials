@@ -49,3 +49,8 @@ add_executable(time_api_sleep time_api/sleep/sleep.cpp)
 target_link_libraries(time_api_sleep ${catkin_LIBRARIES})
 install(TARGETS time_api_sleep
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+install(FILES
+  launch/talker_listener.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
