@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2015-05-21)
+------------------
 * add jade turtle (`#22 <https://github.com/ros/ros_tutorials/pull/22>`_)
 
 0.5.3 (2015-05-04)
