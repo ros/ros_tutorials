@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update the coordinate system in /spawn service for consistency (`#25 <https://github.com/ros/ros_tutorials/pull/25>`_)
+
 0.5.3 (2015-05-04)
 ------------------
 
