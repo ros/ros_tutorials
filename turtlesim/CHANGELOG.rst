@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* update the coordinate system in /spawn service for consistency (`#25 <https://github.com/ros/ros_tutorials/pull/25>`_)
+
 0.6.0 (2015-05-21)
 ------------------
 * add jade turtle (`#22 <https://github.com/ros/ros_tutorials/pull/22>`_)
