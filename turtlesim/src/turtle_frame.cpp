@@ -76,7 +76,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   turtles.append("indigo.svg");
 
   QString images_path = (ros::package::getPath("turtlesim") + "/images/").c_str();
-  for (size_t i = 0; i < turtles.size(); ++i)
+  for (int i = 0; i < turtles.size(); ++i)
   {
     QImage img;
     img.load(images_path + turtles[i]);
@@ -101,7 +101,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   // spawn all available turtle types
   if(FALSE)
   {
-    for(size_t index = 0; index < turtles.size(); index++)
+    for(int index = 0; index < turtles.size(); ++index)
     {
       QString name = turtles[index];
       name = name.split(".").first();
@@ -210,7 +210,7 @@ void TurtleFrame::onUpdate()
   }
 }
 
-void TurtleFrame::paintEvent(QPaintEvent* event)
+void TurtleFrame::paintEvent(QPaintEvent*)
 {
   QPainter painter(this);
 
