@@ -100,7 +100,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
 
   // spawn all available turtle types
-  if(FALSE)
+  if(false)
   {
     for(int index = 0; index < turtles.size(); ++index)
     {

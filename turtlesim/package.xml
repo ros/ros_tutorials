@@ -16,9 +16,9 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>geometry_msgs</build_depend>
-  <build_depend>libqt4-dev</build_depend>
+  <build_depend>qtbase5-dev</build_depend>
   <build_depend>message_generation</build_depend>
-  <build_depend>qt4-qmake</build_depend>
+  <build_depend>qt5-qmake</build_depend>
   <build_depend>rosconsole</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>roscpp_serialization</build_depend>
@@ -28,7 +28,8 @@
   <build_depend>std_srvs</build_depend>
 
   <run_depend>geometry_msgs</run_depend>
-  <run_depend>libqt4</run_depend>
+  <run_depend>libqt5-core</run_depend>
+  <run_depend>libqt5-gui</run_depend>
   <run_depend>message_runtime</run_depend>
   <run_depend>rosconsole</run_depend>
   <run_depend>roscpp</run_depend>
