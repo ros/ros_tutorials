@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.5 (2016-03-18)
+------------------
 * fix compiler warnings
 
 0.5.4 (2015-09-19)
