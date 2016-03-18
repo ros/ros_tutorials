@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.0 (2016-03-18)
+------------------
 * add kinetic image
 * update to Qt5
 * fix size of Jade image to not exceed other images in order to not get positioned incorrectly
