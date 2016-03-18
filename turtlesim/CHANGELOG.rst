@@ -2,6 +2,13 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add kinetic image
+* update to Qt5
+* fix size of Jade image to not exceed other images in order to not get positioned incorrectly
+* fix compiler warnings
+
 0.6.1 (2015-09-19)
 ------------------
 * update the coordinate system in /spawn service for consistency (`#25 <https://github.com/ros/ros_tutorials/pull/25>`_)
