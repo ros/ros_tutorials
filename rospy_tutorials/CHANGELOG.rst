@@ -2,6 +2,10 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix minor misleading comment (`#27 <https://github.com/ros/ros_tutorials/pull/27>`_)
+
 0.6.1 (2015-09-19)
 ------------------
 
