@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>turtlesim</name>
-  <version>0.6.1</version>
+  <version>0.6.2</version>
   <description>
     turtlesim is a tool made for teaching ROS and ROS packages.
   </description>

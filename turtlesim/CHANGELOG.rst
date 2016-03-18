@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.2 (2016-03-18)
+------------------
 * fix size of Jade image to not exceed other images in order to not get positioned incorrectly
 * fix compiler warnings
 

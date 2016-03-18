@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>rospy_tutorials</name>
-  <version>0.6.1</version>
+  <version>0.6.2</version>
   <description>
     This package attempts to show the features of ROS python API step-by-step,
     including using messages, servers, parameters, etc. These tutorials are compatible with the nodes in roscpp_tutorial.
