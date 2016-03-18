@@ -2,6 +2,9 @@
 Changelog for package roscpp_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.4 (2015-09-19)
 ------------------
 
