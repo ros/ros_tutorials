@@ -48,7 +48,7 @@ if __name__ == '__main__':
     try:
         rospy.init_node('talker', anonymous=True)
         pub = rospy.Publisher('chatter', String, queue_size=10)
-        timer = rospy.Timer(rospy.Time(1. / 10), publish_callback)  # 10Hz
+        timer = rospy.Timer(rospy.Duration(1. / 10), publish_callback)  # 10Hz
         rospy.spin()
     except rospy.ROSInterruptException:
         pass
