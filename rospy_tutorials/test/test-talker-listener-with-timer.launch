@@ -3,7 +3,6 @@
   <node name="talker" pkg="rospy_tutorials" type="talker_timer.py" />
 
   <test test-name="talker_listener_test_with_timer"
-        name="talker_listener_test_with_timer"
         pkg="rospy_tutorials" type="talker_listener_test.py" />
 
 </launch>
