@@ -106,6 +106,7 @@ if(CATKIN_ENABLE_TESTING)
       test/test-add-two-ints-with-roscpp-server.launch
       test/test-talker-listener.launch
       test/test-talker-listener-with-roscpp.launch
+      test/test-talker-listener-with-timer.launch
       test/test-on-shutdown.launch
       test/test-connection-header.launch)
      add_rostest(${T})
