@@ -133,8 +133,11 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
       orient_ = req.theta;
     }
 
-    path_painter.setPen(pen_);
-    path_painter.drawLine(pos_ * meter_, old_pos * meter_);
+    if (pen_on_)
+    {
+      path_painter.setPen(pen_);
+      path_painter.drawLine(pos_ * meter_, old_pos * meter_);
+    }
     modified = true;
   }
 
