@@ -1,0 +1,5 @@
+<launch>
+  <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" output="screen"/>	
+  <node name="pathfingding_turtle_node" pkg="pathfinding_turtle" type="pathfinding_turtle_node" output="screen"/>	
+</launch>
+  
