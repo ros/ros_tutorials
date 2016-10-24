@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* check pen_on\_ when processing teleport requests (`#35 <https://github.com/ros/ros_tutorials/pull/35>`_)
+
 0.7.0 (2016-03-18)
 ------------------
 * add kinetic image
