@@ -2,8 +2,8 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.1 (2016-10-24)
+------------------
 * add example of periodical publishing with rospy.Timer (`#34 <https://github.com/ros/ros_tutorials/issues/34>`_)
 
 0.7.0 (2016-03-18)
