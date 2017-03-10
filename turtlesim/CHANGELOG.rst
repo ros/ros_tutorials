@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.0 (2017-03-10)
+------------------
 * add lunar turtle (`#39 <https://github.com/ros/ros_tutorials/pull/39>`_)
 
 0.7.1 (2016-10-24)
