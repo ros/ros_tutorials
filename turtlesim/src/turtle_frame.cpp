@@ -76,6 +76,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
   turtles.append("indigo.svg");
   turtles.append("jade.png");
   turtles.append("kinetic.png");
+  turtles.append("lunar.png");
 
   QString images_path = (ros::package::getPath("turtlesim") + "/images/").c_str();
   for (int i = 0; i < turtles.size(); ++i)
