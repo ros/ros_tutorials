@@ -151,7 +151,9 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   QPointF old_pos = pos_;
 
-  orient_ = std::fmod(orient_ + ang_vel_ * dt, 2*PI);
+  orient_ = orient_ + ang_vel_ * dt;
+  // Keep orient_ between -pi and +pi
+  orient_ -= 2*PI * std::floor((orient_ + PI)/(2*PI));
   pos_.rx() += std::sin(orient_ + PI/2.0) * lin_vel_ * dt;
   pos_.ry() += std::cos(orient_ + PI/2.0) * lin_vel_ * dt;
 
