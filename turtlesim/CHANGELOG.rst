@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* theta ranges from -pi to +pi (`#31 <https://github.com/ros/ros_tutorials/issues/31>`_)
+
 0.8.0 (2017-03-10)
 ------------------
 * add lunar turtle (`#39 <https://github.com/ros/ros_tutorials/pull/39>`_)
