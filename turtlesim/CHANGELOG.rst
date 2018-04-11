@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.0 (2018-04-11)
+------------------
 * add melodic turtle (`#41 <https://github.com/ros/ros_tutorials/issues/41>`_)
 
 0.8.1 (2017-07-27)
