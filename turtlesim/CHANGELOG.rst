@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add melodic turtle (`#41 <https://github.com/ros/ros_tutorials/issues/41>`_)
+
 0.8.1 (2017-07-27)
 ------------------
 * theta ranges from -pi to +pi (`#31 <https://github.com/ros/ros_tutorials/issues/31>`_)
