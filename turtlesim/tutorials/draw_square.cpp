@@ -21,6 +21,27 @@ bool g_first_goal_set = false;
 
 #define PI 3.141592
 
+
+// Following three functions were borrowed from 'angles' ROS package... why
+// re-invent the wheel? http://wiki.ros.org/angles
+double normalize_angle_positive(double angle)
+{
+  return fmod(fmod(angle, 2.0*M_PI) + 2.0*M_PI, 2.0*M_PI);
+}
+
+double normalize_angle(double angle)
+{
+  double a = normalize_angle_positive(angle);
+  if (a > M_PI)
+    a -= 2.0 *M_PI;
+  return a;
+}
+
+double shortest_angular_distance(double from, double to)
+{
+  return normalize_angle(to-from);
+}
+
 void poseCallback(const turtlesim::PoseConstPtr& pose)
 {
   g_pose = pose;
@@ -28,7 +49,7 @@ void poseCallback(const turtlesim::PoseConstPtr& pose)
 
 bool hasReachedGoal()
 {
-  return fabsf(g_pose->x - g_goal.x) < 0.1 && fabsf(g_pose->y - g_goal.y) < 0.1 && fabsf(g_pose->theta - g_goal.theta) < 0.01;
+  return fabsf(g_pose->x - g_goal.x) < 0.1 && fabsf(g_pose->y - g_goal.y) < 0.1 && fabsf(shortest_angular_distance(g_pose->theta, g_goal.theta)) < 0.01;
 }
 
 bool hasStopped()
@@ -57,7 +78,7 @@ void stopForward(ros::Publisher twist_pub)
     g_state = TURN;
     g_goal.x = g_pose->x;
     g_goal.y = g_pose->y;
-    g_goal.theta = fmod(g_pose->theta + PI/2.0, 2*PI);
+    g_goal.theta = normalize_angle(g_pose->theta + PI/2.0);
     printGoal();
   }
   else
