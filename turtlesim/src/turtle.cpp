@@ -155,7 +155,12 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   // Keep orient_ between -pi and +pi
   orient_ -= 2*PI * std::floor((orient_ + PI)/(2*PI));
   pos_.rx() += std::sin(orient_ + PI/2.0) * lin_vel_ * dt;
-  pos_.ry() += std::cos(orient_ + PI/2.0) * lin_vel_ * dt;
+
+  // Make sure orientation is not zero
+  if (orient_)
+  {
+    pos_.ry() += std::cos(orient_ + PI/2.0) * lin_vel_ * dt;
+  }
 
   // Clamp to screen size
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
