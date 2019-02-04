@@ -23,4 +23,6 @@
   <run_depend>message_runtime</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>std_msgs</run_depend>
+
+  <test_depend>roscpp_tutorials</test_depend>
 </package>
