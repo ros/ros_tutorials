@@ -123,8 +123,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
     if (req.relative)
     {
       orient_ += req.theta;
-      pos_.rx() += std::sin(orient_ + PI/2.0) * req.linear;
-      pos_.ry() += std::cos(orient_ + PI/2.0) * req.linear;
+      pos_.rx() += std::cos(orient_) * req.linear;
+      pos_.ry() += - std::sin(orient_) * req.linear;
     }
     else
     {
@@ -154,8 +154,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   orient_ = orient_ + ang_vel_ * dt;
   // Keep orient_ between -pi and +pi
   orient_ -= 2*PI * std::floor((orient_ + PI)/(2*PI));
-  pos_.rx() += std::sin(orient_ + PI/2.0) * lin_vel_ * dt;
-  pos_.ry() += std::cos(orient_ + PI/2.0) * lin_vel_ * dt;
+  pos_.rx() += std::cos(orient_) * lin_vel_ * dt;
+  pos_.ry() += - std::sin(orient_) * lin_vel_ * dt;
 
   // Clamp to screen size
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
