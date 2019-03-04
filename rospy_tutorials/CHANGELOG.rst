@@ -2,8 +2,8 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.1 (2019-03-04)
+------------------
 * add missing dependency for tests (`#50 <https://github.com/ros/ros_tutorials/issues/50>`_)
 
 0.9.0 (2018-04-11)
