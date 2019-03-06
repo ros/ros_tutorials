@@ -41,6 +41,7 @@ foreach(dir
     custom_callback_processing
     timers
     parameters
+    cached_parameters
     )
   rostutorial(${dir})
 endforeach()
