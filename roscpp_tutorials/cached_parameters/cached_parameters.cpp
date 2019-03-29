@@ -42,8 +42,7 @@ int main(int argc, char** argv)
     std::string s;
     // 1st time to lookup parameter server to cache parameter.
     begin = ros::Time::now();
-    if (n.getParamCached("my_cached_param", s))
-    {
+    if (n.getParamCached("my_cached_param", s)) {
       end = ros::Time::now();
       ROS_INFO("1st read: %s (%lu [nsec])\n", s.c_str(), (end.toNSec() - begin.toNSec()));
     } else {
