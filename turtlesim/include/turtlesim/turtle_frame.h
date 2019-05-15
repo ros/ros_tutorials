@@ -86,8 +86,6 @@ private:
   rclcpp::Service<turtlesim::srv::Spawn>::SharedPtr spawn_srv_;
   rclcpp::Service<turtlesim::srv::Kill>::SharedPtr kill_srv_;
 
-  rclcpp::SyncParametersClient::SharedPtr parameters_client_;
-
   typedef std::map<std::string, TurtlePtr> M_Turtle;
   M_Turtle turtles_;
   uint32_t id_counter_;

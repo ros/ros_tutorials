@@ -15,7 +15,9 @@ class Mimic : public rclcpp::Node
     RCLCPP_INFO(this->get_logger(), "turtle_mimic is ON! When input turtle move, another turtle move along");
     RCLCPP_INFO(this->get_logger(), "sub : %s, pub : %s", (input + "/pose").c_str(), (output + "/cmd_vel").c_str());
 
-    twist_pub_ = create_publisher<geometry_msgs::msg::Twist>(output + "/cmd_vel", rmw_qos_profile_default);
+    rclcpp::QoS qos(rclcpp::KeepLast(7));
+
+    twist_pub_ = create_publisher<geometry_msgs::msg::Twist>(output + "/cmd_vel", qos);
 
     twist_ = std::make_shared<geometry_msgs::msg::Twist>();
 
@@ -27,7 +29,7 @@ class Mimic : public rclcpp::Node
         twist_pub_->publish(twist_);
       };
 
-    pose_sub_ = create_subscription<turtlesim::msg::Pose>(input + "/pose", pose_call_back);
+    pose_sub_ = create_subscription<turtlesim::msg::Pose>(input + "/pose", qos, pose_call_back);
   }
 
  private:

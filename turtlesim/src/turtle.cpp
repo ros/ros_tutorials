@@ -64,10 +64,12 @@ Turtle::Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, con
       ang_vel_ = vel->angular.z;
     };
 
-  velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", velocity_callback);
+  rclcpp::QoS qos(rclcpp::KeepLast(7));
 
-  pose_pub_ = nh_->create_publisher<turtlesim::msg::Pose>(real_name + "/pose", rmw_qos_profile_default);
-  color_pub_ = nh_->create_publisher<turtlesim::msg::Color>(real_name + "/color_sensor", rmw_qos_profile_default);
+  velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", qos, velocity_callback);
+
+  pose_pub_ = nh_->create_publisher<turtlesim::msg::Pose>(real_name + "/pose", qos);
+  color_pub_ = nh_->create_publisher<turtlesim::msg::Color>(real_name + "/color_sensor", qos);
   
   auto set_pen_callback =
     [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
@@ -161,13 +163,6 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
-  // TODO: It makes error
-  // if ((nh_->now() - last_command_time_) > rclcpp::Duration(1.0))
-  // {
-    // lin_vel_ = 0.0;
-    // ang_vel_ = 0.0;
-  // }
-  //
   QPointF old_pos = pos_;
 
   orient_ = orient_ + ang_vel_ * dt;

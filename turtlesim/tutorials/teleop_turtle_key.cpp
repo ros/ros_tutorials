@@ -27,7 +27,9 @@ class TeleopTurtle : public rclcpp::Node
     this->declare_parameter("scale_angular", a_scale_);
     this->declare_parameter("scale_linear", l_scale_);
 
-    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", rmw_qos_profile_default);
+    rclcpp::QoS qos(rclcpp::KeepLast(7));
+
+    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", qos);
   }
   void keyLoop();
 

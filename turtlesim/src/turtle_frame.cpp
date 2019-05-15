@@ -63,11 +63,9 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr &node_handle, QWidget* parent, 
 
   nh_ = node_handle;
 
-  nh_->declare_parameter("background_r", DEFAULT_BG_R);
-  nh_->declare_parameter("background_g", DEFAULT_BG_G);
-  nh_->declare_parameter("background_b", DEFAULT_BG_B);
-
-  parameters_client_ = std::make_shared<rclcpp::SyncParametersClient>(nh_);
+  nh_->declare_parameter("background_r", rclcpp::ParameterValue(DEFAULT_BG_R), rcl_interfaces::msg::ParameterDescriptor());
+  nh_->declare_parameter("background_g", rclcpp::ParameterValue(DEFAULT_BG_G), rcl_interfaces::msg::ParameterDescriptor());
+  nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), rcl_interfaces::msg::ParameterDescriptor());
 
   QVector<QString> turtles;
   turtles.append("box-turtle.png");
@@ -232,11 +230,9 @@ void TurtleFrame::clear()
   int g = DEFAULT_BG_G;
   int b = DEFAULT_BG_B;
 
-  auto set_parameters_results = parameters_client_->set_parameters({
-    rclcpp::Parameter("background_r", r),
-    rclcpp::Parameter("background_g", r),
-    rclcpp::Parameter("background_b", r),
-  });
+  nh_->get_parameter("background_r", r);
+  nh_->get_parameter("background_g", g);
+  nh_->get_parameter("background_b", b);
 
   path_image_.fill(qRgb(r, g, b));
   update();
@@ -271,13 +267,6 @@ void TurtleFrame::paintEvent(QPaintEvent*)
 
 void TurtleFrame::updateTurtles()
 {
-  //TODO: It makes errors
-  // if (last_turtle_update_ == rclcpp::Time(0))
-  // {
-    // last_turtle_update_ = nh_->now();
-    // return;
-  // }
-
   last_turtle_update_ = nh_->now();
 
   bool modified = false;

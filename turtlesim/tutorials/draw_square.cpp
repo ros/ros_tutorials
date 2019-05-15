@@ -39,9 +39,11 @@ class DrawSquare : public rclcpp::Node
         printPresent();
       };
 
-    pose_sub_ = create_subscription<turtlesim::msg::Pose>("turtle1/pose", pose_callback);
+    rclcpp::QoS qos(rclcpp::KeepLast(7));
 
-    twist_pub_ = create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", rmw_qos_profile_default);
+    pose_sub_ = create_subscription<turtlesim::msg::Pose>("turtle1/pose", qos, pose_callback);
+
+    twist_pub_ = create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", qos);
 
     auto timer_callback = 
       [this]() -> void
