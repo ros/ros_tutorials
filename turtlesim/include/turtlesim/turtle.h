@@ -32,15 +32,18 @@
 
 // This prevents a MOC error with versions of boost >= 1.48
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <ros/ros.h>
-# include <boost/shared_ptr.hpp>
+# include <rclcpp/rclcpp.hpp>
+// #include <boost/shared_ptr.hpp>
 
-# include <turtlesim/Pose.h>
-# include <geometry_msgs/Twist.h>
-# include <turtlesim/SetPen.h>
-# include <turtlesim/TeleportRelative.h>
-# include <turtlesim/TeleportAbsolute.h>
-# include <turtlesim/Color.h>
+# include <turtlesim/msg/pose.hpp>
+# include <turtlesim/msg/color.hpp>
+# include <geometry_msgs/msg/twist.hpp>
+
+# include <turtlesim/srv/set_pen.hpp>
+# include <turtlesim/srv/teleport_relative.hpp>
+# include <turtlesim/srv/teleport_absolute.hpp>
+
+# include <math.h>
 #endif
 
 #include <QImage>
@@ -55,46 +58,47 @@ namespace turtlesim
 
 class Turtle
 {
-public:
-  Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient);
+ public:
+  Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, const QImage& turtle_image, const QPointF& pos, float orient);
 
-  bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
+  bool update(double dt, QPainter& path_painter, const QImage& path_image, float canvas_width, float canvas_height);
   void paint(QPainter &painter);
-private:
-  void velocityCallback(const geometry_msgs::Twist::ConstPtr& vel);
-  bool setPenCallback(turtlesim::SetPen::Request&, turtlesim::SetPen::Response&);
-  bool teleportRelativeCallback(turtlesim::TeleportRelative::Request&, turtlesim::TeleportRelative::Response&);
-  bool teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request&, turtlesim::TeleportAbsolute::Response&);
 
+ private:
   void rotateImage();
 
-  ros::NodeHandle nh_;
+  rclcpp::Node::SharedPtr nh_;
 
   QImage turtle_image_;
   QImage turtle_rotated_image_;
 
   QPointF pos_;
-  qreal orient_;
+  float orient_;
 
-  qreal lin_vel_;
-  qreal ang_vel_;
+  float lin_vel_;
+  float ang_vel_;
   bool pen_on_;
   QPen pen_;
 
-  ros::Subscriber velocity_sub_;
-  ros::Publisher pose_pub_;
-  ros::Publisher color_pub_;
-  ros::ServiceServer set_pen_srv_;
-  ros::ServiceServer teleport_relative_srv_;
-  ros::ServiceServer teleport_absolute_srv_;
+  std::shared_ptr<turtlesim::msg::Pose> pose_msg_;
+  std::shared_ptr<turtlesim::msg::Color> color_msg_;
 
-  ros::WallTime last_command_time_;
+  rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_sub_;
+  
+  rclcpp::Publisher<turtlesim::msg::Pose>::SharedPtr pose_pub_;
+  rclcpp::Publisher<turtlesim::msg::Color>::SharedPtr color_pub_;
+
+  rclcpp::Service<turtlesim::srv::SetPen>::SharedPtr set_pen_srv_;
+  rclcpp::Service<turtlesim::srv::TeleportRelative>::SharedPtr teleport_relative_srv_;
+  rclcpp::Service<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_absolute_srv_;
+
+  rclcpp::Time last_command_time_;
 
   float meter_;
 
   struct TeleportRequest
   {
-    TeleportRequest(float x, float y, qreal _theta, qreal _linear, bool _relative)
+    TeleportRequest(float x, float y, float _theta, float _linear, bool _relative)
     : pos(x, y)
     , theta(_theta)
     , linear(_linear)
@@ -102,14 +106,14 @@ private:
     {}
 
     QPointF pos;
-    qreal theta;
-    qreal linear;
+    float theta;
+    float linear;
     bool relative;
   };
   typedef std::vector<TeleportRequest> V_TeleportRequest;
   V_TeleportRequest teleport_requests_;
 };
-typedef boost::shared_ptr<Turtle> TurtlePtr;
+typedef std::shared_ptr<Turtle> TurtlePtr;
 
 }
 

@@ -39,9 +39,8 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient)
-: nh_(nh)
-, turtle_image_(turtle_image)
+Turtle::Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, const QImage& turtle_image, const QPointF& pos, float orient)
+: turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
 , lin_vel_(0.0)
@@ -51,53 +50,72 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 {
   pen_.setWidth(3);
 
-  velocity_sub_ = nh_.subscribe("cmd_vel", 1, &Turtle::velocityCallback, this);
-  pose_pub_ = nh_.advertise<Pose>("pose", 1);
-  color_pub_ = nh_.advertise<Color>("color_sensor", 1);
-  set_pen_srv_ = nh_.advertiseService("set_pen", &Turtle::setPenCallback, this);
-  teleport_relative_srv_ = nh_.advertiseService("teleport_relative", &Turtle::teleportRelativeCallback, this);
-  teleport_absolute_srv_ = nh_.advertiseService("teleport_absolute", &Turtle::teleportAbsoluteCallback, this);
+  nh_ = node_handle;
+  last_command_time_ = nh_->now();
+
+  pose_msg_ = std::make_shared<turtlesim::msg::Pose>();
+  color_msg_ = std::make_shared<turtlesim::msg::Color>();
+
+  auto velocity_callback = 
+    [this](const geometry_msgs::msg::Twist::SharedPtr vel) -> void
+    {
+      last_command_time_ = nh_->now();
+      lin_vel_ = vel->linear.x;
+      ang_vel_ = vel->angular.z;
+    };
+
+  velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", velocity_callback);
+
+  pose_pub_ = nh_->create_publisher<turtlesim::msg::Pose>(real_name + "/pose", rmw_qos_profile_default);
+  color_pub_ = nh_->create_publisher<turtlesim::msg::Color>(real_name + "/color_sensor", rmw_qos_profile_default);
+  
+  auto set_pen_callback =
+    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
+      const std::shared_ptr<turtlesim::srv::SetPen::Request> request,
+      std::shared_ptr<turtlesim::srv::SetPen::Response> /*response*/) -> bool
+  {
+    pen_on_ = !request->off;
+    if (request->off)
+    {
+      return true;
+    }
+
+    QPen pen(QColor(request->r, request->g, request->b));
+    if (request->width != 0)
+    {
+      pen.setWidth(request->width);
+    }
+
+    pen_ = pen;
+    return true;
+  };
+
+  set_pen_srv_ = nh_->create_service<turtlesim::srv::SetPen>(real_name + "/set_pen", set_pen_callback);
+
+  auto teleport_relative_callback =
+    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
+      const std::shared_ptr<turtlesim::srv::TeleportRelative::Request> request,
+      std::shared_ptr<turtlesim::srv::TeleportRelative::Response> /*response*/) -> bool
+  {
+    teleport_requests_.push_back(TeleportRequest(0, 0, request->angular, request->linear, true));
+    return true;
+  };
+
+  teleport_relative_srv_ = nh_->create_service<turtlesim::srv::TeleportRelative>(real_name + "/teleport_relative", teleport_relative_callback);
+
+  auto teleport_absolute_callback =
+    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
+      const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request> request,
+      std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response> /*response*/) -> bool
+  {
+    teleport_requests_.push_back(TeleportRequest(request->x, request->y, request->theta, 0, false));
+    return true;
+  };
+
+  teleport_absolute_srv_ = nh_->create_service<turtlesim::srv::TeleportAbsolute>(real_name + "/teleport_absolute", teleport_absolute_callback);
 
   meter_ = turtle_image_.height();
   rotateImage();
-}
-
-
-void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
-{
-  last_command_time_ = ros::WallTime::now();
-  lin_vel_ = vel->linear.x;
-  ang_vel_ = vel->angular.z;
-}
-
-bool Turtle::setPenCallback(turtlesim::SetPen::Request& req, turtlesim::SetPen::Response&)
-{
-  pen_on_ = !req.off;
-  if (req.off)
-  {
-    return true;
-  }
-
-  QPen pen(QColor(req.r, req.g, req.b));
-  if (req.width != 0)
-  {
-    pen.setWidth(req.width);
-  }
-
-  pen_ = pen;
-  return true;
-}
-
-bool Turtle::teleportRelativeCallback(turtlesim::TeleportRelative::Request& req, turtlesim::TeleportRelative::Response&)
-{
-  teleport_requests_.push_back(TeleportRequest(0, 0, req.angular, req.linear, true));
-  return true;
-}
-
-bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req, turtlesim::TeleportAbsolute::Response&)
-{
-  teleport_requests_.push_back(TeleportRequest(req.x, req.y, req.theta, 0, false));
-  return true;
 }
 
 void Turtle::rotateImage()
@@ -107,10 +125,10 @@ void Turtle::rotateImage()
   turtle_rotated_image_ = turtle_image_.transformed(transform);
 }
 
-bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height)
+bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, float canvas_width, float canvas_height)
 {
   bool modified = false;
-  qreal old_orient = orient_;
+  float old_orient = orient_;
 
   // first process any teleportation requests, in order
   V_TeleportRequest::iterator it = teleport_requests_.begin();
@@ -143,12 +161,13 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
-  if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
-  {
-    lin_vel_ = 0.0;
-    ang_vel_ = 0.0;
-  }
-
+  // TODO: It makes error
+  // if ((nh_->now() - last_command_time_) > rclcpp::Duration(1.0))
+  // {
+    // lin_vel_ = 0.0;
+    // ang_vel_ = 0.0;
+  // }
+  //
   QPointF old_pos = pos_;
 
   orient_ = orient_ + ang_vel_ * dt;
@@ -161,32 +180,32 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
       pos_.y() < 0 || pos_.y() > canvas_height)
   {
-    ROS_WARN("Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
+    RCLCPP_WARN(nh_->get_logger(), "Oh no! I hit the wall! (Clamping from [x=%f, y=%f])", pos_.x(), pos_.y());
   }
 
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
   // Publish pose of the turtle
-  Pose p;
-  p.x = pos_.x();
-  p.y = canvas_height - pos_.y();
-  p.theta = orient_;
-  p.linear_velocity = lin_vel_;
-  p.angular_velocity = ang_vel_;
-  pose_pub_.publish(p);
+  pose_msg_->x = pos_.x();
+  pose_msg_->y = canvas_height - pos_.y();
+  pose_msg_->theta = orient_;
+  pose_msg_->linear_velocity = lin_vel_;
+  pose_msg_->angular_velocity = ang_vel_;
+
+  pose_pub_->publish(pose_msg_);
 
   // Figure out (and publish) the color underneath the turtle
   {
-    Color color;
     QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
-    color.r = qRed(pixel);
-    color.g = qGreen(pixel);
-    color.b = qBlue(pixel);
-    color_pub_.publish(color);
+    color_msg_->r = qRed(pixel);
+    color_msg_->g = qGreen(pixel);
+    color_msg_->b = qBlue(pixel);
+
+    color_pub_->publish(color_msg_);
   }
 
-  ROS_DEBUG("[%s]: pos_x: %f pos_y: %f theta: %f", nh_.getNamespace().c_str(), pos_.x(), pos_.y(), orient_);
+  RCLCPP_DEBUG(nh_->get_logger(), "[%s]: pos_x: %f pos_y: %f theta: %f", nh_->get_namespace(), pos_.x(), pos_.y(), orient_);
 
   if (orient_ != old_orient)
   {

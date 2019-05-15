@@ -1,40 +1,85 @@
-#include <ros/ros.h>
-#include <turtlesim/Pose.h>
-#include <geometry_msgs/Twist.h>
+#include <rclcpp/rclcpp.hpp>
+#include <turtlesim/msg/pose.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 
-class Mimic
+#include <string>
+#include <memory>
+#include "rcutils/cmdline_parser.h"
+
+class Mimic : public rclcpp::Node
 {
-public:
-  Mimic();
+ public:
+  explicit Mimic(std::string &input, std::string &output)
+    : Node("turtle_mimic")
+  {
+    RCLCPP_INFO(this->get_logger(), "turtle_mimic is ON! When input turtle move, another turtle move along");
+    RCLCPP_INFO(this->get_logger(), "sub : %s, pub : %s", (input + "/pose").c_str(), (output + "/cmd_vel").c_str());
 
-private:
-  void poseCallback(const turtlesim::PoseConstPtr& pose);
+    twist_pub_ = create_publisher<geometry_msgs::msg::Twist>(output + "/cmd_vel", rmw_qos_profile_default);
 
-  ros::Publisher twist_pub_;
-  ros::Subscriber pose_sub_;
+    twist_ = std::make_shared<geometry_msgs::msg::Twist>();
+
+    auto pose_call_back = 
+      [this](const turtlesim::msg::Pose::SharedPtr pose) -> void
+      {
+        twist_->angular.z = pose->angular_velocity;
+        twist_->linear.x = pose->linear_velocity;
+        twist_pub_->publish(twist_);
+      };
+
+    pose_sub_ = create_subscription<turtlesim::msg::Pose>(input + "/pose", pose_call_back);
+  }
+
+ private:
+  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
+  rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
+
+  std::shared_ptr<geometry_msgs::msg::Twist> twist_;
 };
 
-Mimic::Mimic()
+void print_usage()
 {
-  ros::NodeHandle input_nh("input");
-  ros::NodeHandle output_nh("output");
-  twist_pub_ = output_nh.advertise<geometry_msgs::Twist>("cmd_vel", 1);
-  pose_sub_ = input_nh.subscribe<turtlesim::Pose>("pose", 1, &Mimic::poseCallback, this);
-}
-
-void Mimic::poseCallback(const turtlesim::PoseConstPtr& pose)
-{
-  geometry_msgs::Twist twist;
-  twist.angular.z = pose->angular_velocity;
-  twist.linear.x = pose->linear_velocity;
-  twist_pub_.publish(twist);
+  printf("Usage for turtle_mimic :\n");
+  printf("talker [-i input] [-o output]\n");
+  printf("options:\n");
+  printf("-h : Print this help function.\n");
+  printf("-i input: Specify the namespace on which to pose subscriber. Defaults to input.\n");
+  printf("-o output: Specify the namespace on which to cmd_vel publisher. Defaults to output.\n");
 }
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "turtle_mimic");
-  Mimic mimic;
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
 
-  ros::spin();
+  if (rcutils_cli_option_exist(argv, argv + argc, "-h")) 
+  {
+    print_usage();
+    return 0;
+  }
+
+  rclcpp::init(argc, argv);
+  
+  auto input = std::string("input");
+  char * cli_option[2];
+  cli_option[0] = rcutils_cli_get_option(argv, argv + argc, "-i");
+  if (nullptr != cli_option[0]) 
+  {
+    input = std::string(cli_option[0]);
+  }
+
+  auto output = std::string("output");
+  cli_option[1] = rcutils_cli_get_option(argv, argv + argc, "-o");
+  if (nullptr != cli_option[1]) 
+  {
+    output = std::string(cli_option[1]);
+  }
+
+  auto node = std::make_shared<Mimic>(input, output);
+
+  rclcpp::spin(node);
+
+  rclcpp::shutdown();
+
+  return 0;
 }
 
