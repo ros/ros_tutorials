@@ -13,6 +13,7 @@
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
   <author>Josh Faust</author>
+  <author email="pyo@robotis.com">Pyo</author>
   <author email="thlim@robotis.com">Darby Lim</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
