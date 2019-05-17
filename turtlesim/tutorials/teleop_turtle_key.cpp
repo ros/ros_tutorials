@@ -122,12 +122,12 @@ void TeleopTurtle::keyLoop()
         break;
     }
 
-    auto twist = std::make_shared<geometry_msgs::msg::Twist>();
+    auto twist = std::make_unique<geometry_msgs::msg::Twist>();
     twist->angular.z = a_scale_*angular_;
     twist->linear.x = l_scale_*linear_;
     if(dirty ==true)
     {
-      twist_pub_->publish(twist);    
+      twist_pub_->publish(std::move(twist));    
       dirty=false;
     }
   }

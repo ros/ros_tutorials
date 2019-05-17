@@ -19,14 +19,14 @@ class Mimic : public rclcpp::Node
 
     twist_pub_ = create_publisher<geometry_msgs::msg::Twist>(output + "/cmd_vel", qos);
 
-    twist_ = std::make_shared<geometry_msgs::msg::Twist>();
+    twist_ = std::make_unique<geometry_msgs::msg::Twist>();
 
     auto pose_call_back = 
       [this](const turtlesim::msg::Pose::SharedPtr pose) -> void
       {
         twist_->angular.z = pose->angular_velocity;
         twist_->linear.x = pose->linear_velocity;
-        twist_pub_->publish(twist_);
+        twist_pub_->publish(std::move(twist_));
       };
 
     pose_sub_ = create_subscription<turtlesim::msg::Pose>(input + "/pose", qos, pose_call_back);
@@ -36,7 +36,7 @@ class Mimic : public rclcpp::Node
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
   rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
 
-  std::shared_ptr<geometry_msgs::msg::Twist> twist_;
+  std::unique_ptr<geometry_msgs::msg::Twist> twist_;
 };
 
 void print_usage()
