@@ -163,6 +163,12 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
+  if (nh_->now() - last_command_time_ > rclcpp::Duration(1.0, 0))
+  {
+    lin_vel_ = 0.0;
+    ang_vel_ = 0.0;
+  }
+
   QPointF old_pos = pos_;
 
   orient_ = orient_ + ang_vel_ * dt;
