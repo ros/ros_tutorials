@@ -107,10 +107,10 @@ class DrawSquare : public rclcpp::Node
 
   void commandTurtle(float linear, float angular)
   {
-    auto twist = std::make_shared<geometry_msgs::msg::Twist>();
+    auto twist = std::make_unique<geometry_msgs::msg::Twist>();
     twist->linear.x = linear;
     twist->angular.z = angular;
-    twist_pub_->publish(twist);
+    twist_pub_->publish(std::move(twist));
   }
 
   void stopForward()

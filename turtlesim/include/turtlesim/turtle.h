@@ -80,8 +80,8 @@ class Turtle
   bool pen_on_;
   QPen pen_;
 
-  std::shared_ptr<turtlesim::msg::Pose> pose_msg_;
-  std::shared_ptr<turtlesim::msg::Color> color_msg_;
+  std::unique_ptr<turtlesim::msg::Pose> pose_msg_;
+  std::unique_ptr<turtlesim::msg::Color> color_msg_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_sub_;
   

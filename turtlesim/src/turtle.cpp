@@ -53,8 +53,8 @@ Turtle::Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, con
   nh_ = node_handle;
   last_command_time_ = nh_->now();
 
-  pose_msg_ = std::make_shared<turtlesim::msg::Pose>();
-  color_msg_ = std::make_shared<turtlesim::msg::Color>();
+  pose_msg_ = std::make_unique<turtlesim::msg::Pose>();
+  color_msg_ = std::make_unique<turtlesim::msg::Color>();
 
   auto velocity_callback = 
     [this](const geometry_msgs::msg::Twist::SharedPtr vel) -> void
@@ -194,7 +194,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   pose_msg_->linear_velocity = lin_vel_;
   pose_msg_->angular_velocity = ang_vel_;
 
-  pose_pub_->publish(pose_msg_);
+  pose_pub_->publish(std::move(pose_msg_));
 
   // Figure out (and publish) the color underneath the turtle
   {
@@ -203,7 +203,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
     color_msg_->g = qGreen(pixel);
     color_msg_->b = qBlue(pixel);
 
-    color_pub_->publish(color_msg_);
+    color_pub_->publish(std::move(color_msg_));
   }
 
   RCLCPP_DEBUG(nh_->get_logger(), "[%s]: pos_x: %f pos_y: %f theta: %f", nh_->get_namespace(), pos_.x(), pos_.y(), orient_);
