@@ -53,9 +53,6 @@ Turtle::Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, con
   nh_ = node_handle;
   last_command_time_ = nh_->now();
 
-  pose_msg_ = std::make_unique<turtlesim::msg::Pose>();
-  color_msg_ = std::make_unique<turtlesim::msg::Color>();
-
   auto velocity_callback = 
     [this](const geometry_msgs::msg::Twist::SharedPtr vel) -> void
     {
@@ -187,23 +184,27 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
-  // Publish pose of the turtle
-  pose_msg_->x = pos_.x();
-  pose_msg_->y = canvas_height - pos_.y();
-  pose_msg_->theta = orient_;
-  pose_msg_->linear_velocity = lin_vel_;
-  pose_msg_->angular_velocity = ang_vel_;
+  auto pose_msg = std::make_unique<turtlesim::msg::Pose>();
 
-  pose_pub_->publish(std::move(pose_msg_));
+  // Publish pose of the turtle
+  pose_msg->x = pos_.x();
+  pose_msg->y = canvas_height - pos_.y();
+  pose_msg->theta = orient_;
+  pose_msg->linear_velocity = lin_vel_;
+  pose_msg->angular_velocity = ang_vel_;
+
+  pose_pub_->publish(std::move(pose_msg));
 
   // Figure out (and publish) the color underneath the turtle
   {
-    QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
-    color_msg_->r = qRed(pixel);
-    color_msg_->g = qGreen(pixel);
-    color_msg_->b = qBlue(pixel);
+    auto color_msg = std::make_unique<turtlesim::msg::Color>();
 
-    color_pub_->publish(std::move(color_msg_));
+    QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
+    color_msg->r = qRed(pixel);
+    color_msg->g = qGreen(pixel);
+    color_msg->b = qBlue(pixel);
+
+    color_pub_->publish(std::move(color_msg));
   }
 
   RCLCPP_DEBUG(nh_->get_logger(), "[%s]: pos_x: %f pos_y: %f theta: %f", nh_->get_namespace(), pos_.x(), pos_.y(), orient_);
