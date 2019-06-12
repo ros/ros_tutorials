@@ -35,7 +35,7 @@
 
 class TurtleApp : public QApplication
 {
- public:
+public:
   explicit TurtleApp(int& argc, char** argv, rclcpp::Node::SharedPtr &node_handle)
     : QApplication(argc, argv)
   {
@@ -48,7 +48,7 @@ class TurtleApp : public QApplication
     return QApplication::exec();
   }
 
- private:
+private:
 	std::shared_ptr<turtlesim::TurtleFrame> frame_;
 };
 
