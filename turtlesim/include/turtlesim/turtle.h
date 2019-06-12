@@ -33,7 +33,6 @@
 // This prevents a MOC error with versions of boost >= 1.48
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 # include <rclcpp/rclcpp.hpp>
-// #include <boost/shared_ptr.hpp>
 
 # include <turtlesim/msg/pose.hpp>
 # include <turtlesim/msg/color.hpp>
