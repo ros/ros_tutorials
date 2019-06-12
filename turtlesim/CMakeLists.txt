@@ -91,14 +91,5 @@ install(DIRECTORY
   # FILES_MATCHING PATTERN "*.png" PATTERN "*.svg"
 )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_dependencies()
-
-  find_package(ament_cmake_pytest REQUIRED)
-  find_package(launch_testing_ament_cmake REQUIRED)
-  find_package(rmw_implementation_cmake REQUIRED)
-endif()
-
 ament_export_include_directories(include)
 ament_package()
