@@ -19,7 +19,7 @@ enum State
 
 class DrawSquare : public rclcpp::Node
 {
- public:
+public:
   explicit DrawSquare()
     : Node("draw_square"),
       g_state_(FORWARD),
@@ -84,7 +84,7 @@ class DrawSquare : public rclcpp::Node
     timer_ = create_wall_timer(16ms, timer_callback);
   }
 
- private:
+private:
   bool hasReachedGoal()
   {
     return fabsf(g_pose_->x - g_goal_->x) < 0.1 && fabsf(g_pose_->y - g_goal_->y) < 0.1 && fabsf(g_pose_->theta - g_goal_->theta) < 0.01;
