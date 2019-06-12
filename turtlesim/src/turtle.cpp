@@ -39,7 +39,7 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(rclcpp::Node::SharedPtr &node_handle, std::string &real_name, const QImage& turtle_image, const QPointF& pos, float orient)
+Turtle::Turtle(rclcpp::Node::SharedPtr& node_handle, std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
 : turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
