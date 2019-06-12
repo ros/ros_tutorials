@@ -8,8 +8,8 @@
 
 class Mimic : public rclcpp::Node
 {
- public:
-  explicit Mimic(std::string &input, std::string &output)
+public:
+  explicit Mimic(std::string& input, std::string& output)
     : Node("turtle_mimic")
   {
     RCLCPP_INFO(this->get_logger(), "turtle_mimic is ON! When input turtle move, another turtle move along");
@@ -31,7 +31,7 @@ class Mimic : public rclcpp::Node
     pose_sub_ = create_subscription<turtlesim::msg::Pose>(input + "/pose", qos, pose_call_back);
   }
 
- private:
+private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
   rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
 };
