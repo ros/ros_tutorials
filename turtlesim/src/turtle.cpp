@@ -124,7 +124,7 @@ void Turtle::rotateImage()
   turtle_rotated_image_ = turtle_image_.transformed(transform);
 }
 
-bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, float canvas_width, float canvas_height)
+bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height)
 {
   bool modified = false;
   float old_orient = orient_;
