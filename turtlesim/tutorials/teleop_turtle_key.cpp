@@ -14,7 +14,7 @@
 
 class TeleopTurtle : public rclcpp::Node
 {
- public:
+public:
   explicit TeleopTurtle()
     : Node("turtle_teleop"),
       linear_(0),
@@ -34,7 +34,7 @@ class TeleopTurtle : public rclcpp::Node
   }
   void keyLoop();
 
- private:
+private:
   double linear_, angular_, l_scale_, a_scale_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
 };
