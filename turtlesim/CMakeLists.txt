@@ -41,7 +41,6 @@ set(turtlesim_node_SRCS
   src/turtle.cpp
   src/turtle_frame.cpp
 )
-
 set(turtlesim_node_HDRS
   include/turtlesim/turtle_frame.h
 )
@@ -82,17 +81,12 @@ rosidl_target_interfaces(mimic
   ${PROJECT_NAME} "rosidl_typesupport_cpp"
 )
 
-install(TARGETS 
-  turtlesim_node 
-  turtle_teleop_key 
-  draw_square 
-  mimic
+install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
   DESTINATION lib/${PROJECT_NAME}
 ) 
 
 install(DIRECTORY 
   images
-  launch
   DESTINATION share/${PROJECT_NAME}
   # FILES_MATCHING PATTERN "*.png" PATTERN "*.svg"
 )
