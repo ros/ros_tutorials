@@ -10,7 +10,6 @@
 #define KEYCODE_L 0x44
 #define KEYCODE_U 0x41
 #define KEYCODE_D 0x42
-#define KEYCODE_S 0x20
 #define KEYCODE_Q 0x71
 
 class TeleopTurtle : public rclcpp::Node
@@ -114,12 +113,6 @@ void TeleopTurtle::keyLoop()
       case KEYCODE_D:
         RCLCPP_DEBUG(this->get_logger(), "DOWN");
         linear_ = -1.0;
-        dirty = true;
-        break;
-      case KEYCODE_S:
-        RCLCPP_DEBUG(this->get_logger(), "STOP");
-        linear_ = 0.0;
-        angular_ = 0.0;
         dirty = true;
         break;
     }
