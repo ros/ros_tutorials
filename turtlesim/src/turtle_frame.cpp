@@ -56,7 +56,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   srand(time(NULL));
 
   update_timer_ = new QTimer(this);
-  update_timer_->setInterval(16); // msec
+  update_timer_->setInterval(16);
   update_timer_->start();
 
   connect(update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
