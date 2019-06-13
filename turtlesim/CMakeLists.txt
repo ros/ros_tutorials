@@ -11,19 +11,16 @@ endif()
 
 find_package(ament_cmake REQUIRED) 
 find_package(ament_index_cpp REQUIRED)
-
 find_package(rclcpp REQUIRED) 
 find_package(std_msgs REQUIRED) 
 find_package(geometry_msgs REQUIRED) 
 find_package(std_srvs REQUIRED) 
-
 find_package(rosidl_default_generators REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Color.msg"
   "msg/Pose.msg"
-
   "srv/Kill.srv"
   "srv/SetPen.srv"
   "srv/Spawn.srv"
@@ -36,15 +33,6 @@ include_directories(
   ${QT_INCLUDES}
 )
 
-set(turtlesim_node_SRCS
-  src/turtlesim.cpp
-  src/turtle.cpp
-  src/turtle_frame.cpp
-)
-set(turtlesim_node_HDRS
-  include/turtlesim/turtle_frame.h
-)
-
 set(dependencies
   "rclcpp"
   "ament_index_cpp"
@@ -54,32 +42,31 @@ set(dependencies
   "Qt5Widgets"
 )
 
+set(turtlesim_node_SRCS
+  src/turtlesim.cpp
+  src/turtle.cpp
+  src/turtle_frame.cpp
+)
+set(turtlesim_node_HDRS
+  include/turtlesim/turtle_frame.h
+)
+
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
+
 
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
 target_link_libraries(turtlesim_node ${QT_LIBRARIES})
 ament_target_dependencies(turtlesim_node ${dependencies})
-
-rosidl_target_interfaces(turtlesim_node
-  ${PROJECT_NAME} "rosidl_typesupport_cpp"
-)
+rosidl_target_interfaces(turtlesim_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
 ament_target_dependencies(turtle_teleop_key ${dependencies})
-
 add_executable(draw_square tutorials/draw_square.cpp)
 ament_target_dependencies(draw_square ${dependencies})
-
-rosidl_target_interfaces(draw_square
-  ${PROJECT_NAME} "rosidl_typesupport_cpp"
-)
-
+rosidl_target_interfaces(draw_square ${PROJECT_NAME} "rosidl_typesupport_cpp")
 add_executable(mimic tutorials/mimic.cpp)
 ament_target_dependencies(mimic ${dependencies})
-
-rosidl_target_interfaces(mimic
-  ${PROJECT_NAME} "rosidl_typesupport_cpp"
-)
+rosidl_target_interfaces(mimic ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
   DESTINATION lib/${PROJECT_NAME}
