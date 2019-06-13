@@ -95,70 +95,10 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
 
   clear();
 
-  auto clear_call_back = 
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-          const std::shared_ptr<std_srvs::srv::Empty::Request> /*request*/,
-          std::shared_ptr<std_srvs::srv::Empty::Response> /*response*/) -> bool
-    {
-      RCLCPP_INFO(nh_->get_logger(), "Clearing turtlesim.");
-      clear();
-
-      return true;
-    };
-
-  auto reset_call_back = 
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-          const std::shared_ptr<std_srvs::srv::Empty::Request> /*request*/,
-          std::shared_ptr<std_srvs::srv::Empty::Response> /*response*/) -> bool
-    {
-      RCLCPP_INFO(nh_->get_logger(), "Resetting turtlesim.");
-      turtles_.clear();
-      id_counter_ = 0;
-      spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
-      // clear();
-
-      return true;
-    };
-
-  auto spawn_call_back = 
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-          const std::shared_ptr<turtlesim::srv::Spawn::Request> request,
-          std::shared_ptr<turtlesim::srv::Spawn::Response> response) -> bool
-    {
-      std::string name = spawnTurtle(request->name, request->x, request->y, request->theta);
-      if (name.empty())
-      {
-        RCLCPP_ERROR(nh_->get_logger(), "A turtled named [%s] already exists", request->name.c_str());
-        return false;
-      }
-
-      response->name = name;
-
-      return true;
-    };
-
-  auto kill_call_back = 
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-          const std::shared_ptr<turtlesim::srv::Kill::Request> request,
-          std::shared_ptr<turtlesim::srv::Kill::Response> /*response*/) -> bool
-    {
-      M_Turtle::iterator it = turtles_.find(request->name);
-      if (it == turtles_.end())
-      {
-        RCLCPP_ERROR(nh_->get_logger(), "Tried to kill turtle [%s], which does not exist", request->name.c_str());
-        return false;
-      }
-
-      turtles_.erase(it);
-      update();
-
-      return true;
-    };
-
-  clear_srv_ = nh_->create_service<std_srvs::srv::Empty>("clear", clear_call_back);
-  reset_srv_ = nh_->create_service<std_srvs::srv::Empty>("reset", reset_call_back);
-  spawn_srv_ = nh_->create_service<turtlesim::srv::Spawn>("spawn", spawn_call_back);
-  kill_srv_ = nh_->create_service<turtlesim::srv::Kill>("kill", kill_call_back);
+  clear_srv_ = nh_->create_service<std_srvs::srv::Empty>("clear", std::bind(&TurtleFrame::clearCallback, this, std::placeholders::_1, std::placeholders::_2));
+  reset_srv_ = nh_->create_service<std_srvs::srv::Empty>("reset", std::bind(&TurtleFrame::resetCallback, this, std::placeholders::_1, std::placeholders::_2));
+  spawn_srv_ = nh_->create_service<turtlesim::srv::Spawn>("spawn", std::bind(&TurtleFrame::spawnCallback, this, std::placeholders::_1, std::placeholders::_2));
+  kill_srv_ = nh_->create_service<turtlesim::srv::Kill>("kill", std::bind(&TurtleFrame::killCallback, this, std::placeholders::_1, std::placeholders::_2));
 
   // TODO: Can't get node names
   RCLCPP_INFO(nh_->get_logger(), "Starting turtlesim with node name %s", nh_->get_node_names()[0].c_str());
@@ -183,6 +123,35 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
 TurtleFrame::~TurtleFrame()
 {
   delete update_timer_;
+}
+
+bool TurtleFrame::spawnCallback(const std::shared_ptr<turtlesim::srv::Spawn::Request> req, std::shared_ptr<turtlesim::srv::Spawn::Response> res)
+{
+  std::string name = spawnTurtle(req->name, req->x, req->y, req->theta);
+  if (name.empty())
+  {
+    RCLCPP_ERROR(nh_->get_logger(), "A turtled named [%s] already exists", req->name.c_str());
+    return false;
+  }
+
+  res->name = name;
+
+  return true;
+}
+
+bool TurtleFrame::killCallback(const std::shared_ptr<turtlesim::srv::Kill::Request> req, std::shared_ptr<turtlesim::srv::Kill::Response>)
+{
+  M_Turtle::iterator it = turtles_.find(req->name);
+  if (it == turtles_.end())
+  {
+    RCLCPP_ERROR(nh_->get_logger(), "Tried to kill turtle [%s], which does not exist", req->name.c_str());
+    return false;
+  }
+
+  turtles_.erase(it);
+  update();
+
+  return true;
 }
 
 bool TurtleFrame::hasTurtle(const std::string& name)
@@ -282,4 +251,24 @@ void TurtleFrame::updateTurtles()
   } 
   ++frame_count_;
 }
+
+bool TurtleFrame::clearCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>)
+{
+  RCLCPP_INFO(nh_->get_logger(), "Clearing turtlesim.");
+  clear();
+
+  return true;
+}
+
+bool TurtleFrame::resetCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>)
+{
+  RCLCPP_INFO(nh_->get_logger(), "Resetting turtlesim.");
+  turtles_.clear();
+  id_counter_ = 0;
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  clear();
+
+  return true;
+}
+
 }
