@@ -127,7 +127,7 @@ void Turtle::rotateImage()
 bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height)
 {
   bool modified = false;
-  float old_orient = orient_;
+  qreal old_orient = orient_;
 
   // first process any teleportation requests, in order
   V_TeleportRequest::iterator it = teleport_requests_.begin();

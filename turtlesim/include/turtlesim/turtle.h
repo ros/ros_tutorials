@@ -72,10 +72,10 @@ private:
   QImage turtle_rotated_image_;
 
   QPointF pos_;
-  float orient_;
+  qreal orient_;
 
-  float lin_vel_;
-  float ang_vel_;
+  qreal lin_vel_;
+  qreal ang_vel_;
   bool pen_on_;
   QPen pen_;
 
@@ -94,7 +94,7 @@ private:
 
   struct TeleportRequest
   {
-    TeleportRequest(float x, float y, float _theta, float _linear, bool _relative)
+    TeleportRequest(float x, float y, qreal _theta, qreal _linear, bool _relative)
     : pos(x, y)
     , theta(_theta)
     , linear(_linear)
@@ -102,8 +102,8 @@ private:
     {}
 
     QPointF pos;
-    float theta;
-    float linear;
+    qreal theta;
+    qreal linear;
     bool relative;
   };
   typedef std::vector<TeleportRequest> V_TeleportRequest;
