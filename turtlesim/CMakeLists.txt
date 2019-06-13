@@ -18,6 +18,8 @@ find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
+include_directories(include ${QT_INCLUDES})
+
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Color.msg"
   "msg/Pose.msg"
@@ -25,22 +27,9 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/SetPen.srv"
   "srv/Spawn.srv"
   "srv/TeleportAbsolute.srv"
-  "srv/TeleportRelative.srv"
-)
+  "srv/TeleportRelative.srv")
 
-include_directories(
-  include 
-  ${QT_INCLUDES}
-)
-
-set(dependencies
-  "rclcpp"
-  "ament_index_cpp"
-  "geometry_msgs"
-  "std_msgs"
-  "std_srvs"
-  "Qt5Widgets"
-)
+set(dependencies "rclcpp" "ament_index_cpp" "geometry_msgs" "std_msgs" "std_srvs" "Qt5Widgets")
 
 set(turtlesim_node_SRCS
   src/turtlesim.cpp
@@ -52,7 +41,6 @@ set(turtlesim_node_HDRS
 )
 
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
-
 
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
 target_link_libraries(turtlesim_node ${QT_LIBRARIES})
@@ -69,14 +57,10 @@ ament_target_dependencies(mimic ${dependencies})
 rosidl_target_interfaces(mimic ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
-  DESTINATION lib/${PROJECT_NAME}
-) 
+  DESTINATION lib/${PROJECT_NAME}) 
 
-install(DIRECTORY 
-  images
-  DESTINATION share/${PROJECT_NAME}
-  # FILES_MATCHING PATTERN "*.png" PATTERN "*.svg"
-)
+install(DIRECTORY images
+  DESTINATION share/${PROJECT_NAME})
 
 ament_export_include_directories(include)
 ament_package()
