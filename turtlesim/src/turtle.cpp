@@ -53,68 +53,53 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& node_handle, std::string& real_name, con
   nh_ = node_handle;
   last_command_time_ = nh_->now();
 
-  auto velocity_callback = 
-    [this](const geometry_msgs::msg::Twist::SharedPtr vel) -> void
-    {
-      last_command_time_ = nh_->now();
-      lin_vel_ = vel->linear.x;
-      ang_vel_ = vel->angular.z;
-    };
-
   rclcpp::QoS qos(rclcpp::KeepLast(7));
-
-  velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", qos, velocity_callback);
-
+  velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", qos, std::bind(&Turtle::velocityCallback, this, std::placeholders::_1));
   pose_pub_ = nh_->create_publisher<turtlesim::msg::Pose>(real_name + "/pose", qos);
   color_pub_ = nh_->create_publisher<turtlesim::msg::Color>(real_name + "/color_sensor", qos);
-  
-  auto set_pen_callback =
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-      const std::shared_ptr<turtlesim::srv::SetPen::Request> request,
-      std::shared_ptr<turtlesim::srv::SetPen::Response> /*response*/) -> bool
-  {
-    pen_on_ = !request->off;
-    if (request->off)
-    {
-      return true;
-    }
-
-    QPen pen(QColor(request->r, request->g, request->b));
-    if (request->width != 0)
-    {
-      pen.setWidth(request->width);
-    }
-
-    pen_ = pen;
-    return true;
-  };
-
-  set_pen_srv_ = nh_->create_service<turtlesim::srv::SetPen>(real_name + "/set_pen", set_pen_callback);
-
-  auto teleport_relative_callback =
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-      const std::shared_ptr<turtlesim::srv::TeleportRelative::Request> request,
-      std::shared_ptr<turtlesim::srv::TeleportRelative::Response> /*response*/) -> bool
-  {
-    teleport_requests_.push_back(TeleportRequest(0, 0, request->angular, request->linear, true));
-    return true;
-  };
-
-  teleport_relative_srv_ = nh_->create_service<turtlesim::srv::TeleportRelative>(real_name + "/teleport_relative", teleport_relative_callback);
-
-  auto teleport_absolute_callback =
-    [this](const std::shared_ptr<rmw_request_id_t> /*request_header*/,
-      const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request> request,
-      std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response> /*response*/) -> bool
-  {
-    teleport_requests_.push_back(TeleportRequest(request->x, request->y, request->theta, 0, false));
-    return true;
-  };
-
-  teleport_absolute_srv_ = nh_->create_service<turtlesim::srv::TeleportAbsolute>(real_name + "/teleport_absolute", teleport_absolute_callback);
+  set_pen_srv_ = nh_->create_service<turtlesim::srv::SetPen>(real_name + "/set_pen", std::bind(&Turtle::setPenCallback, this, std::placeholders::_1, std::placeholders::_2));
+  teleport_relative_srv_ = nh_->create_service<turtlesim::srv::TeleportRelative>(real_name + "/teleport_relative", std::bind(&Turtle::teleportRelativeCallback, this, std::placeholders::_1, std::placeholders::_2));
+  teleport_absolute_srv_ = nh_->create_service<turtlesim::srv::TeleportAbsolute>(real_name + "/teleport_absolute", std::bind(&Turtle::teleportAbsoluteCallback, this, std::placeholders::_1, std::placeholders::_2));
 
   meter_ = turtle_image_.height();
   rotateImage();
+}
+
+void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
+{
+  last_command_time_ = nh_->now();
+  lin_vel_ = vel->linear.x;
+  ang_vel_ = vel->angular.z;
+}
+
+bool Turtle::setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request> req, std::shared_ptr<turtlesim::srv::SetPen::Response>)
+{
+  pen_on_ = !req->off;
+  if (req->off)
+  {
+    return true;
+  }
+
+  QPen pen(QColor(req->r, req->g, req->b));
+  if (req->width != 0)
+  {
+    pen.setWidth(req->width);
+  }
+
+  pen_ = pen;
+  return true;
+}
+
+bool Turtle::teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request> req, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>)
+{
+  teleport_requests_.push_back(TeleportRequest(0, 0, req->angular, req->linear, true));
+  return true;
+}
+
+bool Turtle::teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request> req, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>)
+{
+  teleport_requests_.push_back(TeleportRequest(req->x, req->y, req->theta, 0, false));
+  return true;
 }
 
 void Turtle::rotateImage()

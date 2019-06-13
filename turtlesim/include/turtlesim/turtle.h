@@ -63,6 +63,11 @@ public:
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
 
+  void velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel);
+  bool setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request>, std::shared_ptr<turtlesim::srv::SetPen::Response>);
+  bool teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request>, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>);
+  bool teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request>, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>);
+
 private:
   void rotateImage();
 
