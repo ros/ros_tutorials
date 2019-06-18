@@ -1,10 +1,9 @@
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/twist.hpp>
-
 #include <signal.h>
 #include <termios.h>
-#include <unistd.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #define KEYCODE_R 0x43 
 #define KEYCODE_L 0x44
@@ -12,32 +11,35 @@
 #define KEYCODE_D 0x42
 #define KEYCODE_Q 0x71
 
-class TeleopTurtle : public rclcpp::Node
+class TeleopTurtle
 {
 public:
-  explicit TeleopTurtle()
-    : Node("turtle_teleop"),
-      linear_(0),
-      angular_(0),
-      l_scale_(2.0),
-      a_scale_(2.0)
-  {
-    this->declare_parameter("scale_angular", rclcpp::ParameterValue(2.0));
-    this->declare_parameter("scale_linear", rclcpp::ParameterValue(2.0));
-
-    this->get_parameter("scale_angular", a_scale_);
-    this->get_parameter("scale_linear", l_scale_);
-
-    rclcpp::QoS qos(rclcpp::KeepLast(7));
-
-    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", qos);
-  }
+  TeleopTurtle();
   void keyLoop();
 
 private:
+
+
+  rclcpp::Node::SharedPtr nh_;
   double linear_, angular_, l_scale_, a_scale_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
+
 };
+
+TeleopTurtle::TeleopTurtle():
+  linear_(0),
+  angular_(0),
+  l_scale_(2.0),
+  a_scale_(2.0)
+{
+  nh_ = rclcpp::Node::make_shared("teleop_turtle");
+  nh_->declare_parameter("scale_angular", rclcpp::ParameterValue(2.0));
+  nh_->declare_parameter("scale_linear", rclcpp::ParameterValue(2.0));
+  nh_->get_parameter("scale_angular", a_scale_);
+  nh_->get_parameter("scale_linear", l_scale_);
+
+  twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
+}
 
 int kfd = 0;
 struct termios cooked, raw;
@@ -50,23 +52,25 @@ void quit(int sig)
   exit(0);
 }
 
+
 int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
-
-  auto node = std::make_shared<TeleopTurtle>();
+  TeleopTurtle teleop_turtle;
 
   signal(SIGINT, quit);
 
-  node->keyLoop();
+  teleop_turtle.keyLoop();
   
-  return 0;
+  return(0);
 }
+
 
 void TeleopTurtle::keyLoop()
 {
   char c;
   bool dirty=false;
+
 
   // get the console in raw mode                                                              
   tcgetattr(kfd, &cooked);
@@ -81,54 +85,56 @@ void TeleopTurtle::keyLoop()
   puts("---------------------------");
   puts("Use arrow keys to move the turtle.");
 
+
   for(;;)
   {
     // get the next event from the keyboard  
-    if(read(kfd, &c, sizeof(c)) < 0)
+    if(read(kfd, &c, 1) < 0)
     {
       perror("read():");
       exit(-1);
     }
 
     linear_=angular_=0;
-    RCLCPP_DEBUG(this->get_logger(), "value: 0x%02X\n", c);
+    RCLCPP_DEBUG(nh_->get_logger(), "value: 0x%02X\n", c);
   
     switch(c)
     {
       case KEYCODE_L:
-        RCLCPP_DEBUG(this->get_logger(), "LEFT");
+        RCLCPP_DEBUG(nh_->get_logger(), "LEFT");
         angular_ = 1.0;
         dirty = true;
         break;
       case KEYCODE_R:
-        RCLCPP_DEBUG(this->get_logger(), "RIGHT");
+        RCLCPP_DEBUG(nh_->get_logger(), "RIGHT");
         angular_ = -1.0;
         dirty = true;
         break;
       case KEYCODE_U:
-        RCLCPP_DEBUG(this->get_logger(), "UP");
+        RCLCPP_DEBUG(nh_->get_logger(), "UP");
         linear_ = 1.0;
         dirty = true;
         break;
       case KEYCODE_D:
-        RCLCPP_DEBUG(this->get_logger(), "DOWN");
+        RCLCPP_DEBUG(nh_->get_logger(), "DOWN");
         linear_ = -1.0;
         dirty = true;
         break;
     }
+   
 
-    auto twist = std::make_unique<geometry_msgs::msg::Twist>();
-    twist->angular.z = a_scale_*angular_;
-    twist->linear.x = l_scale_*linear_;
+    geometry_msgs::msg::Twist twist;
+    twist.angular.z = a_scale_*angular_;
+    twist.linear.x = l_scale_*linear_;
     if(dirty ==true)
     {
-      twist_pub_->publish(std::move(twist));    
+      twist_pub_->publish(twist);    
       dirty=false;
     }
   }
 
+
   return;
 }
-
 
 
