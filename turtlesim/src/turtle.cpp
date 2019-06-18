@@ -183,12 +183,10 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   // Figure out (and publish) the color underneath the turtle
   {
     auto color_msg = std::make_unique<turtlesim::msg::Color>();
-
     QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
     color_msg->r = qRed(pixel);
     color_msg->g = qGreen(pixel);
     color_msg->b = qBlue(pixel);
-
     color_pub_->publish(std::move(color_msg));
   }
 
