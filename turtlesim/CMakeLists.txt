@@ -9,12 +9,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Wvla)
 endif()
 
-find_package(ament_cmake REQUIRED) 
+find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
-find_package(rclcpp REQUIRED) 
-find_package(std_msgs REQUIRED) 
-find_package(geometry_msgs REQUIRED) 
-find_package(std_srvs REQUIRED) 
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 
@@ -57,7 +57,7 @@ ament_target_dependencies(mimic ${dependencies})
 rosidl_target_interfaces(mimic ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
-  DESTINATION lib/${PROJECT_NAME}) 
+  DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY images
   DESTINATION share/${PROJECT_NAME})
