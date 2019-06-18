@@ -38,8 +38,6 @@
 #define DEFAULT_BG_G 0x56
 #define DEFAULT_BG_B 0xff
 
-using namespace std::chrono_literals;
-
 namespace turtlesim
 {
 
