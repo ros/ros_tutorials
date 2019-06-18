@@ -36,30 +36,27 @@
 class TurtleApp : public QApplication
 {
 public:
-  explicit TurtleApp(int& argc, char** argv, rclcpp::Node::SharedPtr &node_handle)
+  rclcpp::Node::SharedPtr nh_;
+
+  explicit TurtleApp(int& argc, char** argv)
     : QApplication(argc, argv)
   {
-    frame_ = std::make_shared<turtlesim::TurtleFrame>(node_handle);
-    frame_->show();
+    rclcpp::init(argc, argv);
+    nh_ = rclcpp::Node::make_shared("turtlesim");
   }
 
   int exec()
   {
+    turtlesim::TurtleFrame frame(nh_);
+    frame.show();
+
     return QApplication::exec();
   }
-
-private:
-	std::shared_ptr<turtlesim::TurtleFrame> frame_;
 };
 
 int main(int argc, char** argv)
 {
-  rclcpp::init(argc, argv);
-
-  auto node = rclcpp::Node::make_shared("turtlesim"); 
-
-  auto app = std::make_shared<TurtleApp>(argc, argv, node);
-
-  return app->exec();
+  TurtleApp app(argc, argv);
+  return app.exec();
 }
 
