@@ -21,11 +21,9 @@
 
   <depend>rclcpp</depend>
   <depend>ament_index_cpp</depend>
-
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>geometry_msgs</depend>
-
   <depend>qt5-qmake</depend>
   <depend>qtbase5-dev</depend>
   <depend>libqt5-core</depend>
