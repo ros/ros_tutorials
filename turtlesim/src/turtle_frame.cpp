@@ -248,7 +248,8 @@ void TurtleFrame::updateTurtles()
   if (modified)
   {
     update();
-  } 
+  }
+
   ++frame_count_;
 }
 
@@ -256,7 +257,6 @@ bool TurtleFrame::clearCallback(const std::shared_ptr<std_srvs::srv::Empty::Requ
 {
   RCLCPP_INFO(nh_->get_logger(), "Clearing turtlesim.");
   clear();
-
   return true;
 }
 
@@ -267,7 +267,6 @@ bool TurtleFrame::resetCallback(const std::shared_ptr<std_srvs::srv::Empty::Requ
   id_counter_ = 0;
   spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
   clear();
-
   return true;
 }
 
