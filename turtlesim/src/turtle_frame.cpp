@@ -62,7 +62,6 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   connect(update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
 
   nh_ = node_handle;
-
   nh_->declare_parameter("background_r", rclcpp::ParameterValue(DEFAULT_BG_R), rcl_interfaces::msg::ParameterDescriptor());
   nh_->declare_parameter("background_g", rclcpp::ParameterValue(DEFAULT_BG_G), rcl_interfaces::msg::ParameterDescriptor());
   nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), rcl_interfaces::msg::ParameterDescriptor());
@@ -83,7 +82,6 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   turtles.append("melodic.png");
 
   QString images_path = (ament_index_cpp::get_package_share_directory("turtlesim") + "/images/").c_str();
-
   for (int i = 0; i < turtles.size(); ++i)
   {
     QImage img;
@@ -100,7 +98,6 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   spawn_srv_ = nh_->create_service<turtlesim::srv::Spawn>("spawn", std::bind(&TurtleFrame::spawnCallback, this, std::placeholders::_1, std::placeholders::_2));
   kill_srv_ = nh_->create_service<turtlesim::srv::Kill>("kill", std::bind(&TurtleFrame::killCallback, this, std::placeholders::_1, std::placeholders::_2));
 
-  // TODO: Can't get node names
   RCLCPP_INFO(nh_->get_logger(), "Starting turtlesim with node name %s", nh_->get_node_names()[0].c_str());
 
   width_in_meters_ = (width() - 1) / meter_;
@@ -236,7 +233,11 @@ void TurtleFrame::paintEvent(QPaintEvent*)
 
 void TurtleFrame::updateTurtles()
 {
-  last_turtle_update_ = nh_->now();
+  if (last_turtle_update_.nanoseconds() == 0)
+  {
+    last_turtle_update_ = nh_->now();
+    return;
+  }
 
   bool modified = false;
   M_Turtle::iterator it = turtles_.begin();
