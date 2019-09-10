@@ -42,6 +42,7 @@ set(turtlesim_node_HDRS
 
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
 
+
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
 target_link_libraries(turtlesim_node Qt5::Widgets)
 ament_target_dependencies(turtlesim_node ${dependencies})
@@ -60,6 +61,7 @@ install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY images
-  DESTINATION share/${PROJECT_NAME})
+  DESTINATION share/${PROJECT_NAME}
+  FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")
 
 ament_package()
