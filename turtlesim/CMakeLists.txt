@@ -1,25 +1,35 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(turtlesim)
 
-find_package(catkin REQUIRED COMPONENTS geometry_msgs message_generation rosconsole roscpp roscpp_serialization roslib rostime std_msgs std_srvs)
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
+endif()
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread)
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
-include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
-link_directories(${catkin_LIBRARY_DIRS})
+find_package(ament_cmake REQUIRED)
+find_package(ament_index_cpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(rclcpp REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
-add_message_files(DIRECTORY msg FILES
-                  Color.msg Pose.msg)
-add_service_files(DIRECTORY srv FILES
-                  Kill.srv
-                  SetPen.srv
-                  Spawn.srv
-                  TeleportAbsolute.srv
-                  TeleportRelative.srv)
-generate_messages(DEPENDENCIES geometry_msgs std_msgs std_srvs)
+include_directories(include ${Qt5Widgets_INCLUDE_DIRS})
 
-catkin_package(CATKIN_DEPENDS geometry_msgs message_runtime std_msgs std_srvs)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Color.msg"
+  "msg/Pose.msg"
+  "srv/Kill.srv"
+  "srv/SetPen.srv"
+  "srv/Spawn.srv"
+  "srv/TeleportAbsolute.srv"
+  "srv/TeleportRelative.srv")
+
+set(dependencies "rclcpp" "ament_index_cpp" "geometry_msgs" "std_msgs" "std_srvs")
 
 set(turtlesim_node_SRCS
   src/turtlesim.cpp
@@ -34,22 +44,24 @@ qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
 
 
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
-target_link_libraries(turtlesim_node Qt5::Widgets ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_dependencies(turtlesim_node turtlesim_gencpp)
+target_link_libraries(turtlesim_node Qt5::Widgets)
+ament_target_dependencies(turtlesim_node ${dependencies})
+rosidl_target_interfaces(turtlesim_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
-target_link_libraries(turtle_teleop_key ${catkin_LIBRARIES})
-add_dependencies(turtle_teleop_key turtlesim_gencpp)
+ament_target_dependencies(turtle_teleop_key ${dependencies})
 add_executable(draw_square tutorials/draw_square.cpp)
-target_link_libraries(draw_square ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_dependencies(draw_square turtlesim_gencpp)
+ament_target_dependencies(draw_square ${dependencies})
+rosidl_target_interfaces(draw_square ${PROJECT_NAME} "rosidl_typesupport_cpp")
 add_executable(mimic tutorials/mimic.cpp)
-target_link_libraries(mimic ${catkin_LIBRARIES})
-add_dependencies(mimic turtlesim_gencpp)
+ament_target_dependencies(mimic ${dependencies})
+rosidl_target_interfaces(mimic ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+  DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY images
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
   FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")
+
+ament_package()

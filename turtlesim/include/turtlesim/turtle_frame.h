@@ -36,11 +36,12 @@
 
 // This prevents a MOC error with versions of boost >= 1.48
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <ros/ros.h>
+# include <rclcpp/rclcpp.hpp>
+# include <ament_index_cpp/get_package_share_directory.hpp>
 
-# include <std_srvs/Empty.h>
-# include <turtlesim/Spawn.h>
-# include <turtlesim/Kill.h>
+# include <std_srvs/srv/empty.hpp>
+# include <turtlesim/srv/spawn.hpp>
+# include <turtlesim/srv/kill.hpp>
 # include <map>
 
 # include "turtle.h"
@@ -53,7 +54,7 @@ class TurtleFrame : public QFrame
 {
   Q_OBJECT
 public:
-  TurtleFrame(QWidget* parent = 0, Qt::WindowFlags f = 0);
+  TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent = 0, Qt::WindowFlags f = 0);
   ~TurtleFrame();
 
   std::string spawnTurtle(const std::string& name, float x, float y, float angle);
@@ -70,24 +71,25 @@ private:
   void clear();
   bool hasTurtle(const std::string& name);
 
-  bool clearCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
-  bool resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Response&);
-  bool spawnCallback(turtlesim::Spawn::Request&, turtlesim::Spawn::Response&);
-  bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
+  bool clearCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr);
+  bool resetCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr);
+  bool spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr, turtlesim::srv::Spawn::Response::SharedPtr);
+  bool killCallback(const turtlesim::srv::Kill::Request::SharedPtr, turtlesim::srv::Kill::Response::SharedPtr);
 
-  ros::NodeHandle nh_;
+  rclcpp::Node::SharedPtr nh_;
+
   QTimer* update_timer_;
   QImage path_image_;
   QPainter path_painter_;
 
   uint64_t frame_count_;
 
-  ros::WallTime last_turtle_update_;
+  rclcpp::Time last_turtle_update_;
 
-  ros::ServiceServer clear_srv_;
-  ros::ServiceServer reset_srv_;
-  ros::ServiceServer spawn_srv_;
-  ros::ServiceServer kill_srv_;
+  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr clear_srv_;
+  rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_srv_;
+  rclcpp::Service<turtlesim::srv::Spawn>::SharedPtr spawn_srv_;
+  rclcpp::Service<turtlesim::srv::Kill>::SharedPtr kill_srv_;
 
   typedef std::map<std::string, TurtlePtr> M_Turtle;
   M_Turtle turtles_;

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<package>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>turtlesim</name>
   <version>0.9.1</version>
   <description>
@@ -13,29 +14,25 @@
   <url type="repository">https://github.com/ros/ros_tutorials</url>
   <author>Josh Faust</author>
 
-  <buildtool_depend>catkin</buildtool_depend>
-
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>qtbase5-dev</build_depend>
-  <build_depend>message_generation</build_depend>
   <build_depend>qt5-qmake</build_depend>
-  <build_depend>rosconsole</build_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>roscpp_serialization</build_depend>
-  <build_depend>roslib</build_depend>
-  <build_depend>rostime</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>std_srvs</build_depend>
+  <build_depend>qtbase5-dev</build_depend>
 
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>libqt5-core</run_depend>
-  <run_depend>libqt5-gui</run_depend>
-  <run_depend>message_runtime</run_depend>
-  <run_depend>rosconsole</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>roscpp_serialization</run_depend>
-  <run_depend>roslib</run_depend>
-  <run_depend>rostime</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>std_srvs</run_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <exec_depend>libqt5-core</exec_depend>
+  <exec_depend>libqt5-gui</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <depend>ament_index_cpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
