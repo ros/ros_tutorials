@@ -204,15 +204,15 @@ void TurtleFrame::clear()
 
 void TurtleFrame::onUpdate()
 {
-  rclcpp::spin_some(nh_);
-
-  updateTurtles();
-
   if (!rclcpp::ok())
   {
     close();
-    rclcpp::shutdown();
+    return;
   }
+
+  rclcpp::spin_some(nh_);
+
+  updateTurtles();
 }
 
 void TurtleFrame::paintEvent(QPaintEvent*)

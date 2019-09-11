@@ -45,6 +45,11 @@ public:
     nh_ = rclcpp::Node::make_shared("turtlesim");
   }
 
+  ~TurtleApp()
+  {
+    rclcpp::shutdown();
+  }
+
   int exec()
   {
     turtlesim::TurtleFrame frame(nh_);
