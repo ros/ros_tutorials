@@ -252,6 +252,7 @@ void TurtleFrame::updateTurtles()
   ++frame_count_;
 }
 
+
 bool TurtleFrame::clearCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr)
 {
   RCLCPP_INFO(nh_->get_logger(), "Clearing turtlesim.");
