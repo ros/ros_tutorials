@@ -168,9 +168,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
-  auto pose_msg = std::make_unique<turtlesim::msg::Pose>();
-
   // Publish pose of the turtle
+  auto pose_msg = std::make_unique<turtlesim::msg::Pose>();
   pose_msg->x = pos_.x();
   pose_msg->y = canvas_height - pos_.y();
   pose_msg->theta = orient_;
