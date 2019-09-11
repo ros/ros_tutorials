@@ -11,11 +11,44 @@
 #define KEYCODE_D 0x42
 #define KEYCODE_Q 0x71
 
+class KeyboardReader
+{
+public:
+  KeyboardReader()
+    : kfd(0)
+  {
+    // get the console in raw mode
+    tcgetattr(kfd, &cooked);
+    struct termios raw;
+    memcpy(&raw, &cooked, sizeof(struct termios));
+    raw.c_lflag &=~ (ICANON | ECHO);
+    // Setting a new line, then end of file
+    raw.c_cc[VEOL] = 1;
+    raw.c_cc[VEOF] = 2;
+    tcsetattr(kfd, TCSANOW, &raw);
+  }
+  void readOne(char * c)
+  {
+    int rc = read(kfd, c, 1);
+    if (rc < 0)
+    {
+      throw std::runtime_error("read failed");
+    }
+  }
+  void shutdown()
+  {
+    tcsetattr(kfd, TCSANOW, &cooked);
+  }
+private:
+  int kfd;
+  struct termios cooked;
+};
+
 class TeleopTurtle
 {
 public:
   TeleopTurtle();
-  void keyLoop();
+  int keyLoop();
 
 private:
 
@@ -41,13 +74,12 @@ TeleopTurtle::TeleopTurtle():
   twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
 }
 
-int kfd = 0;
-struct termios cooked, raw;
+KeyboardReader input;
 
 void quit(int sig)
 {
   (void)sig;
-  tcsetattr(kfd, TCSANOW, &cooked);
+  input.shutdown();
   rclcpp::shutdown();
   exit(0);
 }
@@ -60,26 +92,18 @@ int main(int argc, char** argv)
 
   signal(SIGINT,quit);
 
-  teleop_turtle.keyLoop();
+  int rc = teleop_turtle.keyLoop();
+  input.shutdown();
+  rclcpp::shutdown();
   
-  return(0);
+  return rc;
 }
 
 
-void TeleopTurtle::keyLoop()
+int TeleopTurtle::keyLoop()
 {
   char c;
   bool dirty=false;
-
-
-  // get the console in raw mode                                                              
-  tcgetattr(kfd, &cooked);
-  memcpy(&raw, &cooked, sizeof(struct termios));
-  raw.c_lflag &=~ (ICANON | ECHO);
-  // Setting a new line, then end of file                         
-  raw.c_cc[VEOL] = 1;
-  raw.c_cc[VEOF] = 2;
-  tcsetattr(kfd, TCSANOW, &raw);
 
   puts("Reading from keyboard");
   puts("---------------------------");
@@ -89,10 +113,14 @@ void TeleopTurtle::keyLoop()
   for(;;)
   {
     // get the next event from the keyboard  
-    if(read(kfd, &c, 1) < 0)
+    try
+    {
+      input.readOne(&c);
+    }
+    catch (std::runtime_error)
     {
       perror("read():");
-      exit(-1);
+      return -1;
     }
 
     linear_=angular_=0;
@@ -134,7 +162,7 @@ void TeleopTurtle::keyLoop()
   }
 
 
-  return;
+  return 0;
 }
 
 
