@@ -34,15 +34,12 @@
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 # include <rclcpp/rclcpp.hpp>
 
-# include <turtlesim/msg/pose.hpp>
-# include <turtlesim/msg/color.hpp>
 # include <geometry_msgs/msg/twist.hpp>
-
+# include <turtlesim/msg/color.hpp>
+# include <turtlesim/msg/pose.hpp>
 # include <turtlesim/srv/set_pen.hpp>
-# include <turtlesim/srv/teleport_relative.hpp>
 # include <turtlesim/srv/teleport_absolute.hpp>
-
-# include <math.h>
+# include <turtlesim/srv/teleport_relative.hpp>
 #endif
 
 #include <QImage>
@@ -58,15 +55,15 @@ namespace turtlesim
 class Turtle
 {
 public:
-  Turtle(rclcpp::Node::SharedPtr& nh, std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient);
+  Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient);
 
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
 private:
   void velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel);
-  bool setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request>, std::shared_ptr<turtlesim::srv::SetPen::Response>);
-  bool teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request>, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>);
-  bool teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request>, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>);
+  bool setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr, turtlesim::srv::SetPen::Response::SharedPtr);
+  bool teleportRelativeCallback(const turtlesim::srv::TeleportRelative::Request::SharedPtr, turtlesim::srv::TeleportRelative::Response::SharedPtr);
+  bool teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Request::SharedPtr, turtlesim::srv::TeleportAbsolute::Response::SharedPtr);
 
   void rotateImage();
 
@@ -84,10 +81,8 @@ private:
   QPen pen_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_sub_;
-
   rclcpp::Publisher<turtlesim::msg::Pose>::SharedPtr pose_pub_;
   rclcpp::Publisher<turtlesim::msg::Color>::SharedPtr color_pub_;
-
   rclcpp::Service<turtlesim::srv::SetPen>::SharedPtr set_pen_srv_;
   rclcpp::Service<turtlesim::srv::TeleportRelative>::SharedPtr teleport_relative_srv_;
   rclcpp::Service<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_absolute_srv_;

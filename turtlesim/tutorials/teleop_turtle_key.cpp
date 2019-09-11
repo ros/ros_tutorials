@@ -19,11 +19,11 @@ public:
 
 private:
 
-
+  
   rclcpp::Node::SharedPtr nh_;
   double linear_, angular_, l_scale_, a_scale_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-
+  
 };
 
 TeleopTurtle::TeleopTurtle():
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   rclcpp::init(argc, argv);
   TeleopTurtle teleop_turtle;
 
-  signal(SIGINT, quit);
+  signal(SIGINT,quit);
 
   teleop_turtle.keyLoop();
   
@@ -136,5 +136,6 @@ void TeleopTurtle::keyLoop()
 
   return;
 }
+
 
 

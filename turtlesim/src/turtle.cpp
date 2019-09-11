@@ -29,6 +29,8 @@
 
 #include "turtlesim/turtle.h"
 
+#include <math.h>
+
 #include <QColor>
 #include <QRgb>
 
@@ -39,7 +41,7 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(rclcpp::Node::SharedPtr& nh, std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
+Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
 : nh_(nh)
 , turtle_image_(turtle_image)
 , pos_(pos)
@@ -63,6 +65,7 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& nh, std::string& real_name, const QImage
   rotateImage();
 }
 
+
 void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
 {
   last_command_time_ = nh_->now();
@@ -70,7 +73,7 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
   ang_vel_ = vel->angular.z;
 }
 
-bool Turtle::setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request> req, std::shared_ptr<turtlesim::srv::SetPen::Response>)
+bool Turtle::setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr req, turtlesim::srv::SetPen::Response::SharedPtr)
 {
   pen_on_ = !req->off;
   if (req->off)
@@ -88,13 +91,13 @@ bool Turtle::setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Reques
   return true;
 }
 
-bool Turtle::teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request> req, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>)
+bool Turtle::teleportRelativeCallback(const turtlesim::srv::TeleportRelative::Request::SharedPtr req, turtlesim::srv::TeleportRelative::Response::SharedPtr)
 {
   teleport_requests_.push_back(TeleportRequest(0, 0, req->angular, req->linear, true));
   return true;
 }
 
-bool Turtle::teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request> req, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>)
+bool Turtle::teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Request::SharedPtr req, turtlesim::srv::TeleportAbsolute::Response::SharedPtr)
 {
   teleport_requests_.push_back(TeleportRequest(req->x, req->y, req->theta, 0, false));
   return true;
@@ -167,25 +170,23 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   pos_.setX(std::min(std::max(static_cast<double>(pos_.x()), 0.0), static_cast<double>(canvas_width)));
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
-  auto pose_msg = std::make_unique<turtlesim::msg::Pose>();
-
   // Publish pose of the turtle
-  pose_msg->x = pos_.x();
-  pose_msg->y = canvas_height - pos_.y();
-  pose_msg->theta = orient_;
-  pose_msg->linear_velocity = lin_vel_;
-  pose_msg->angular_velocity = ang_vel_;
-
-  pose_pub_->publish(std::move(pose_msg));
+  auto p = std::make_unique<turtlesim::msg::Pose>();
+  p->x = pos_.x();
+  p->y = canvas_height - pos_.y();
+  p->theta = orient_;
+  p->linear_velocity = lin_vel_;
+  p->angular_velocity = ang_vel_;
+  pose_pub_->publish(std::move(p));
 
   // Figure out (and publish) the color underneath the turtle
   {
-    auto color_msg = std::make_unique<turtlesim::msg::Color>();
+    auto color = std::make_unique<turtlesim::msg::Color>();
     QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
-    color_msg->r = qRed(pixel);
-    color_msg->g = qGreen(pixel);
-    color_msg->b = qBlue(pixel);
-    color_pub_->publish(std::move(color_msg));
+    color->r = qRed(pixel);
+    color->g = qGreen(pixel);
+    color->b = qBlue(pixel);
+    color_pub_->publish(std::move(color));
   }
 
   RCLCPP_DEBUG(nh_->get_logger(), "[%s]: pos_x: %f pos_y: %f theta: %f", nh_->get_namespace(), pos_.x(), pos_.y(), orient_);

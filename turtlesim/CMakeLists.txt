@@ -6,19 +6,19 @@ if(NOT CMAKE_CXX_STANDARD)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic -Wvla)
+  add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(std_srvs REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(rclcpp REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
-find_package(Qt5Widgets REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 
-include_directories(include ${QT_INCLUDES})
+include_directories(include ${Qt5Widgets_INCLUDE_DIRS})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Color.msg"
@@ -29,7 +29,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/TeleportAbsolute.srv"
   "srv/TeleportRelative.srv")
 
-set(dependencies "rclcpp" "ament_index_cpp" "geometry_msgs" "std_msgs" "std_srvs" "Qt5Widgets")
+set(dependencies "rclcpp" "ament_index_cpp" "geometry_msgs" "std_msgs" "std_srvs")
 
 set(turtlesim_node_SRCS
   src/turtlesim.cpp
@@ -42,8 +42,9 @@ set(turtlesim_node_HDRS
 
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
 
+
 add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
-target_link_libraries(turtlesim_node ${QT_LIBRARIES})
+target_link_libraries(turtlesim_node Qt5::Widgets)
 ament_target_dependencies(turtlesim_node ${dependencies})
 rosidl_target_interfaces(turtlesim_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
@@ -60,7 +61,7 @@ install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY images
-  DESTINATION share/${PROJECT_NAME})
+  DESTINATION share/${PROJECT_NAME}
+  FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")
 
-ament_export_include_directories(include)
 ament_package()
