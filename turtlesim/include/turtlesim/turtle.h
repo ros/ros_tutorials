@@ -84,10 +84,8 @@ private:
   QPen pen_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr velocity_sub_;
-
   rclcpp::Publisher<turtlesim::msg::Pose>::SharedPtr pose_pub_;
   rclcpp::Publisher<turtlesim::msg::Color>::SharedPtr color_pub_;
-
   rclcpp::Service<turtlesim::srv::SetPen>::SharedPtr set_pen_srv_;
   rclcpp::Service<turtlesim::srv::TeleportRelative>::SharedPtr teleport_relative_srv_;
   rclcpp::Service<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_absolute_srv_;
