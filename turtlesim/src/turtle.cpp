@@ -29,6 +29,8 @@
 
 #include "turtlesim/turtle.h"
 
+#include <math.h>
+
 #include <QColor>
 #include <QRgb>
 

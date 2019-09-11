@@ -37,12 +37,9 @@
 # include <geometry_msgs/msg/twist.hpp>
 # include <turtlesim/msg/color.hpp>
 # include <turtlesim/msg/pose.hpp>
-
 # include <turtlesim/srv/set_pen.hpp>
 # include <turtlesim/srv/teleport_absolute.hpp>
 # include <turtlesim/srv/teleport_relative.hpp>
-
-# include <math.h>
 #endif
 
 #include <QImage>
