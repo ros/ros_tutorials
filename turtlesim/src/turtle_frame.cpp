@@ -120,7 +120,7 @@ TurtleFrame::~TurtleFrame()
   delete update_timer_;
 }
 
-bool TurtleFrame::spawnCallback(const std::shared_ptr<turtlesim::srv::Spawn::Request> req, std::shared_ptr<turtlesim::srv::Spawn::Response> res)
+bool TurtleFrame::spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr req, turtlesim::srv::Spawn::Response::SharedPtr res)
 {
   std::string name = spawnTurtle(req->name, req->x, req->y, req->theta);
   if (name.empty())
@@ -134,7 +134,7 @@ bool TurtleFrame::spawnCallback(const std::shared_ptr<turtlesim::srv::Spawn::Req
   return true;
 }
 
-bool TurtleFrame::killCallback(const std::shared_ptr<turtlesim::srv::Kill::Request> req, std::shared_ptr<turtlesim::srv::Kill::Response>)
+bool TurtleFrame::killCallback(const turtlesim::srv::Kill::Request::SharedPtr req, turtlesim::srv::Kill::Response::SharedPtr)
 {
   M_Turtle::iterator it = turtles_.find(req->name);
   if (it == turtles_.end())
@@ -252,14 +252,14 @@ void TurtleFrame::updateTurtles()
   ++frame_count_;
 }
 
-bool TurtleFrame::clearCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>)
+bool TurtleFrame::clearCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr)
 {
   RCLCPP_INFO(nh_->get_logger(), "Clearing turtlesim.");
   clear();
   return true;
 }
 
-bool TurtleFrame::resetCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>)
+bool TurtleFrame::resetCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr)
 {
   RCLCPP_INFO(nh_->get_logger(), "Resetting turtlesim.");
   turtles_.clear();

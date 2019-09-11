@@ -70,7 +70,7 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
   ang_vel_ = vel->angular.z;
 }
 
-bool Turtle::setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request> req, std::shared_ptr<turtlesim::srv::SetPen::Response>)
+bool Turtle::setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr req, turtlesim::srv::SetPen::Response::SharedPtr)
 {
   pen_on_ = !req->off;
   if (req->off)
@@ -88,13 +88,13 @@ bool Turtle::setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Reques
   return true;
 }
 
-bool Turtle::teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request> req, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>)
+bool Turtle::teleportRelativeCallback(const turtlesim::srv::TeleportRelative::Request::SharedPtr req, turtlesim::srv::TeleportRelative::Response::SharedPtr)
 {
   teleport_requests_.push_back(TeleportRequest(0, 0, req->angular, req->linear, true));
   return true;
 }
 
-bool Turtle::teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request> req, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>)
+bool Turtle::teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Request::SharedPtr req, turtlesim::srv::TeleportAbsolute::Response::SharedPtr)
 {
   teleport_requests_.push_back(TeleportRequest(req->x, req->y, req->theta, 0, false));
   return true;

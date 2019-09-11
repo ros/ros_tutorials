@@ -71,10 +71,10 @@ private:
   void clear();
   bool hasTurtle(const std::string& name);
 
-  bool clearCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>);
-  bool resetCallback(const std::shared_ptr<std_srvs::srv::Empty::Request>, std::shared_ptr<std_srvs::srv::Empty::Response>);
-  bool spawnCallback(const std::shared_ptr<turtlesim::srv::Spawn::Request>, std::shared_ptr<turtlesim::srv::Spawn::Response>);
-  bool killCallback(const std::shared_ptr<turtlesim::srv::Kill::Request>, std::shared_ptr<turtlesim::srv::Kill::Response>);
+  bool clearCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr);
+  bool resetCallback(const std_srvs::srv::Empty::Request::SharedPtr, std_srvs::srv::Empty::Response::SharedPtr);
+  bool spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr, turtlesim::srv::Spawn::Response::SharedPtr);
+  bool killCallback(const turtlesim::srv::Kill::Request::SharedPtr, turtlesim::srv::Kill::Response::SharedPtr);
 
   rclcpp::Node::SharedPtr nh_;
 

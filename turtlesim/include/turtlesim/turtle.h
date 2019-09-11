@@ -64,9 +64,9 @@ public:
   void paint(QPainter &painter);
 private:
   void velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel);
-  bool setPenCallback(const std::shared_ptr<turtlesim::srv::SetPen::Request>, std::shared_ptr<turtlesim::srv::SetPen::Response>);
-  bool teleportRelativeCallback(const std::shared_ptr<turtlesim::srv::TeleportRelative::Request>, std::shared_ptr<turtlesim::srv::TeleportRelative::Response>);
-  bool teleportAbsoluteCallback(const std::shared_ptr<turtlesim::srv::TeleportAbsolute::Request>, std::shared_ptr<turtlesim::srv::TeleportAbsolute::Response>);
+  bool setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr, turtlesim::srv::SetPen::Response::SharedPtr);
+  bool teleportRelativeCallback(const turtlesim::srv::TeleportRelative::Request::SharedPtr, turtlesim::srv::TeleportRelative::Response::SharedPtr);
+  bool teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Request::SharedPtr, turtlesim::srv::TeleportAbsolute::Response::SharedPtr);
 
   void rotateImage();
 
