@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   rclcpp::init(argc, argv);
   TeleopTurtle teleop_turtle;
 
-  signal(SIGINT, quit);
+  signal(SIGINT,quit);
 
   teleop_turtle.keyLoop();
   
