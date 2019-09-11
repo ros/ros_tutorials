@@ -169,23 +169,23 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   pos_.setY(std::min(std::max(static_cast<double>(pos_.y()), 0.0), static_cast<double>(canvas_height)));
 
   // Publish pose of the turtle
-  auto pose_msg = std::make_unique<turtlesim::msg::Pose>();
-  pose_msg->x = pos_.x();
-  pose_msg->y = canvas_height - pos_.y();
-  pose_msg->theta = orient_;
-  pose_msg->linear_velocity = lin_vel_;
-  pose_msg->angular_velocity = ang_vel_;
+  auto p = std::make_unique<turtlesim::msg::Pose>();
+  p->x = pos_.x();
+  p->y = canvas_height - pos_.y();
+  p->theta = orient_;
+  p->linear_velocity = lin_vel_;
+  p->angular_velocity = ang_vel_;
 
-  pose_pub_->publish(std::move(pose_msg));
+  pose_pub_->publish(std::move(p));
 
   // Figure out (and publish) the color underneath the turtle
   {
-    auto color_msg = std::make_unique<turtlesim::msg::Color>();
+    auto color = std::make_unique<turtlesim::msg::Color>();
     QRgb pixel = path_image.pixel((pos_ * meter_).toPoint());
-    color_msg->r = qRed(pixel);
-    color_msg->g = qGreen(pixel);
-    color_msg->b = qBlue(pixel);
-    color_pub_->publish(std::move(color_msg));
+    color->r = qRed(pixel);
+    color->g = qGreen(pixel);
+    color->b = qBlue(pixel);
+    color_pub_->publish(std::move(color));
   }
 
   RCLCPP_DEBUG(nh_->get_logger(), "[%s]: pos_x: %f pos_y: %f theta: %f", nh_->get_namespace(), pos_.x(), pos_.y(), orient_);
