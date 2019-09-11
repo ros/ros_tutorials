@@ -34,13 +34,13 @@
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 # include <rclcpp/rclcpp.hpp>
 
-# include <turtlesim/msg/pose.hpp>
-# include <turtlesim/msg/color.hpp>
 # include <geometry_msgs/msg/twist.hpp>
+# include <turtlesim/msg/color.hpp>
+# include <turtlesim/msg/pose.hpp>
 
 # include <turtlesim/srv/set_pen.hpp>
-# include <turtlesim/srv/teleport_relative.hpp>
 # include <turtlesim/srv/teleport_absolute.hpp>
+# include <turtlesim/srv/teleport_relative.hpp>
 
 # include <math.h>
 #endif
