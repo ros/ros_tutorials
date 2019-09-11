@@ -175,7 +175,6 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   p->theta = orient_;
   p->linear_velocity = lin_vel_;
   p->angular_velocity = ang_vel_;
-
   pose_pub_->publish(std::move(p));
 
   // Figure out (and publish) the color underneath the turtle
