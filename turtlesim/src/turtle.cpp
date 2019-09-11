@@ -39,8 +39,9 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(rclcpp::Node::SharedPtr& node_handle, std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
-: turtle_image_(turtle_image)
+Turtle::Turtle(rclcpp::Node::SharedPtr& nh, std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
+: nh_(nh)
+, turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
 , lin_vel_(0.0)
@@ -49,9 +50,6 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& node_handle, std::string& real_name, con
 , pen_(QColor(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
 {
   pen_.setWidth(3);
-
-  nh_ = node_handle;
-  last_command_time_ = nh_->now();
 
   rclcpp::QoS qos(rclcpp::KeepLast(7));
   velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(real_name + "/cmd_vel", qos, std::bind(&Turtle::velocityCallback, this, std::placeholders::_1));
