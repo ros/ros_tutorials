@@ -1,9 +1,13 @@
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <signal.h>
-#include <termios.h>
 #include <stdio.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <termios.h>
+# include <unistd.h>
+#else
+# include <windows.h>
+#endif
 
 #define KEYCODE_R 0x43 
 #define KEYCODE_L 0x44
@@ -11,11 +15,86 @@
 #define KEYCODE_D 0x42
 #define KEYCODE_Q 0x71
 
+class KeyboardReader
+{
+public:
+  KeyboardReader()
+#ifndef _WIN32
+    : kfd(0)
+#endif
+  {
+#ifndef _WIN32
+    // get the console in raw mode
+    tcgetattr(kfd, &cooked);
+    struct termios raw;
+    memcpy(&raw, &cooked, sizeof(struct termios));
+    raw.c_lflag &=~ (ICANON | ECHO);
+    // Setting a new line, then end of file
+    raw.c_cc[VEOL] = 1;
+    raw.c_cc[VEOF] = 2;
+    tcsetattr(kfd, TCSANOW, &raw);
+#endif
+  }
+  void readOne(char * c)
+  {
+#ifndef _WIN32
+    int rc = read(kfd, c, 1);
+    if (rc < 0)
+    {
+      throw std::runtime_error("read failed");
+    }
+#else
+    for(;;)
+    {
+      HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+      INPUT_RECORD buffer;
+      DWORD events;
+      PeekConsoleInput(handle, &buffer, 1, &events);
+      if(events > 0)
+      {
+        ReadConsoleInput(handle, &buffer, 1, &events);
+        if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_LEFT)
+        {
+          *c = KEYCODE_L;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_UP)
+        {
+          *c = KEYCODE_U;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_RIGHT)
+        {
+          *c = KEYCODE_R;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_DOWN)
+        {
+          *c = KEYCODE_D;
+          return;
+        }
+      }
+    }
+#endif
+  }
+  void shutdown()
+  {
+#ifndef _WIN32
+    tcsetattr(kfd, TCSANOW, &cooked);
+#endif
+  }
+private:
+#ifndef _WIN32
+  int kfd;
+  struct termios cooked;
+#endif
+};
+
 class TeleopTurtle
 {
 public:
   TeleopTurtle();
-  void keyLoop();
+  int keyLoop();
 
 private:
 
@@ -41,13 +120,12 @@ TeleopTurtle::TeleopTurtle():
   twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
 }
 
-int kfd = 0;
-struct termios cooked, raw;
+KeyboardReader input;
 
 void quit(int sig)
 {
   (void)sig;
-  tcsetattr(kfd, TCSANOW, &cooked);
+  input.shutdown();
   rclcpp::shutdown();
   exit(0);
 }
@@ -60,26 +138,18 @@ int main(int argc, char** argv)
 
   signal(SIGINT,quit);
 
-  teleop_turtle.keyLoop();
+  int rc = teleop_turtle.keyLoop();
+  input.shutdown();
+  rclcpp::shutdown();
   
-  return(0);
+  return rc;
 }
 
 
-void TeleopTurtle::keyLoop()
+int TeleopTurtle::keyLoop()
 {
   char c;
   bool dirty=false;
-
-
-  // get the console in raw mode                                                              
-  tcgetattr(kfd, &cooked);
-  memcpy(&raw, &cooked, sizeof(struct termios));
-  raw.c_lflag &=~ (ICANON | ECHO);
-  // Setting a new line, then end of file                         
-  raw.c_cc[VEOL] = 1;
-  raw.c_cc[VEOF] = 2;
-  tcsetattr(kfd, TCSANOW, &raw);
 
   puts("Reading from keyboard");
   puts("---------------------------");
@@ -89,10 +159,14 @@ void TeleopTurtle::keyLoop()
   for(;;)
   {
     // get the next event from the keyboard  
-    if(read(kfd, &c, 1) < 0)
+    try
+    {
+      input.readOne(&c);
+    }
+    catch (std::runtime_error)
     {
       perror("read():");
-      exit(-1);
+      return -1;
     }
 
     linear_=angular_=0;
@@ -134,7 +208,7 @@ void TeleopTurtle::keyLoop()
   }
 
 
-  return;
+  return 0;
 }
 
 
