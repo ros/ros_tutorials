@@ -73,6 +73,11 @@ public:
           *c = KEYCODE_D;
           return;
         }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x51)
+        {
+          *c = KEYCODE_Q;
+          return;
+        }
       }
     }
 #endif
@@ -153,7 +158,7 @@ int TeleopTurtle::keyLoop()
 
   puts("Reading from keyboard");
   puts("---------------------------");
-  puts("Use arrow keys to move the turtle.");
+  puts("Use arrow keys to move the turtle. 'q' to quit.");
 
 
   for(;;)
@@ -194,6 +199,9 @@ int TeleopTurtle::keyLoop()
         linear_ = -1.0;
         dirty = true;
         break;
+      case KEYCODE_Q:
+        RCLCPP_DEBUG(nh_->get_logger(), "quit");
+        return 0;
     }
    
 
