@@ -19,11 +19,11 @@ public:
 
 private:
 
-
+  
   rclcpp::Node::SharedPtr nh_;
   double linear_, angular_, l_scale_, a_scale_;
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-
+  
 };
 
 TeleopTurtle::TeleopTurtle():
