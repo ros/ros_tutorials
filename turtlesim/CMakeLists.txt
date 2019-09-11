@@ -64,4 +64,7 @@ install(DIRECTORY images
   DESTINATION share/${PROJECT_NAME}
   FILES_MATCHING PATTERN "*.png" PATTERN "*.svg")
 
+install(DIRECTORY launch
+  DESTINATION share/${PROJECT_NAME})
+
 ament_package()
