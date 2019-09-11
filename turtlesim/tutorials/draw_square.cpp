@@ -57,9 +57,9 @@ void stopForward(rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_p
     g_state = TURN;
     g_goal.x = g_pose->x;
     g_goal.y = g_pose->y;
-    g_goal.theta = fmod(g_pose->theta + PI/2.0, 2*PI);
+    g_goal.theta = fmod(g_pose->theta + static_cast<float>(PI) / 2.0f, 2.0f * static_cast<float>(PI));
     // wrap g_goal.theta to [-pi, pi)
-    if (g_goal.theta >= PI) g_goal.theta -= 2 * PI;
+    if (g_goal.theta >= static_cast<float>(PI)) g_goal.theta -= 2.0f * static_cast<float>(PI);
     printGoal();
   }
   else
@@ -95,7 +95,7 @@ void forward(rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub)
   }
   else
   {
-    commandTurtle(twist_pub, 1.0, 0.0);
+    commandTurtle(twist_pub, 1.0f, 0);
   }
 }
 
@@ -108,7 +108,7 @@ void turn(rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub)
   }
   else
   {
-    commandTurtle(twist_pub, 0.0, 0.4);
+    commandTurtle(twist_pub, 0, 0.4f);
   }
 }
 
