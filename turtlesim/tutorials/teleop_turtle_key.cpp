@@ -1,9 +1,13 @@
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <signal.h>
-#include <termios.h>
 #include <stdio.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <termios.h>
+# include <unistd.h>
+#else
+# include <windows.h>
+#endif
 
 #define KEYCODE_R 0x43 
 #define KEYCODE_L 0x44
@@ -15,8 +19,11 @@ class KeyboardReader
 {
 public:
   KeyboardReader()
+#ifndef _WIN32
     : kfd(0)
+#endif
   {
+#ifndef _WIN32
     // get the console in raw mode
     tcgetattr(kfd, &cooked);
     struct termios raw;
@@ -26,22 +33,61 @@ public:
     raw.c_cc[VEOL] = 1;
     raw.c_cc[VEOF] = 2;
     tcsetattr(kfd, TCSANOW, &raw);
+#endif
   }
   void readOne(char * c)
   {
+#ifndef _WIN32
     int rc = read(kfd, c, 1);
     if (rc < 0)
     {
       throw std::runtime_error("read failed");
     }
+#else
+    for(;;)
+    {
+      HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+      INPUT_RECORD buffer;
+      DWORD events;
+      PeekConsoleInput(handle, &buffer, 1, &events);
+      if(events > 0)
+      {
+        ReadConsoleInput(handle, &buffer, 1, &events);
+        if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_LEFT)
+        {
+          *c = KEYCODE_L;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_UP)
+        {
+          *c = KEYCODE_U;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_RIGHT)
+        {
+          *c = KEYCODE_R;
+          return;
+        }
+        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_DOWN)
+        {
+          *c = KEYCODE_D;
+          return;
+        }
+      }
+    }
+#endif
   }
   void shutdown()
   {
+#ifndef _WIN32
     tcsetattr(kfd, TCSANOW, &cooked);
+#endif
   }
 private:
+#ifndef _WIN32
   int kfd;
   struct termios cooked;
+#endif
 };
 
 class TeleopTurtle
