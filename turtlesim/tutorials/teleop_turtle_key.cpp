@@ -57,6 +57,7 @@ int main(int argc, char** argv)
   signal(SIGINT,quit);
 
   teleop_turtle.keyLoop();
+  quit(0);
   
   return(0);
 }
@@ -79,7 +80,7 @@ void TeleopTurtle::keyLoop()
 
   puts("Reading from keyboard");
   puts("---------------------------");
-  puts("Use arrow keys to move the turtle.");
+  puts("Use arrow keys to move the turtle. 'q' to quit.");
 
 
   for(;;)
@@ -116,6 +117,9 @@ void TeleopTurtle::keyLoop()
         linear_ = -1.0;
         dirty = true;
         break;
+      case KEYCODE_Q:
+        ROS_DEBUG("quit");
+        return;
     }
    
 
