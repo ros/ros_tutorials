@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2019-09-24)
+------------------
 * replace images with ROS 2 turtles (`#60 <https://github.com/ros/ros_tutorials/issues/60>`_)
 * add shortcut to quit teleop (`#58 <https://github.com/ros/ros_tutorials/issues/58>`_)
 * fix compiler warnings on Windows (`#57 <https://github.com/ros/ros_tutorials/issues/57>`_)
