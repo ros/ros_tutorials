@@ -2,6 +2,15 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* replace images with ROS 2 turtles (`#60 <https://github.com/ros/ros_tutorials/issues/60>`_)
+* add shortcut to quit teleop (`#58 <https://github.com/ros/ros_tutorials/issues/58>`_)
+* fix compiler warnings on Windows (`#57 <https://github.com/ros/ros_tutorials/issues/57>`_)
+* add support for Windows (`#56 <https://github.com/ros/ros_tutorials/issues/56>`_)
+* various fixes for ROS 2 (`#55 <https://github.com/ros/ros_tutorials/issues/55>`_)
+* turtlesim for ROS 2 (`#53 <https://github.com/ros/ros_tutorials/issues/53>`_)
+
 0.9.1 (2019-03-04)
 ------------------
 * change formula to avoid rounding with extreme input values (`#51 <https://github.com/ros/ros_tutorials/issues/51>`_)
