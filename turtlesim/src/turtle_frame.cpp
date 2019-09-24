@@ -65,19 +65,10 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), rcl_interfaces::msg::ParameterDescriptor());
 
   QVector<QString> turtles;
-  turtles.append("box-turtle.png");
-  turtles.append("robot-turtle.png");
-  turtles.append("sea-turtle.png");
-  turtles.append("diamondback.png");
-  turtles.append("electric.png");
-  turtles.append("fuerte.png");
-  turtles.append("groovy.png");
-  turtles.append("hydro.svg");
-  turtles.append("indigo.svg");
-  turtles.append("jade.png");
-  turtles.append("kinetic.png");
-  turtles.append("lunar.png");
-  turtles.append("melodic.png");
+  turtles.append("ardent.png");
+  turtles.append("bouncy.png");
+  turtles.append("crystal.png");
+  turtles.append("dashing.png");
 
   QString images_path = (ament_index_cpp::get_package_share_directory("turtlesim") + "/images/").c_str();
   for (int i = 0; i < turtles.size(); ++i)
