@@ -21,6 +21,7 @@ find_package(std_srvs REQUIRED)
 include_directories(include ${Qt5Widgets_INCLUDE_DIRS})
 
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "action/RotateAbsolute.action"
   "msg/Color.msg"
   "msg/Pose.msg"
   "srv/Kill.srv"
