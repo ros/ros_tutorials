@@ -14,6 +14,7 @@ find_package(ament_index_cpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
@@ -30,7 +31,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/TeleportAbsolute.srv"
   "srv/TeleportRelative.srv")
 
-set(dependencies "rclcpp" "ament_index_cpp" "geometry_msgs" "std_msgs" "std_srvs")
+set(dependencies "ament_index_cpp" "geometry_msgs" "rclcpp" "rclcpp_action" "std_msgs" "std_srvs")
 
 set(turtlesim_node_SRCS
   src/turtlesim.cpp
