@@ -212,7 +212,14 @@ void TeleopTurtle::cancelGoal()
  if (goal_handle_)
  {
    RCLCPP_DEBUG(nh_->get_logger(), "Sending cancel request");
-   rotate_absolute_client_->async_cancel_goal(goal_handle_);
+   try
+   {
+     rotate_absolute_client_->async_cancel_goal(goal_handle_);
+   }
+   catch (...)
+   {
+     // This can happen if the goal has already terminated and expired
+   }
  }
 }
 
