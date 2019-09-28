@@ -52,6 +52,7 @@ rosidl_target_interfaces(turtlesim_node ${PROJECT_NAME} "rosidl_typesupport_cpp"
 
 add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
 ament_target_dependencies(turtle_teleop_key ${dependencies})
+rosidl_target_interfaces(turtle_teleop_key ${PROJECT_NAME} "rosidl_typesupport_cpp")
 add_executable(draw_square tutorials/draw_square.cpp)
 ament_target_dependencies(draw_square ${dependencies})
 rosidl_target_interfaces(draw_square ${PROJECT_NAME} "rosidl_typesupport_cpp")
