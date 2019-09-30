@@ -242,6 +242,7 @@ int main(int argc, char** argv)
   signal(SIGINT,quit);
 
   int rc = teleop_turtle.keyLoop();
+  input.shutdown();
   
   return rc;
 }
