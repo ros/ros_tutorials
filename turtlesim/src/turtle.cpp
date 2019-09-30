@@ -34,8 +34,6 @@
 #include <QColor>
 #include <QRgb>
 
-#define TWO_PI 6.283185307179586
-
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
 #define DEFAULT_PEN_B 0xff

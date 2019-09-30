@@ -50,6 +50,7 @@
 #include <QPointF>
 
 #define PI 3.14159265
+#define TWO_PI 2.0 * PI
 
 namespace turtlesim
 {
