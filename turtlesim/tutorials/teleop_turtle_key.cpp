@@ -243,6 +243,7 @@ int main(int argc, char** argv)
 
   int rc = teleop_turtle.keyLoop();
   input.shutdown();
+  rclcpp::shutdown();
   
   return rc;
 }
