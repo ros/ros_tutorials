@@ -116,7 +116,7 @@ bool TurtleFrame::spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr 
   std::string name = spawnTurtle(req->name, req->x, req->y, req->theta);
   if (name.empty())
   {
-    RCLCPP_ERROR(nh_->get_logger(), "A turtled named [%s] already exists", req->name.c_str());
+    RCLCPP_ERROR(nh_->get_logger(), "A turtle named [%s] already exists", req->name.c_str());
     return false;
   }
 
