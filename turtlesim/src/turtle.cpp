@@ -94,7 +94,8 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
   ang_vel_ = vel->angular.z;
 
   // Abort any active action
-  if (rotate_absolute_goal_handle_) {
+  if (rotate_absolute_goal_handle_)
+  {
     RCLCPP_WARN(nh_->get_logger(), "Velocity command received during rotation action. Aborting action");
     rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
     rotate_absolute_goal_handle_ = nullptr;
