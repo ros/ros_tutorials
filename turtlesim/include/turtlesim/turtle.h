@@ -33,8 +33,10 @@
 // This prevents a MOC error with versions of boost >= 1.48
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 # include <rclcpp/rclcpp.hpp>
+# include <rclcpp_action/rclcpp_action.hpp>
 
 # include <geometry_msgs/msg/twist.hpp>
+# include <turtlesim/action/rotate_absolute.hpp>
 # include <turtlesim/msg/color.hpp>
 # include <turtlesim/msg/pose.hpp>
 # include <turtlesim/srv/set_pen.hpp>
@@ -48,6 +50,7 @@
 #include <QPointF>
 
 #define PI 3.14159265
+#define TWO_PI 2.0 * PI
 
 namespace turtlesim
 {
@@ -55,6 +58,8 @@ namespace turtlesim
 class Turtle
 {
 public:
+  using RotateAbsoluteGoalHandle = rclcpp_action::ServerGoalHandle<turtlesim::action::RotateAbsolute>;
+
   Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient);
 
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
@@ -64,6 +69,7 @@ private:
   bool setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr, turtlesim::srv::SetPen::Response::SharedPtr);
   bool teleportRelativeCallback(const turtlesim::srv::TeleportRelative::Request::SharedPtr, turtlesim::srv::TeleportRelative::Response::SharedPtr);
   bool teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Request::SharedPtr, turtlesim::srv::TeleportAbsolute::Response::SharedPtr);
+  void rotateAbsoluteAcceptCallback(const std::shared_ptr<RotateAbsoluteGoalHandle>);
 
   void rotateImage();
 
@@ -86,6 +92,12 @@ private:
   rclcpp::Service<turtlesim::srv::SetPen>::SharedPtr set_pen_srv_;
   rclcpp::Service<turtlesim::srv::TeleportRelative>::SharedPtr teleport_relative_srv_;
   rclcpp::Service<turtlesim::srv::TeleportAbsolute>::SharedPtr teleport_absolute_srv_;
+  rclcpp_action::Server<turtlesim::action::RotateAbsolute>::SharedPtr rotate_absolute_action_server_;
+
+  std::shared_ptr<RotateAbsoluteGoalHandle> rotate_absolute_goal_handle_;
+  std::shared_ptr<turtlesim::action::RotateAbsolute::Feedback> rotate_absolute_feedback_;
+  std::shared_ptr<turtlesim::action::RotateAbsolute::Result> rotate_absolute_result_;
+  qreal rotate_absolute_start_orient_;
 
   rclcpp::Time last_command_time_;
 

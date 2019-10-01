@@ -41,6 +41,11 @@
 namespace turtlesim
 {
 
+static float normalizeAngle(float angle)
+{
+  return angle - (TWO_PI * std::floor((angle + PI) / (TWO_PI)));
+}
+
 Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
 : nh_(nh)
 , turtle_image_(turtle_image)
@@ -60,6 +65,20 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const 
   set_pen_srv_ = nh_->create_service<turtlesim::srv::SetPen>(real_name + "/set_pen", std::bind(&Turtle::setPenCallback, this, std::placeholders::_1, std::placeholders::_2));
   teleport_relative_srv_ = nh_->create_service<turtlesim::srv::TeleportRelative>(real_name + "/teleport_relative", std::bind(&Turtle::teleportRelativeCallback, this, std::placeholders::_1, std::placeholders::_2));
   teleport_absolute_srv_ = nh_->create_service<turtlesim::srv::TeleportAbsolute>(real_name + "/teleport_absolute", std::bind(&Turtle::teleportAbsoluteCallback, this, std::placeholders::_1, std::placeholders::_2));
+  rotate_absolute_action_server_ = rclcpp_action::create_server<turtlesim::action::RotateAbsolute>(
+    nh,
+    real_name + "/rotate_absolute",
+    [](const rclcpp_action::GoalUUID &, std::shared_ptr<const turtlesim::action::RotateAbsolute::Goal>)
+    {
+      // Accept all goals
+      return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+    },
+    [](const std::shared_ptr<RotateAbsoluteGoalHandle>)
+    {
+      // Accept all cancel requests
+      return rclcpp_action::CancelResponse::ACCEPT;
+    },
+    std::bind(&Turtle::rotateAbsoluteAcceptCallback, this, std::placeholders::_1));
 
   last_command_time_ = nh_->now();
 
@@ -73,6 +92,14 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
   last_command_time_ = nh_->now();
   lin_vel_ = vel->linear.x;
   ang_vel_ = vel->angular.z;
+
+  // Abort any active action
+  if (rotate_absolute_goal_handle_)
+  {
+    RCLCPP_WARN(nh_->get_logger(), "Velocity command received during rotation action. Aborting action");
+    rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
+    rotate_absolute_goal_handle_ = nullptr;
+  }
 }
 
 bool Turtle::setPenCallback(const turtlesim::srv::SetPen::Request::SharedPtr req, turtlesim::srv::SetPen::Response::SharedPtr)
@@ -103,6 +130,20 @@ bool Turtle::teleportAbsoluteCallback(const turtlesim::srv::TeleportAbsolute::Re
 {
   teleport_requests_.push_back(TeleportRequest(req->x, req->y, req->theta, 0, false));
   return true;
+}
+
+void Turtle::rotateAbsoluteAcceptCallback(const std::shared_ptr<RotateAbsoluteGoalHandle> goal_handle)
+{
+  // Abort any existing goal
+  if (rotate_absolute_goal_handle_)
+  {
+    RCLCPP_WARN(nh_->get_logger(), "Rotation action received before a previous action finished. Aborting previous action");
+    rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
+  }
+  rotate_absolute_goal_handle_ = goal_handle;
+  rotate_absolute_feedback_.reset(new turtlesim::action::RotateAbsolute::Feedback);
+  rotate_absolute_result_.reset(new turtlesim::action::RotateAbsolute::Result);
+  rotate_absolute_start_orient_ = orient_;
 }
 
 void Turtle::rotateImage()
@@ -148,6 +189,47 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   teleport_requests_.clear();
 
+  // Process any action requests
+  if (rotate_absolute_goal_handle_)
+  {
+    // Check if there was a cancel request
+    if (rotate_absolute_goal_handle_->is_canceling())
+    {
+      RCLCPP_INFO(nh_->get_logger(), "Rotation action canceled");
+      rotate_absolute_goal_handle_->canceled(rotate_absolute_result_);
+      rotate_absolute_goal_handle_ = nullptr;
+      lin_vel_ = 0.0;
+      ang_vel_ = 0.0;
+    }
+    else
+    {
+      float theta = normalizeAngle(rotate_absolute_goal_handle_->get_goal()->theta);
+      float remaining = normalizeAngle(theta - static_cast<float>(orient_));
+
+      // Update result
+      rotate_absolute_result_->delta = normalizeAngle(static_cast<float>(rotate_absolute_start_orient_ - orient_));
+
+      // Update feedback
+      rotate_absolute_feedback_->remaining = remaining;
+      rotate_absolute_goal_handle_->publish_feedback(rotate_absolute_feedback_);
+
+      // Check stopping condition
+      if (fabs(normalizeAngle(static_cast<float>(orient_) - theta)) < 0.02)
+      {
+        rotate_absolute_goal_handle_->succeed(rotate_absolute_result_);
+        rotate_absolute_goal_handle_ = nullptr;
+        lin_vel_ = 0.0;
+        ang_vel_ = 0.0;
+      }
+      else
+      {
+        lin_vel_ = 0.0;
+        ang_vel_ = remaining < 0.0 ? -1.0 : 1.0;
+        last_command_time_ = nh_->now();
+      }
+    }
+  }
+
   if (nh_->now() - last_command_time_ > rclcpp::Duration(1.0, 0))
   {
     lin_vel_ = 0.0;
@@ -158,7 +240,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   orient_ = orient_ + ang_vel_ * dt;
   // Keep orient_ between -pi and +pi
-  orient_ -= 2*PI * std::floor((orient_ + PI)/(2*PI));
+  orient_ = normalizeAngle(orient_);
   pos_.rx() += std::cos(orient_) * lin_vel_ * dt;
   pos_.ry() += - std::sin(orient_) * lin_vel_ * dt;
 
