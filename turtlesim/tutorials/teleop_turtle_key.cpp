@@ -82,7 +82,7 @@ public:
         }
         else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_DOWN)
         {
-          *c = KEYCODE_DDOWN;
+          *c = KEYCODE_DOWN;
           return;
         }
         else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x42)
