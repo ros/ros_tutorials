@@ -2,6 +2,13 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix mimic tutorial node (`#65 <https://github.com/ros/ros_tutorials/issues/65>`_)
+* fix syntax error in teleop_turtle_key.cpp on Windows (`#66 <https://github.com/ros/ros_tutorials/issues/66>`_)
+* add RotateAbsolute action (`#62 <https://github.com/ros/ros_tutorials/issues/62>`_)
+* fix typo in error message (`#64 <https://github.com/ros/ros_tutorials/issues/64>`_)
+
 1.0.0 (2019-09-24)
 ------------------
 * replace images with ROS 2 turtles (`#60 <https://github.com/ros/ros_tutorials/issues/60>`_)
