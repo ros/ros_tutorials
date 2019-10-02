@@ -96,7 +96,7 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
   // Abort any active action
   if (rotate_absolute_goal_handle_)
   {
-    RCLCPP_WARN(nh_->get_logger(), "Velocity command received during rotation action. Aborting action");
+    RCLCPP_WARN(nh_->get_logger(), "Velocity command received during rotation goal. Aborting goal");
     rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
     rotate_absolute_goal_handle_ = nullptr;
   }
@@ -137,7 +137,7 @@ void Turtle::rotateAbsoluteAcceptCallback(const std::shared_ptr<RotateAbsoluteGo
   // Abort any existing goal
   if (rotate_absolute_goal_handle_)
   {
-    RCLCPP_WARN(nh_->get_logger(), "Rotation action received before a previous action finished. Aborting previous action");
+    RCLCPP_WARN(nh_->get_logger(), "Rotation goal received before a previous goal finished. Aborting previous goal");
     rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
   }
   rotate_absolute_goal_handle_ = goal_handle;
@@ -195,7 +195,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
     // Check if there was a cancel request
     if (rotate_absolute_goal_handle_->is_canceling())
     {
-      RCLCPP_INFO(nh_->get_logger(), "Rotation action canceled");
+      RCLCPP_INFO(nh_->get_logger(), "Rotation goal canceled");
       rotate_absolute_goal_handle_->canceled(rotate_absolute_result_);
       rotate_absolute_goal_handle_ = nullptr;
       lin_vel_ = 0.0;
@@ -216,6 +216,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
       // Check stopping condition
       if (fabs(normalizeAngle(static_cast<float>(orient_) - theta)) < 0.02)
       {
+        RCLCPP_INFO(nh_->get_logger(), "Rotation goal completed successfully");
         rotate_absolute_goal_handle_->succeed(rotate_absolute_result_);
         rotate_absolute_goal_handle_ = nullptr;
         lin_vel_ = 0.0;
