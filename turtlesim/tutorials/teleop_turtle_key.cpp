@@ -160,7 +160,7 @@ public:
 
 private:
   void spin();
-  void sendGoal(double theta);
+  void sendGoal(float theta);
   void goalResponseCallback(std::shared_future<rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr> future);
   void cancelGoal();
   
@@ -187,7 +187,7 @@ TeleopTurtle::TeleopTurtle():
   rotate_absolute_client_ = rclcpp_action::create_client<turtlesim::action::RotateAbsolute>(nh_, "turtle1/rotate_absolute");
 }
 
-void TeleopTurtle::sendGoal(double theta)
+void TeleopTurtle::sendGoal(float theta)
 {
   auto goal = turtlesim::action::RotateAbsolute::Goal();
   goal.theta = theta;
@@ -310,35 +310,35 @@ int TeleopTurtle::keyLoop()
         break;
       case KEYCODE_G:
         RCLCPP_DEBUG(nh_->get_logger(), "G");
-        sendGoal(0.0);
+        sendGoal(0.0f);
         break;
       case KEYCODE_T:
         RCLCPP_DEBUG(nh_->get_logger(), "T");
-        sendGoal(0.7854);
+        sendGoal(0.7854f);
         break;
       case KEYCODE_R:
         RCLCPP_DEBUG(nh_->get_logger(), "R");
-        sendGoal(1.5708);
+        sendGoal(1.5708f);
         break;
       case KEYCODE_E:
         RCLCPP_DEBUG(nh_->get_logger(), "E");
-        sendGoal(2.3562);
+        sendGoal(2.3562f);
         break;
       case KEYCODE_D:
         RCLCPP_DEBUG(nh_->get_logger(), "D");
-        sendGoal(3.1416);
+        sendGoal(3.1416f);
         break;
       case KEYCODE_C:
         RCLCPP_DEBUG(nh_->get_logger(), "C");
-        sendGoal(-2.3562);
+        sendGoal(-2.3562f);
         break;
       case KEYCODE_V:
         RCLCPP_DEBUG(nh_->get_logger(), "V");
-        sendGoal(-1.5708);
+        sendGoal(-1.5708f);
         break;
       case KEYCODE_B:
         RCLCPP_DEBUG(nh_->get_logger(), "B");
-        sendGoal(-0.7854);
+        sendGoal(-0.7854f);
         break;
       case KEYCODE_F:
         RCLCPP_DEBUG(nh_->get_logger(), "F");
