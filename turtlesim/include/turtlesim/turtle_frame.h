@@ -76,6 +76,7 @@ private:
   bool killCallback(turtlesim::Kill::Request&, turtlesim::Kill::Response&);
 
   ros::NodeHandle nh_;
+  ros::NodeHandle private_nh_;
   QTimer* update_timer_;
   QImage path_image_;
   QPainter path_painter_;
