@@ -60,9 +60,21 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   connect(update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
 
   nh_ = node_handle;
-  nh_->declare_parameter("background_r", rclcpp::ParameterValue(DEFAULT_BG_R), rcl_interfaces::msg::ParameterDescriptor());
-  nh_->declare_parameter("background_g", rclcpp::ParameterValue(DEFAULT_BG_G), rcl_interfaces::msg::ParameterDescriptor());
-  nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), rcl_interfaces::msg::ParameterDescriptor());
+  rcl_interfaces::msg::IntegerRange range;
+  range.from_value = 0;
+  range.to_value = 255;
+  rcl_interfaces::msg::ParameterDescriptor background_r_descriptor;
+  background_r_descriptor.description = "Red channel of the background color";
+  background_r_descriptor.integer_range.push_back(range);
+  rcl_interfaces::msg::ParameterDescriptor background_g_descriptor;
+  background_g_descriptor.description = "Green channel of the background color";
+  background_g_descriptor.integer_range.push_back(range);
+  rcl_interfaces::msg::ParameterDescriptor background_b_descriptor;
+  background_b_descriptor.description = "Blue channel of the background color";
+  background_b_descriptor.integer_range.push_back(range);
+  nh_->declare_parameter("background_r", rclcpp::ParameterValue(DEFAULT_BG_R), background_r_descriptor);
+  nh_->declare_parameter("background_g", rclcpp::ParameterValue(DEFAULT_BG_G), background_g_descriptor);
+  nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), background_b_descriptor);
 
   QVector<QString> turtles;
   turtles.append("ardent.png");
