@@ -39,6 +39,7 @@
 # include <rclcpp/rclcpp.hpp>
 # include <ament_index_cpp/get_package_share_directory.hpp>
 
+# include <rcl_interfaces/msg/parameter_event.hpp>
 # include <std_srvs/srv/empty.hpp>
 # include <turtlesim/srv/spawn.hpp>
 # include <turtlesim/srv/kill.hpp>
@@ -76,6 +77,8 @@ private:
   bool spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr, turtlesim::srv::Spawn::Response::SharedPtr);
   bool killCallback(const turtlesim::srv::Kill::Request::SharedPtr, turtlesim::srv::Kill::Response::SharedPtr);
 
+  void parameterEventCallback(const rcl_interfaces::msg::ParameterEvent::SharedPtr);
+
   rclcpp::Node::SharedPtr nh_;
 
   QTimer* update_timer_;
@@ -90,6 +93,7 @@ private:
   rclcpp::Service<std_srvs::srv::Empty>::SharedPtr reset_srv_;
   rclcpp::Service<turtlesim::srv::Spawn>::SharedPtr spawn_srv_;
   rclcpp::Service<turtlesim::srv::Kill>::SharedPtr kill_srv_;
+  rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub_;
 
   typedef std::map<std::string, TurtlePtr> M_Turtle;
   M_Turtle turtles_;
