@@ -99,6 +99,10 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   spawn_srv_ = nh_->create_service<turtlesim::srv::Spawn>("spawn", std::bind(&TurtleFrame::spawnCallback, this, std::placeholders::_1, std::placeholders::_2));
   kill_srv_ = nh_->create_service<turtlesim::srv::Kill>("kill", std::bind(&TurtleFrame::killCallback, this, std::placeholders::_1, std::placeholders::_2));
 
+  rclcpp::QoS qos(rclcpp::KeepLast(100), rmw_qos_profile_sensor_data);
+  parameter_event_sub_ = nh_->create_subscription<rcl_interfaces::msg::ParameterEvent>(
+    "/parameter_events", qos, std::bind(&TurtleFrame::parameterEventCallback, this, std::placeholders::_1));
+
   RCLCPP_INFO(nh_->get_logger(), "Starting turtlesim with node name %s", nh_->get_node_names()[0].c_str());
 
   width_in_meters_ = (width() - 1) / meter_;
@@ -152,6 +156,16 @@ bool TurtleFrame::killCallback(const turtlesim::srv::Kill::Request::SharedPtr re
   return true;
 }
 
+void TurtleFrame::parameterEventCallback(const rcl_interfaces::msg::ParameterEvent::SharedPtr event)
+{
+  // only consider events from this node
+  if (event->node == nh_->get_fully_qualified_name())
+  {
+    // since parameter events for this even aren't expected frequently just always call update()
+    update();
+  }
+}
+
 bool TurtleFrame::hasTurtle(const std::string& name)
 {
   return turtles_.find(name) != turtles_.end();
@@ -193,15 +207,8 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
 
 void TurtleFrame::clear()
 {
-  int r = DEFAULT_BG_R;
-  int g = DEFAULT_BG_G;
-  int b = DEFAULT_BG_B;
-
-  nh_->get_parameter("background_r", r);
-  nh_->get_parameter("background_g", g);
-  nh_->get_parameter("background_b", b);
-
-  path_image_.fill(qRgb(r, g, b));
+  // make all pixels fully transparent
+  path_image_.fill(qRgba(255, 255, 255, 0));
   update();
 }
 
@@ -221,6 +228,15 @@ void TurtleFrame::onUpdate()
 void TurtleFrame::paintEvent(QPaintEvent*)
 {
   QPainter painter(this);
+
+  int r = DEFAULT_BG_R;
+  int g = DEFAULT_BG_G;
+  int b = DEFAULT_BG_B;
+  nh_->get_parameter("background_r", r);
+  nh_->get_parameter("background_g", g);
+  nh_->get_parameter("background_b", b);
+  QRgb background_color = qRgb(r, g, b);
+  painter.fillRect(0, 0, width(), height(), background_color);
 
   painter.drawImage(QPoint(0, 0), path_image_);
 
