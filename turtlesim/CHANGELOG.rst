@@ -2,6 +2,14 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* separate background color from drawn paths, trigger repaint on parameter changes (`#75 <https://github.com/ros/ros_tutorials/issues/75>`_)
+* add descriptor information for background color parameters (`#73 <https://github.com/ros/ros_tutorials/issues/73>`_)
+* Fix Windows compiler warning (`#69 <https://github.com/ros/ros_tutorials/issues/69>`_)
+* Change log messages to use 'goal' instead of 'action' (`#67 <https://github.com/ros/ros_tutorials/issues/67>`_)
+* Contributors: Dirk Thomas, Jacob Perron
+
 1.0.1 (2019-10-02)
 ------------------
 * fix mimic tutorial node (`#65 <https://github.com/ros/ros_tutorials/issues/65>`_)
