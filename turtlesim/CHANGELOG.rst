@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.2 (2019-10-23)
+------------------
 * separate background color from drawn paths, trigger repaint on parameter changes (`#75 <https://github.com/ros/ros_tutorials/issues/75>`_)
 * add descriptor information for background color parameters (`#73 <https://github.com/ros/ros_tutorials/issues/73>`_)
 * Fix Windows compiler warning (`#69 <https://github.com/ros/ros_tutorials/issues/69>`_)
