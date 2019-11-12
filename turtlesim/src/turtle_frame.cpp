@@ -81,6 +81,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   turtles.append("bouncy.png");
   turtles.append("crystal.png");
   turtles.append("dashing.png");
+  turtles.append("eloquent.png");
 
   QString images_path = (ament_index_cpp::get_package_share_directory("turtlesim") + "/images/").c_str();
   for (int i = 0; i < turtles.size(); ++i)
