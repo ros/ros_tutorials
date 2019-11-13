@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.0 (2019-11-12)
+------------------
 * Eloquent Elusor turtle icon (`#77 <https://github.com/ros/ros_tutorials/issues/77>`_)
 
 1.0.2 (2019-10-23)
