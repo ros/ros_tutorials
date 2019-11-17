@@ -277,7 +277,7 @@ int TeleopTurtle::keyLoop()
     {
       input.readOne(&c);
     }
-    catch (std::runtime_error)
+    catch (const std::runtime_error &)
     {
       perror("read():");
       return -1;
