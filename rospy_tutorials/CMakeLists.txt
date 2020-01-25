@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(rospy_tutorials)
 
 find_package(catkin REQUIRED COMPONENTS message_generation std_msgs)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(roscpp_tutorials)
 
 find_package(Boost REQUIRED COMPONENTS date_time thread)
