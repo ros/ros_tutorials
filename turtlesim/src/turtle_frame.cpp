@@ -48,6 +48,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
 , path_painter_(&path_image_)
 , frame_count_(0)
 , id_counter_(0)
+, private_nh_("~")
 {
   setFixedSize(500, 500);
   setWindowTitle("TurtleSim");
@@ -60,9 +61,18 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
 
   connect(update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
 
-  nh_.setParam("background_r", DEFAULT_BG_R);
-  nh_.setParam("background_g", DEFAULT_BG_G);
-  nh_.setParam("background_b", DEFAULT_BG_B);
+  if (!private_nh_.hasParam("background_r"))
+  {
+    private_nh_.setParam("background_r", DEFAULT_BG_R);
+  }
+  if (!private_nh_.hasParam("background_g"))
+  {
+    private_nh_.setParam("background_g", DEFAULT_BG_G);
+  }
+  if (!private_nh_.hasParam("background_b"))
+  {
+    private_nh_.setParam("background_b", DEFAULT_BG_B);
+  }
 
   QVector<QString> turtles;
   turtles.append("box-turtle.png");
@@ -194,9 +204,9 @@ void TurtleFrame::clear()
   int g = DEFAULT_BG_G;
   int b = DEFAULT_BG_B;
 
-  nh_.param("background_r", r, r);
-  nh_.param("background_g", g, g);
-  nh_.param("background_b", b, b);
+  private_nh_.param("background_r", r, r);
+  private_nh_.param("background_g", g, g);
+  private_nh_.param("background_b", b, b);
 
   path_image_.fill(qRgb(r, g, b));
   update();
