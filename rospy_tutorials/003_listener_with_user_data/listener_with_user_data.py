@@ -45,11 +45,11 @@ from std_msgs.msg import *
 
 def callback(data, args):
     if args == 1:
-        print "#1: I heard [%s]"%data.data
+        print("#1: I heard [%s]"%data.data)
     elif args == 2:
-        print "#2: I heard [%s]"%data.data
+        print("#2: I heard [%s]"%data.data)
     else:
-        print "I heard [%s] with userdata [%s]"%(data.data, str(args)) 
+        print("I heard [%s] with userdata [%s]"%(data.data, str(args)))
     
 def listener_with_user_data():
     # Callback arguments (aka user data) allow you to reuse the same
@@ -68,4 +68,4 @@ if __name__ == '__main__':
         listener_with_user_data()
     except KeyboardInterrupt, e:
         pass
-    print "exiting"
+    print("exiting")
