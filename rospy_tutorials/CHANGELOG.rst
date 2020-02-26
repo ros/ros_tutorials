@@ -2,6 +2,11 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add print parenthesis for Python 3 (`#82 <https://github.com/ros/ros_tutorials/issues/82>`_)
+* bump CMake minimum version to avoid CMP0048 warning (`#81 <https://github.com/ros/ros_tutorials/issues/81>`_)
+
 0.9.1 (2019-03-04)
 ------------------
 * add missing dependency for tests (`#50 <https://github.com/ros/ros_tutorials/issues/50>`_)

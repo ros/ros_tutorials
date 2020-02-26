@@ -2,6 +2,12 @@
 Changelog for package roscpp_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* explicitly state Boost dependencies manifests (`#83 <https://github.com/ros/ros_tutorials/issues/83>`_)
+* bump CMake minimum version to avoid CMP0048 warning (`#81 <https://github.com/ros/ros_tutorials/issues/81>`_)
+* add cached parameter sample (`#52 <https://github.com/ros/ros_tutorials/issues/52>`_)
+
 0.9.1 (2019-03-04)
 ------------------
 

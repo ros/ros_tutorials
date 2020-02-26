@@ -2,6 +2,14 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* explicitly state Boost dependencies manifests (`#83 <https://github.com/ros/ros_tutorials/issues/83>`_)
+* backport Windows implemenation from eloquent. (`#80 <https://github.com/ros/ros_tutorials/issues/80>`_)
+* background colour and private nodehandle (`#70 <https://github.com/ros/ros_tutorials/issues/70>`_)
+* bump CMake minimum version to avoid CMP0048 warning (`#81 <https://github.com/ros/ros_tutorials/issues/81>`_)
+* add shortcut to quit teleop (`#59 <https://github.com/ros/ros_tutorials/issues/59>`_)
+
 0.9.1 (2019-03-04)
 ------------------
 * change formula to avoid rounding with extreme input values (`#51 <https://github.com/ros/ros_tutorials/issues/51>`_)
