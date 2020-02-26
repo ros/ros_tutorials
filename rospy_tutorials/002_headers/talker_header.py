@@ -50,7 +50,7 @@ def talker_header():
     count = 0
     while not rospy.is_shutdown():
         str = 'hello world %s'%count
-        print str
+        print(str)
         # If None is used as the header value, rospy will automatically
         # fill it in.
         pub.publish(HeaderString(None, str))

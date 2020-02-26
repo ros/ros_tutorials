@@ -50,9 +50,9 @@ def callback(data):
     else:
         who = 'unknown'
     if 'cookies' in data._connection_header:
-        print "%s just offered me %s cookies"%(who, data._connection_header['cookies'])
+        print("%s just offered me %s cookies"%(who, data._connection_header['cookies']))
     else:
-        print "I just heard %s from %s"%(chatter, who)
+        print("I just heard %s from %s"%(chatter, who))
     
 def listener_header():
     rospy.Subscriber("chatter", String, callback)
@@ -64,4 +64,4 @@ if __name__ == '__main__':
         listener_header()
     except KeyboardInterrupt, e:
         pass
-    print "exiting"
+    print("exiting")

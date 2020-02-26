@@ -42,7 +42,7 @@ from std_msgs.msg import String
 pub = None
 # publish a message to subscribers when we die
 def talker_shutdown():
-    print "I'm dead!"
+    print("I'm dead!")
     pub.publish("I'm dead!")
     
 def talker():
@@ -52,7 +52,7 @@ def talker():
 
     # register talker_shutdown() to be called when rospy exits
     rospy.on_shutdown(talker_shutdown)
-    print "Hit ctrl-C to see on_shutdown example"
+    print("Hit ctrl-C to see on_shutdown example")
 
     # spin() blocks until the node shuts down
     rospy.spin()

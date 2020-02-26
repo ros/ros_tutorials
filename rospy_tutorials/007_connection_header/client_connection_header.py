@@ -54,15 +54,15 @@ def add_two_ints_client(x, y):
         metadata = { 'cookies' : 'peanut butter' } 
         add_two_ints = rospy.ServiceProxy('add_two_ints', AddTwoInts, headers=metadata)
         
-        print "Requesting %s+%s with cookies=%s"%(x, y, metadata['cookies'])
+        print("Requesting %s+%s with cookies=%s"%(x, y, metadata['cookies']))
         
         # simplified style
         resp = add_two_ints(x, y)
-        print "Server's connection headers were", resp._connection_header
+        print("Server's connection headers were", resp._connection_header)
 
         return resp.sum
     except rospy.ServiceException, e:
-        print "Service call failed: %s"%e
+        print("Service call failed: %s"%e)
 
 def usage():
     return "%s [x y]"%sys.argv[0]
@@ -79,9 +79,9 @@ if __name__ == "__main__":
             x = string.atoi(sys.argv[1])
             y = string.atoi(sys.argv[2])
         except:
-            print usage()
+            print(usage())
             sys.exit(1)
     else:
-        print usage()
+        print(usage())
         sys.exit(1)
-    print "%s + %s = %s"%(x, y, add_two_ints_client(x, y))
+    print("%s + %s = %s"%(x, y, add_two_ints_client(x, y)))
