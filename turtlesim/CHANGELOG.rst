@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.2 (2020-02-26)
+------------------
 * explicitly state Boost dependencies manifests (`#83 <https://github.com/ros/ros_tutorials/issues/83>`_)
 * backport Windows implemenation from eloquent. (`#80 <https://github.com/ros/ros_tutorials/issues/80>`_)
 * background colour and private nodehandle (`#70 <https://github.com/ros/ros_tutorials/issues/70>`_)

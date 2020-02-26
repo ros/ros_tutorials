@@ -2,8 +2,8 @@
 Changelog for package ros_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.2 (2020-02-26)
+------------------
 * bump CMake minimum version to avoid CMP0048 warning (`#81 <https://github.com/ros/ros_tutorials/issues/81>`_)
 
 0.9.1 (2019-03-04)
