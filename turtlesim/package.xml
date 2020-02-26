@@ -16,6 +16,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>geometry_msgs</build_depend>
+  <build_depend>libboost-thread-dev</build_depend>
   <build_depend>qtbase5-dev</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>qt5-qmake</build_depend>
@@ -28,6 +29,7 @@
   <build_depend>std_srvs</build_depend>
 
   <run_depend>geometry_msgs</run_depend>
+  <run_depend>libboost-thread-dev</run_depend>
   <run_depend>libqt5-core</run_depend>
   <run_depend>libqt5-gui</run_depend>
   <run_depend>message_runtime</run_depend>
