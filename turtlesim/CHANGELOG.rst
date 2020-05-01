@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Replace deprecated launch_ros usage (`#84 <https://github.com/ros/ros_tutorials/issues/84>`_)
+* Contributors: Jacob Perron
+
 1.1.1 (2020-04-16)
 ------------------
 * catch reference to fix -Wcatch-value warning (`#78 <https://github.com/ros/ros_tutorials/issues/78>`_)
