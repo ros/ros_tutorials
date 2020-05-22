@@ -61,7 +61,7 @@ def add_two_ints_client(x, y):
         print("Server's connection headers were", resp._connection_header)
 
         return resp.sum
-    except rospy.ServiceException, e:
+    except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
 def usage():

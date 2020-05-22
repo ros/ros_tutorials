@@ -62,6 +62,6 @@ def listener_header():
 if __name__ == '__main__':
     try:
         listener_header()
-    except KeyboardInterrupt, e:
+    except KeyboardInterrupt:
         pass
     print("exiting")
