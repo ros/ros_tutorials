@@ -74,7 +74,7 @@ def add_two_ints_client(x, y):
         if not resp2.sum == (x + y):
             raise Exception("test failure, returned sum was %s"%resp2.sum)
         return resp1.sum
-    except rospy.ServiceException, e:
+    except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
 
 def usage():

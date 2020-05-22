@@ -66,6 +66,6 @@ def listener_with_user_data():
 if __name__ == '__main__':
     try:
         listener_with_user_data()
-    except KeyboardInterrupt, e:
+    except KeyboardInterrupt:
         pass
     print("exiting")
