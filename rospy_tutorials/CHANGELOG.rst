@@ -2,6 +2,10 @@
 Changelog for package rospy_tutorials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* fix syntax to be Python 3 compatible (`#87 <https://github.com/ros/ros_tutorials/issues/87>`_)
+
 0.10.0 (2020-05-12)
 -------------------
 
