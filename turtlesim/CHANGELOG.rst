@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add Foxy turtle (`#89 <https://github.com/ros/ros_tutorials/issues/89>`_)
+* Contributors: Jacob Perron
+
 1.2.1 (2020-06-02)
 ------------------
 * Fix Qt deprecation warning (`#88 <https://github.com/ros/ros_tutorials/issues/88>`_)
