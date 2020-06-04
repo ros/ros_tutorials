@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.2.2 (2020-06-03)
+------------------
 * add Foxy turtle (`#89 <https://github.com/ros/ros_tutorials/issues/89>`_)
 * Contributors: Jacob Perron
 
