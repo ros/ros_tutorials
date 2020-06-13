@@ -62,6 +62,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   nh_ = node_handle;
   rcl_interfaces::msg::IntegerRange range;
   range.from_value = 0;
+  range.step = 1;
   range.to_value = 255;
   rcl_interfaces::msg::ParameterDescriptor background_r_descriptor;
   background_r_descriptor.description = "Red channel of the background color";
