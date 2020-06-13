@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add step value to turtlesim color parameters (`#91 <https://github.com/ros/ros_tutorials/issues/91>`_)
+
 1.2.3 (2020-06-05)
 ------------------
 * update Foxy turtle (`#90 <https://github.com/ros/ros_tutorials/issues/90>`_)
