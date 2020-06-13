@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.2.4 (2020-06-12)
+------------------
 * add step value to turtlesim color parameters (`#91 <https://github.com/ros/ros_tutorials/issues/91>`_)
 
 1.2.3 (2020-06-05)
