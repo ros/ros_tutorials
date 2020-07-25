@@ -44,7 +44,8 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 , turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
-, lin_vel_(0.0)
+, lin_vel_x_(0.0)
+, lin_vel_y_(0.0)
 , ang_vel_(0.0)
 , pen_on_(true)
 , pen_(QColor(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
@@ -66,7 +67,8 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
 {
   last_command_time_ = ros::WallTime::now();
-  lin_vel_ = vel->linear.x;
+  lin_vel_x_ = vel->linear.x;
+  lin_vel_y_ = vel->linear.y;
   ang_vel_ = vel->angular.z;
 }
 
@@ -145,7 +147,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   if (ros::WallTime::now() - last_command_time_ > ros::WallDuration(1.0))
   {
-    lin_vel_ = 0.0;
+    lin_vel_x_ = 0.0;
+    lin_vel_y_ = 0.0;
     ang_vel_ = 0.0;
   }
 
@@ -154,8 +157,10 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   orient_ = orient_ + ang_vel_ * dt;
   // Keep orient_ between -pi and +pi
   orient_ -= 2*PI * std::floor((orient_ + PI)/(2*PI));
-  pos_.rx() += std::cos(orient_) * lin_vel_ * dt;
-  pos_.ry() += - std::sin(orient_) * lin_vel_ * dt;
+  pos_.rx() += std::cos(orient_) * lin_vel_x_ * dt
+             - std::sin(orient_) * lin_vel_y_ * dt;
+  pos_.ry() -= std::cos(orient_) * lin_vel_y_ * dt
+             + std::sin(orient_) * lin_vel_x_ * dt;
 
   // Clamp to screen size
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
@@ -172,7 +177,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   p.x = pos_.x();
   p.y = canvas_height - pos_.y();
   p.theta = orient_;
-  p.linear_velocity = lin_vel_;
+  p.linear_velocity = std::sqrt(lin_vel_x_ * lin_vel_x_ + lin_vel_y_ * lin_vel_y_);
   p.angular_velocity = ang_vel_;
   pose_pub_.publish(p);
 
