@@ -81,7 +81,8 @@ private:
   QPointF pos_;
   qreal orient_;
 
-  qreal lin_vel_;
+  qreal lin_vel_x_;
+  qreal lin_vel_y_;
   qreal ang_vel_;
   bool pen_on_;
   QPen pen_;
