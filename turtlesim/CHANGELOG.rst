@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add holonomic motion for turtlesim (`#94 <https://github.com/ros/ros_tutorials/issues/94>`_)
+
 0.10.1 (2020-05-22)
 -------------------
 
