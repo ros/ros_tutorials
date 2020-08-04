@@ -2,6 +2,10 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add holonomic motion for turtlesim (`#94 <https://github.com/ros/ros_tutorials/issues/94>`_)
+
 0.9.2 (2020-02-26)
 ------------------
 * explicitly state Boost dependencies manifests (`#83 <https://github.com/ros/ros_tutorials/issues/83>`_)
