@@ -51,7 +51,8 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const 
 , turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
-, lin_vel_(0.0)
+, lin_vel_x_(0.0)
+, lin_vel_y_(0.0)
 , ang_vel_(0.0)
 , pen_on_(true)
 , pen_(QColor(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
@@ -90,7 +91,8 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const 
 void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
 {
   last_command_time_ = nh_->now();
-  lin_vel_ = vel->linear.x;
+  lin_vel_x_ = vel->linear.x;
+  lin_vel_y_ = vel->linear.y;
   ang_vel_ = vel->angular.z;
 
   // Abort any active action
@@ -198,7 +200,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
       RCLCPP_INFO(nh_->get_logger(), "Rotation goal canceled");
       rotate_absolute_goal_handle_->canceled(rotate_absolute_result_);
       rotate_absolute_goal_handle_ = nullptr;
-      lin_vel_ = 0.0;
+      lin_vel_x_ = 0.0;
+      lin_vel_y_ = 0.0;
       ang_vel_ = 0.0;
     }
     else
@@ -219,12 +222,14 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
         RCLCPP_INFO(nh_->get_logger(), "Rotation goal completed successfully");
         rotate_absolute_goal_handle_->succeed(rotate_absolute_result_);
         rotate_absolute_goal_handle_ = nullptr;
-        lin_vel_ = 0.0;
+        lin_vel_x_ = 0.0;
+        lin_vel_y_ = 0.0;
         ang_vel_ = 0.0;
       }
       else
       {
-        lin_vel_ = 0.0;
+        lin_vel_x_ = 0.0;
+        lin_vel_y_ = 0.0;
         ang_vel_ = remaining < 0.0 ? -1.0 : 1.0;
         last_command_time_ = nh_->now();
       }
@@ -233,7 +238,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
 
   if (nh_->now() - last_command_time_ > rclcpp::Duration(1.0, 0))
   {
-    lin_vel_ = 0.0;
+    lin_vel_x_ = 0.0;
+    lin_vel_y_ = 0.0;
     ang_vel_ = 0.0;
   }
 
@@ -242,8 +248,10 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   orient_ = orient_ + ang_vel_ * dt;
   // Keep orient_ between -pi and +pi
   orient_ = normalizeAngle(orient_);
-  pos_.rx() += std::cos(orient_) * lin_vel_ * dt;
-  pos_.ry() += - std::sin(orient_) * lin_vel_ * dt;
+  pos_.rx() += std::cos(orient_) * lin_vel_x_ * dt
+             - std::sin(orient_) * lin_vel_y_ * dt;
+  pos_.ry() -= std::cos(orient_) * lin_vel_y_ * dt
+             + std::sin(orient_) * lin_vel_x_ * dt;
 
   // Clamp to screen size
   if (pos_.x() < 0 || pos_.x() > canvas_width ||
@@ -260,7 +268,7 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
   p->x = pos_.x();
   p->y = canvas_height - pos_.y();
   p->theta = orient_;
-  p->linear_velocity = lin_vel_;
+  p->linear_velocity = std::sqrt(lin_vel_x_ * lin_vel_x_ + lin_vel_y_ * lin_vel_y_);
   p->angular_velocity = ang_vel_;
   pose_pub_->publish(std::move(p));
 
