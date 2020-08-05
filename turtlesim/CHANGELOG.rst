@@ -2,10 +2,13 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add holonomic motion for turtlesim (foxy) (`#98 <https://github.com/ros/ros_tutorials/issues/98>`_)
+
 1.1.1 (2020-04-16)
 ------------------
 * catch reference to fix -Wcatch-value warning (`#78 <https://github.com/ros/ros_tutorials/issues/78>`_)
-* Contributors: Mikael Arguedas
 
 1.1.0 (2019-11-12)
 ------------------
