@@ -200,7 +200,8 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
       RCLCPP_INFO(nh_->get_logger(), "Rotation goal canceled");
       rotate_absolute_goal_handle_->canceled(rotate_absolute_result_);
       rotate_absolute_goal_handle_ = nullptr;
-      lin_vel_ = 0.0;
+      lin_vel_x_ = 0.0;
+      lin_vel_y_ = 0.0;
       ang_vel_ = 0.0;
     }
     else
@@ -221,12 +222,14 @@ bool Turtle::update(double dt, QPainter& path_painter, const QImage& path_image,
         RCLCPP_INFO(nh_->get_logger(), "Rotation goal completed successfully");
         rotate_absolute_goal_handle_->succeed(rotate_absolute_result_);
         rotate_absolute_goal_handle_ = nullptr;
-        lin_vel_ = 0.0;
+        lin_vel_x_ = 0.0;
+        lin_vel_y_ = 0.0;
         ang_vel_ = 0.0;
       }
       else
       {
-        lin_vel_ = 0.0;
+        lin_vel_x_ = 0.0;
+        lin_vel_y_ = 0.0;
         ang_vel_ = remaining < 0.0 ? -1.0 : 1.0;
         last_command_time_ = nh_->now();
       }
