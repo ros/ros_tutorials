@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.0 (2020-09-21)
+------------------
 * Update goal response callback signature (`#100 <https://github.com/ros/ros_tutorials/issues/100>`_)
 * Contributors: Jacob Perron
 
