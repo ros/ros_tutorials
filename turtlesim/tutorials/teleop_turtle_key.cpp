@@ -161,7 +161,6 @@ public:
 private:
   void spin();
   void sendGoal(float theta);
-  void goalResponseCallback(std::shared_future<rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr> future);
   void cancelGoal();
   
   rclcpp::Node::SharedPtr nh_;
@@ -193,18 +192,12 @@ void TeleopTurtle::sendGoal(float theta)
   goal.theta = theta;
   auto send_goal_options = rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SendGoalOptions();
   send_goal_options.goal_response_callback =
-    [this](std::shared_future<rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr> future)
+    [this](rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle)
     {
       RCLCPP_DEBUG(nh_->get_logger(), "Goal response received");
-      this->goal_handle_ = future.get();
+      this->goal_handle_ = goal_handle;
     };
   rotate_absolute_client_->async_send_goal(goal, send_goal_options);
-}
-
-void TeleopTurtle::goalResponseCallback(std::shared_future<rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr> future)
-{
-  RCLCPP_DEBUG(nh_->get_logger(), "Goal response received");
-  this->goal_handle_ = future.get();
 }
 
 void TeleopTurtle::cancelGoal()
