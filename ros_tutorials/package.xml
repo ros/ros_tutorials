@@ -6,7 +6,8 @@
     ros_tutorials contains packages that demonstrate various features of ROS,
     as well as support packages which help demonstrate those features.
   </description>
-  <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
+  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
+  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
   <license>BSD</license>
 
   <url type="website">http://www.ros.org/wiki/ros_tutorials</url>
@@ -14,6 +15,7 @@
   <url type="repository">https://github.com/ros/ros_tutorials</url>
   <author>Josh Faust</author>
   <author>Ken Conley</author>
+  <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
