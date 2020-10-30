@@ -1,0 +1,4 @@
+<launch>
+  <node name="publish_pointcloud2" pkg="rospy_tutorials" type="publish_pointcloud2.py" output="screen"/>
+</launch>
+

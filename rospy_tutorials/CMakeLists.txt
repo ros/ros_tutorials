@@ -98,6 +98,15 @@ install(FILES
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/009_advanced_publish
 )
 
+catkin_install_python(PROGRAMS
+  010_publish_pointcloud2/publish_pointcloud2.py
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/010_publish_pointcloud2
+)
+install(FILES
+  010_publish_pointcloud2/publish_pointcloud2.launch
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/010_publish_pointcloud2
+)
+
 if(CATKIN_ENABLE_TESTING)
   find_package(rostest)
   foreach(T
