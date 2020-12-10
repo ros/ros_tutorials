@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.1 (2020-12-10)
+------------------
 * Update maintainers (`#106 <https://github.com/ros/ros_tutorials/issues/106>`_)
 * Contributors: Shane Loretz
 
