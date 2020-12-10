@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update maintainers (`#106 <https://github.com/ros/ros_tutorials/issues/106>`_)
+* Contributors: Shane Loretz
+
 1.3.0 (2020-09-21)
 ------------------
 * Update goal response callback signature (`#100 <https://github.com/ros/ros_tutorials/issues/100>`_)
