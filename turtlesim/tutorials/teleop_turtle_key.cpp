@@ -65,6 +65,10 @@ public:
       if(events > 0)
       {
         ReadConsoleInput(handle, &buffer, 1, &events);
+        if (!buffer.Event.KeyEvent.bKeyDown)
+        {
+          continue;
+        }
         if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_LEFT)
         {
           *c = KEYCODE_LEFT;
