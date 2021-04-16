@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.2 (2021-04-16)
+------------------
+* Ignore key up events in teleop_turtle_key on Windows (`#118 <https://github.com/ros/ros_tutorials/issues/118>`_)
+* Contributors: Michel Hidalgo
+
 1.3.1 (2020-12-10)
 ------------------
 * Update maintainers (`#106 <https://github.com/ros/ros_tutorials/issues/106>`_)
