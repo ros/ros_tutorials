@@ -39,12 +39,12 @@ public:
   KeyboardReader()
   {
 #ifdef _WIN32
-    hstdin = GetStdHandle(STD_INPUT_HANDLE);
-    if (hstdin == INVALID_HANDLE_VALUE)
+    hstdin_ = GetStdHandle(STD_INPUT_HANDLE);
+    if (hstdin_ == INVALID_HANDLE_VALUE)
     {
       throw std::runtime_error("Failed to get stdin handle");
     }
-    if (!GetConsoleMode(hstdin, &old_mode))
+    if (!GetConsoleMode(hstdin_, &old_mode_))
     {
       throw std::runtime_error("Failed to get old console mode");
     }
@@ -55,12 +55,12 @@ public:
     }
 #else
     // get the console in raw mode
-    if (tcgetattr(0, &cooked) < 0)
+    if (tcgetattr(0, &cooked_) < 0)
     {
       throw std::runtime_error("Failed to get old console mode");
     }
     struct termios raw;
-    memcpy(&raw, &cooked, sizeof(struct termios));
+    memcpy(&raw, &cooked_, sizeof(struct termios));
     raw.c_lflag &=~ (ICANON | ECHO);
     // Setting a new line, then end of file
     raw.c_cc[VEOL] = 1;
@@ -81,10 +81,10 @@ public:
 #ifdef _WIN32
     INPUT_RECORD record;
     DWORD num_read;
-    switch (WaitForSingleObject(hstdin, 100))
+    switch (WaitForSingleObject(hstdin_, 100))
     {
     case WAIT_OBJECT_0:
-      if (!ReadConsoleInput(hstdin, &record, 1, &num_read))
+      if (!ReadConsoleInput(hstdin_, &record, 1, &num_read))
       {
         throw std::runtime_error("Read failed");
       }
@@ -169,18 +169,18 @@ public:
   ~KeyboardReader()
   {
 #ifdef _WIN32
-    SetConsoleMode(hstdin, old_mode);
+    SetConsoleMode(hstdin_, old_mode_);
 #else
-    tcsetattr(0, TCSANOW, &cooked);
+    tcsetattr(0, TCSANOW, &cooked_);
 #endif
   }
 
 private:
 #ifdef _WIN32
-  HANDLE hstdin;
-  DWORD old_mode;
+  HANDLE hstdin_;
+  DWORD old_mode_;
 #else
-  struct termios cooked;
+  struct termios cooked_;
 #endif
 };
 
@@ -214,7 +214,7 @@ public:
       // get the next event from the keyboard
       try
       {
-        c = input.readOne();
+        c = input_.readOne();
       }
       catch (const std::runtime_error &)
       {
@@ -345,7 +345,7 @@ private:
   rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SharedPtr rotate_absolute_client_;
   rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle_;
 
-  KeyboardReader input;
+  KeyboardReader input_;
 };
 
 #ifdef _WIN32
