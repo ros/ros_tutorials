@@ -49,7 +49,7 @@ public:
       throw std::runtime_error("Failed to get old console mode");
     }
     DWORD new_mode = ENABLE_PROCESSED_INPUT;  // for Ctrl-C processing
-    if (!SetConsoleMode(hstdin, new_mode))
+    if (!SetConsoleMode(hstdin_, new_mode))
     {
       throw std::runtime_error("Failed to set new console mode");
     }
