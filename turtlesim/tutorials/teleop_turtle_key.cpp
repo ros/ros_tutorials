@@ -1,3 +1,7 @@
+#include <functional>
+#include <stdexcept>
+#include <thread>
+
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <geometry_msgs/msg/twist.hpp>
@@ -5,305 +9,241 @@
 
 #include <signal.h>
 #include <stdio.h>
-#ifndef _WIN32
+#ifdef _WIN32
+# include <windows.h>
+#else
 # include <termios.h>
 # include <unistd.h>
-#else
-# include <windows.h>
 #endif
 
-#define KEYCODE_RIGHT 0x43
-#define KEYCODE_LEFT 0x44
-#define KEYCODE_UP 0x41
-#define KEYCODE_DOWN 0x42
-#define KEYCODE_B 0x62
-#define KEYCODE_C 0x63
-#define KEYCODE_D 0x64
-#define KEYCODE_E 0x65
-#define KEYCODE_F 0x66
-#define KEYCODE_G 0x67
-#define KEYCODE_Q 0x71
-#define KEYCODE_R 0x72
-#define KEYCODE_T 0x74
-#define KEYCODE_V 0x76
+static constexpr char KEYCODE_RIGHT = 0x43;
+static constexpr char KEYCODE_LEFT = 0x44;
+static constexpr char KEYCODE_UP = 0x41;
+static constexpr char KEYCODE_DOWN = 0x42;
+static constexpr char KEYCODE_B = 0x62;
+static constexpr char KEYCODE_C = 0x63;
+static constexpr char KEYCODE_D = 0x64;
+static constexpr char KEYCODE_E = 0x65;
+static constexpr char KEYCODE_F = 0x66;
+static constexpr char KEYCODE_G = 0x67;
+static constexpr char KEYCODE_Q = 0x71;
+static constexpr char KEYCODE_R = 0x72;
+static constexpr char KEYCODE_T = 0x74;
+static constexpr char KEYCODE_V = 0x76;
 
-class KeyboardReader
+bool running = true;
+
+class KeyboardReader final
 {
 public:
   KeyboardReader()
-#ifndef _WIN32
-    : kfd(0)
-#endif
   {
-#ifndef _WIN32
+#ifdef _WIN32
+    hstdin_ = GetStdHandle(STD_INPUT_HANDLE);
+    if (hstdin_ == INVALID_HANDLE_VALUE)
+    {
+      throw std::runtime_error("Failed to get stdin handle");
+    }
+    if (!GetConsoleMode(hstdin_, &old_mode_))
+    {
+      throw std::runtime_error("Failed to get old console mode");
+    }
+    DWORD new_mode = ENABLE_PROCESSED_INPUT;  // for Ctrl-C processing
+    if (!SetConsoleMode(hstdin_, new_mode))
+    {
+      throw std::runtime_error("Failed to set new console mode");
+    }
+#else
     // get the console in raw mode
-    tcgetattr(kfd, &cooked);
+    if (tcgetattr(0, &cooked_) < 0)
+    {
+      throw std::runtime_error("Failed to get old console mode");
+    }
     struct termios raw;
-    memcpy(&raw, &cooked, sizeof(struct termios));
+    memcpy(&raw, &cooked_, sizeof(struct termios));
     raw.c_lflag &=~ (ICANON | ECHO);
     // Setting a new line, then end of file
     raw.c_cc[VEOL] = 1;
     raw.c_cc[VEOF] = 2;
-    tcsetattr(kfd, TCSANOW, &raw);
+    raw.c_cc[VTIME] = 1;
+    raw.c_cc[VMIN] = 0;
+    if (tcsetattr(0, TCSANOW, &raw) < 0)
+    {
+      throw std::runtime_error("Failed to set new console mode");
+    }
 #endif
   }
-  void readOne(char * c)
+
+  char readOne()
   {
-#ifndef _WIN32
-    int rc = read(kfd, c, 1);
+    char c = 0;
+
+#ifdef _WIN32
+    INPUT_RECORD record;
+    DWORD num_read;
+    switch (WaitForSingleObject(hstdin_, 100))
+    {
+    case WAIT_OBJECT_0:
+      if (!ReadConsoleInput(hstdin_, &record, 1, &num_read))
+      {
+        throw std::runtime_error("Read failed");
+      }
+
+      if (record.EventType != KEY_EVENT || !record.Event.KeyEvent.bKeyDown) {
+        break;
+      }
+
+      if (record.Event.KeyEvent.wVirtualKeyCode == VK_LEFT)
+      {
+        c = KEYCODE_LEFT;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == VK_UP)
+      {
+        c = KEYCODE_UP;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == VK_RIGHT)
+      {
+        c = KEYCODE_RIGHT;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == VK_DOWN)
+      {
+        c = KEYCODE_DOWN;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x42)
+      {
+        c = KEYCODE_B;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x43)
+      {
+        c = KEYCODE_C;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x44)
+      {
+        c = KEYCODE_D;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x45)
+      {
+        c = KEYCODE_E;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x46)
+      {
+        c = KEYCODE_F;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x47)
+      {
+        c = KEYCODE_G;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x51)
+      {
+        c = KEYCODE_Q;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x52)
+      {
+        c = KEYCODE_R;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x54)
+      {
+        c = KEYCODE_T;
+      }
+      else if (record.Event.KeyEvent.wVirtualKeyCode == 0x56)
+      {
+        c = KEYCODE_V;
+      }
+      break;
+
+    case WAIT_TIMEOUT:
+      break;
+    }
+
+#else
+    int rc = read(0, &c, 1);
     if (rc < 0)
     {
       throw std::runtime_error("read failed");
     }
-#else
-    for(;;)
-    {
-      HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
-      INPUT_RECORD buffer;
-      DWORD events;
-      PeekConsoleInput(handle, &buffer, 1, &events);
-      if(events > 0)
-      {
-        ReadConsoleInput(handle, &buffer, 1, &events);
-        if (!buffer.Event.KeyEvent.bKeyDown)
-        {
-          continue;
-        }
-        if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_LEFT)
-        {
-          *c = KEYCODE_LEFT;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_UP)
-        {
-          *c = KEYCODE_UP;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_RIGHT)
-        {
-          *c = KEYCODE_RIGHT;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == VK_DOWN)
-        {
-          *c = KEYCODE_DOWN;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x42)
-        {
-          *c = KEYCODE_B;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x43)
-        {
-          *c = KEYCODE_C;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x44)
-        {
-          *c = KEYCODE_D;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x45)
-        {
-          *c = KEYCODE_E;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x46)
-        {
-          *c = KEYCODE_F;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x47)
-        {
-          *c = KEYCODE_G;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x51)
-        {
-          *c = KEYCODE_Q;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x52)
-        {
-          *c = KEYCODE_R;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x54)
-        {
-          *c = KEYCODE_T;
-          return;
-        }
-        else if (buffer.Event.KeyEvent.wVirtualKeyCode == 0x56)
-        {
-          *c = KEYCODE_V;
-          return;
-        }
-      }
-    }
 #endif
+
+    return c;
   }
-  void shutdown()
+
+  ~KeyboardReader()
   {
-#ifndef _WIN32
-    tcsetattr(kfd, TCSANOW, &cooked);
+#ifdef _WIN32
+    SetConsoleMode(hstdin_, old_mode_);
+#else
+    tcsetattr(0, TCSANOW, &cooked_);
 #endif
   }
+
 private:
-#ifndef _WIN32
-  int kfd;
-  struct termios cooked;
+#ifdef _WIN32
+  HANDLE hstdin_;
+  DWORD old_mode_;
+#else
+  struct termios cooked_;
 #endif
 };
 
-class TeleopTurtle
+class TeleopTurtle final
 {
 public:
-  TeleopTurtle();
-  int keyLoop();
-
-private:
-  void spin();
-  void sendGoal(float theta);
-  void cancelGoal();
-  
-  rclcpp::Node::SharedPtr nh_;
-  double linear_, angular_, l_scale_, a_scale_;
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-  rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SharedPtr rotate_absolute_client_;
-  rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle_;
-};
-
-TeleopTurtle::TeleopTurtle():
-  linear_(0),
-  angular_(0),
-  l_scale_(2.0),
-  a_scale_(2.0)
-{
-  nh_ = rclcpp::Node::make_shared("teleop_turtle");
-  nh_->declare_parameter("scale_angular", rclcpp::ParameterValue(2.0));
-  nh_->declare_parameter("scale_linear", rclcpp::ParameterValue(2.0));
-  nh_->get_parameter("scale_angular", a_scale_);
-  nh_->get_parameter("scale_linear", l_scale_);
-
-  twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
-  rotate_absolute_client_ = rclcpp_action::create_client<turtlesim::action::RotateAbsolute>(nh_, "turtle1/rotate_absolute");
-}
-
-void TeleopTurtle::sendGoal(float theta)
-{
-  auto goal = turtlesim::action::RotateAbsolute::Goal();
-  goal.theta = theta;
-  auto send_goal_options = rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SendGoalOptions();
-  send_goal_options.goal_response_callback =
-    [this](rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle)
-    {
-      RCLCPP_DEBUG(nh_->get_logger(), "Goal response received");
-      this->goal_handle_ = goal_handle;
-    };
-  rotate_absolute_client_->async_send_goal(goal, send_goal_options);
-}
-
-void TeleopTurtle::cancelGoal()
-{
- if (goal_handle_)
- {
-   RCLCPP_DEBUG(nh_->get_logger(), "Sending cancel request");
-   try
-   {
-     rotate_absolute_client_->async_cancel_goal(goal_handle_);
-   }
-   catch (...)
-   {
-     // This can happen if the goal has already terminated and expired
-   }
- }
-}
-
-KeyboardReader input;
-
-void quit(int sig)
-{
-  (void)sig;
-  input.shutdown();
-  rclcpp::shutdown();
-  exit(0);
-}
-
-
-int main(int argc, char** argv)
-{
-  rclcpp::init(argc, argv);
-  TeleopTurtle teleop_turtle;
-
-  signal(SIGINT,quit);
-
-  int rc = teleop_turtle.keyLoop();
-  input.shutdown();
-  rclcpp::shutdown();
-  
-  return rc;
-}
-
-void TeleopTurtle::spin()
-{
-  while (rclcpp::ok())
+  TeleopTurtle()
   {
-    rclcpp::spin_some(nh_);
+    nh_ = rclcpp::Node::make_shared("teleop_turtle");
+    nh_->declare_parameter("scale_angular", 2.0);
+    nh_->declare_parameter("scale_linear", 2.0);
+
+    twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
+    rotate_absolute_client_ = rclcpp_action::create_client<turtlesim::action::RotateAbsolute>(nh_, "turtle1/rotate_absolute");
   }
-}
 
-int TeleopTurtle::keyLoop()
-{
-  char c;
-  bool dirty=false;
-
-  std::thread{std::bind(&TeleopTurtle::spin, this)}.detach();
-
-  puts("Reading from keyboard");
-  puts("---------------------------");
-  puts("Use arrow keys to move the turtle.");
-  puts("Use G|B|V|C|D|E|R|T keys to rotate to absolute orientations. 'F' to cancel a rotation.");
-  puts("'Q' to quit.");
-
-
-  for(;;)
+  int keyLoop()
   {
-    // get the next event from the keyboard  
-    try
-    {
-      input.readOne(&c);
-    }
-    catch (const std::runtime_error &)
-    {
-      perror("read():");
-      return -1;
-    }
+    char c;
 
-    linear_=angular_=0;
-    RCLCPP_DEBUG(nh_->get_logger(), "value: 0x%02X\n", c);
-  
-    switch(c)
+    std::thread{std::bind(&TeleopTurtle::spin, this)}.detach();
+
+    puts("Reading from keyboard");
+    puts("---------------------------");
+    puts("Use arrow keys to move the turtle.");
+    puts("Use G|B|V|C|D|E|R|T keys to rotate to absolute orientations. 'F' to cancel a rotation.");
+    puts("'Q' to quit.");
+
+    while (running)
     {
+      // get the next event from the keyboard
+      try
+      {
+        c = input_.readOne();
+      }
+      catch (const std::runtime_error &)
+      {
+        perror("read():");
+        return -1;
+      }
+
+      double linear = 0.0;
+      double angular = 0.0;
+
+      RCLCPP_DEBUG(nh_->get_logger(), "value: 0x%02X\n", c);
+
+      switch(c)
+      {
       case KEYCODE_LEFT:
         RCLCPP_DEBUG(nh_->get_logger(), "LEFT");
-        angular_ = 1.0;
-        dirty = true;
+        angular = 1.0;
         break;
       case KEYCODE_RIGHT:
         RCLCPP_DEBUG(nh_->get_logger(), "RIGHT");
-        angular_ = -1.0;
-        dirty = true;
+        angular = -1.0;
         break;
       case KEYCODE_UP:
         RCLCPP_DEBUG(nh_->get_logger(), "UP");
-        linear_ = 1.0;
-        dirty = true;
+        linear = 1.0;
         break;
       case KEYCODE_DOWN:
         RCLCPP_DEBUG(nh_->get_logger(), "DOWN");
-        linear_ = -1.0;
-        dirty = true;
+        linear = -1.0;
         break;
       case KEYCODE_G:
         RCLCPP_DEBUG(nh_->get_logger(), "G");
@@ -343,23 +283,101 @@ int TeleopTurtle::keyLoop()
         break;
       case KEYCODE_Q:
         RCLCPP_DEBUG(nh_->get_logger(), "quit");
-        return 0;
-    }
-   
+        running = false;
+        break;
+      default:
+        // This can happen if the read returned when there was no data, or
+        // another key was pressed.  In these cases, just silently ignore the
+        // press.
+        break;
+      }
 
-    geometry_msgs::msg::Twist twist;
-    twist.angular.z = a_scale_*angular_;
-    twist.linear.x = l_scale_*linear_;
-    if(dirty ==true)
+      if (running && (linear != 0.0 || angular != 0.0))
+      {
+        geometry_msgs::msg::Twist twist;
+        twist.angular.z = nh_->get_parameter("scale_angular").as_double() * angular;
+        twist.linear.x = nh_->get_parameter("scale_linear").as_double() * linear;
+        twist_pub_->publish(twist);
+      }
+    }
+
+    return 0;
+  }
+
+private:
+  void spin()
+  {
+    rclcpp::spin(nh_);
+  }
+
+  void sendGoal(float theta)
+  {
+    auto goal = turtlesim::action::RotateAbsolute::Goal();
+    goal.theta = theta;
+    auto send_goal_options = rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SendGoalOptions();
+    send_goal_options.goal_response_callback =
+      [this](rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle)
+      {
+        RCLCPP_DEBUG(nh_->get_logger(), "Goal response received");
+        this->goal_handle_ = goal_handle;
+      };
+    rotate_absolute_client_->async_send_goal(goal, send_goal_options);
+  }
+
+  void cancelGoal()
+  {
+    if (goal_handle_)
     {
-      twist_pub_->publish(twist);    
-      dirty=false;
+      RCLCPP_DEBUG(nh_->get_logger(), "Sending cancel request");
+      try
+      {
+        rotate_absolute_client_->async_cancel_goal(goal_handle_);
+      }
+      catch (...)
+      {
+        // This can happen if the goal has already terminated and expired
+      }
     }
   }
 
+  rclcpp::Node::SharedPtr nh_;
+  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
+  rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SharedPtr rotate_absolute_client_;
+  rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr goal_handle_;
 
-  return 0;
+  KeyboardReader input_;
+};
+
+#ifdef _WIN32
+BOOL WINAPI quit(DWORD ctrl_type)
+{
+  (void)ctrl_type;
+  running = false;
+  return true;
 }
+#else
+void quit(int sig)
+{
+  (void)sig;
+  running = false;
+}
+#endif
 
+int main(int argc, char** argv)
+{
+  rclcpp::init(argc, argv);
 
+#ifdef _WIN32
+  SetConsoleCtrlHandler(quit, TRUE);
+#else
+  signal(SIGINT, quit);
+#endif
 
+  TeleopTurtle teleop_turtle;
+
+  int rc = teleop_turtle.keyLoop();
+
+  rclcpp::shutdown();
+
+  return rc;
+}
