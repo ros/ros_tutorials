@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.3.3 (2021-05-21)
+------------------
+* Added galactic turtle icon. (`#123 <https://github.com/ros/ros_tutorials/issues/123>`_)
+* Heavily cleanup teleop_turtle_key. (`#121 <https://github.com/ros/ros_tutorials/issues/121>`_)
+* Contributors: Chris Lalancette, Katherine Scott
+
 1.3.2 (2021-04-16)
 ------------------
 * Ignore key up events in teleop_turtle_key on Windows (`#118 <https://github.com/ros/ros_tutorials/issues/118>`_)
