@@ -74,6 +74,12 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
     private_nh_.setParam("background_b", DEFAULT_BG_B);
   }
 
+  if (!private_nh_.hasParam("holonomic"))
+  {
+    private_nh_.setParam("holonomic", true);
+  }
+  private_nh_.getParam("holonomic", holonomic_);
+
   QVector<QString> turtles;
   turtles.append("box-turtle.png");
   turtles.append("robot-turtle.png");
@@ -111,7 +117,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
 
   width_in_meters_ = (width() - 1) / meter_;
   height_in_meters_ = (height() - 1) / meter_;
-  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0, holonomic_);
 
   // spawn all available turtle types
   if(false)
@@ -121,7 +127,7 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
       QString name = turtles[index];
       name = name.split(".").first();
       name.replace(QString("-"), QString(""));
-      spawnTurtle(name.toStdString(), 1.0 + 1.5 * (index % 7), 1.0 + 1.5 * (index / 7), PI / 2.0, index);
+      spawnTurtle(name.toStdString(), 1.0 + 1.5 * (index % 7), 1.0 + 1.5 * (index / 7), PI / 2.0, index, holonomic_);
     }
   }
 }
@@ -133,7 +139,7 @@ TurtleFrame::~TurtleFrame()
 
 bool TurtleFrame::spawnCallback(turtlesim::Spawn::Request& req, turtlesim::Spawn::Response& res)
 {
-  std::string name = spawnTurtle(req.name, req.x, req.y, req.theta);
+  std::string name = spawnTurtle(req.name, req.x, req.y, req.theta, holonomic_);
   if (name.empty())
   {
     ROS_ERROR("A turtled named [%s] already exists", req.name.c_str());
@@ -165,12 +171,12 @@ bool TurtleFrame::hasTurtle(const std::string& name)
   return turtles_.find(name) != turtles_.end();
 }
 
-std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle)
+std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, bool holonomic)
 {
-  return spawnTurtle(name, x, y, angle, rand() % turtle_images_.size());
+  return spawnTurtle(name, x, y, angle, rand() % turtle_images_.size(), holonomic);
 }
 
-std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, size_t index)
+std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, size_t index, bool holonomic)
 {
   std::string real_name = name;
   if (real_name.empty())
@@ -190,11 +196,18 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
     }
   }
 
-  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[index], QPointF(x, height_in_meters_ - y), angle));
+  TurtlePtr t(new Turtle(ros::NodeHandle(real_name), turtle_images_[index], QPointF(x, height_in_meters_ - y), angle, holonomic));
   turtles_[real_name] = t;
   update();
 
-  ROS_INFO("Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
+  if (holonomic)
+  {
+    ROS_INFO("Spawning holonomic turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
+  }
+  else
+  {
+    ROS_INFO("Spawning differential-drive turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
+  }
 
   return real_name;
 }
@@ -275,7 +288,8 @@ bool TurtleFrame::resetCallback(std_srvs::Empty::Request&, std_srvs::Empty::Resp
   ROS_INFO("Resetting turtlesim.");
   turtles_.clear();
   id_counter_ = 0;
-  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
+  private_nh_.getParam("holonomic", holonomic_);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0, holonomic_);
   clear();
   return true;
 }

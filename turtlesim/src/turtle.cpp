@@ -39,11 +39,12 @@
 namespace turtlesim
 {
 
-Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient)
+Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient, bool holonomic)
 : nh_(nh)
 , turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
+, holonomic_(holonomic)
 , lin_vel_x_(0.0)
 , lin_vel_y_(0.0)
 , ang_vel_(0.0)
@@ -63,12 +64,14 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
   rotateImage();
 }
 
-
 void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
 {
   last_command_time_ = ros::WallTime::now();
   lin_vel_x_ = vel->linear.x;
-  lin_vel_y_ = vel->linear.y;
+  if (holonomic_) 
+  {
+    lin_vel_y_ = vel->linear.y;
+  }
   ang_vel_ = vel->angular.z;
 }
 

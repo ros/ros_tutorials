@@ -56,8 +56,8 @@ public:
   TurtleFrame(QWidget* parent = 0, Qt::WindowFlags f = 0);
   ~TurtleFrame();
 
-  std::string spawnTurtle(const std::string& name, float x, float y, float angle);
-  std::string spawnTurtle(const std::string& name, float x, float y, float angle, size_t index);
+  std::string spawnTurtle(const std::string& name, float x, float y, float angle, bool holonomic);
+  std::string spawnTurtle(const std::string& name, float x, float y, float angle, size_t index, bool holonomic);
 
 protected:
   void paintEvent(QPaintEvent* event);
@@ -99,6 +99,7 @@ private:
   float meter_;
   float width_in_meters_;
   float height_in_meters_;
+  bool holonomic_;
 };
 
 }

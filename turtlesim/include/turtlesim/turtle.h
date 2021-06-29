@@ -56,7 +56,7 @@ namespace turtlesim
 class Turtle
 {
 public:
-  Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient);
+  Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient, bool holonomic);
 
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
@@ -75,6 +75,7 @@ private:
 
   QPointF pos_;
   qreal orient_;
+  bool holonomic_;
 
   qreal lin_vel_x_;
   qreal lin_vel_y_;
