@@ -160,12 +160,12 @@ bool TurtleFrame::killCallback(const turtlesim::srv::Kill::Request::SharedPtr re
   return true;
 }
 
-void TurtleFrame::parameterEventCallback(const rcl_interfaces::msg::ParameterEvent::SharedPtr event)
+void TurtleFrame::parameterEventCallback(const rcl_interfaces::msg::ParameterEvent::ConstSharedPtr event)
 {
   // only consider events from this node
   if (event->node == nh_->get_fully_qualified_name())
   {
-    // since parameter events for this even aren't expected frequently just always call update()
+    // since parameter events for this event aren't expected frequently just always call update()
     update();
   }
 }
