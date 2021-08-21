@@ -13,7 +13,7 @@ public:
   }
 
 private:
-  void poseCallback(const turtlesim::msg::Pose::SharedPtr pose)
+  void poseCallback(const turtlesim::msg::Pose::ConstSharedPtr pose)
   {
     geometry_msgs::msg::Twist twist;
     twist.angular.z = pose->angular_velocity;

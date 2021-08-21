@@ -88,7 +88,7 @@ Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const 
 }
 
 
-void Turtle::velocityCallback(const geometry_msgs::msg::Twist::SharedPtr vel)
+void Turtle::velocityCallback(const geometry_msgs::msg::Twist::ConstSharedPtr vel)
 {
   last_command_time_ = nh_->now();
   lin_vel_x_ = vel->linear.x;
