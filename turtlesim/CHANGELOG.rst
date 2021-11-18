@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.4.0 (2021-11-18)
+------------------
 * Update maintainers to Audrow Nash and Michael Jeronimo (`#137 <https://github.com/ros/ros_tutorials/issues/137>`_)
 * Fixing deprecated subscriber callback warnings (`#134 <https://github.com/ros/ros_tutorials/issues/134>`_)
 * Use rosidl_get_typesupport_target() (`#132 <https://github.com/ros/ros_tutorials/issues/132>`_)
