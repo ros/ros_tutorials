@@ -6,15 +6,20 @@
   <description>
     turtlesim is a tool made for teaching ROS and ROS packages.
   </description>
-  <maintainer email="mabel@openrobotics.org">Mabel Zhang</maintainer>
-  <maintainer email="sloretz@openrobotics.org">Shane Loretz</maintainer>
+
+  <maintainer email="audrow@openrobotics.org">Audrow Nash</maintainer>
+  <maintainer email="michael.jeronimo@openrobotics.org">Michael Jeronimo</maintainer>
+
   <license>BSD</license>
 
   <url type="website">http://www.ros.org/wiki/turtlesim</url>
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
-  <author>Josh Faust</author>
+
   <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
+  <author>Josh Faust</author>
+  <author email="mabel@openrobotics.org">Mabel Zhang</author>
+  <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <build_depend>qt5-qmake</build_depend>
   <build_depend>qtbase5-dev</build_depend>
