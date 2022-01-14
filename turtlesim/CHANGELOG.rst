@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.1 (2022-01-14)
+------------------
+* Use ``double`` when handling ``qreal orient\_`` (`#114 <https://github.com/ros/ros_tutorials/issues/114>`_)
+* Add Rolling Icon (`#133 <https://github.com/ros/ros_tutorials/issues/133>`_)
+* Contributors: Katherine Scott, Seulbae Kim
+
 1.4.0 (2021-11-18)
 ------------------
 * Update maintainers to Audrow Nash and Michael Jeronimo (`#137 <https://github.com/ros/ros_tutorials/issues/137>`_)
