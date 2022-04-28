@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Print out the correct node name on startup. (`#122 <https://github.com/ros/ros_tutorials/issues/122>`_)
+* Contributors: Chris Lalancette
+
 1.3.3 (2021-05-21)
 ------------------
 * Added galactic turtle icon. (`#123 <https://github.com/ros/ros_tutorials/issues/123>`_)
