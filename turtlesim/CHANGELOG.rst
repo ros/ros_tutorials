@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.4 (2022-04-28)
+------------------
 * Print out the correct node name on startup. (`#122 <https://github.com/ros/ros_tutorials/issues/122>`_)
 * Contributors: Chris Lalancette
 
