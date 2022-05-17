@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.4.2 (2022-05-17)
+------------------
 * Add humble turtle (`#140 <https://github.com/ros/ros_tutorials/issues/140>`_)
 * Contributors: Audrow Nash
 
