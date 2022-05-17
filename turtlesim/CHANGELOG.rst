@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add humble turtle (`#140 <https://github.com/ros/ros_tutorials/issues/140>`_)
+* Contributors: Audrow Nash
+
 1.4.1 (2022-01-14)
 ------------------
 * Use ``double`` when handling ``qreal orient\_`` (`#114 <https://github.com/ros/ros_tutorials/issues/114>`_)
