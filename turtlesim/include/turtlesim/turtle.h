@@ -60,7 +60,7 @@ class Turtle
 public:
   using RotateAbsoluteGoalHandle = rclcpp_action::ServerGoalHandle<turtlesim::action::RotateAbsolute>;
 
-  Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient, bool holonomic);
+  Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient);
 
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
@@ -80,7 +80,6 @@ private:
 
   QPointF pos_;
   qreal orient_;
-  bool holonomic_;
 
   qreal lin_vel_x_;
   qreal lin_vel_y_;

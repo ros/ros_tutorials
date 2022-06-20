@@ -46,12 +46,11 @@ static double normalizeAngle(double angle)
   return angle - (TWO_PI * std::floor((angle + PI) / (TWO_PI)));
 }
 
-Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient, bool holonomic)
+Turtle::Turtle(rclcpp::Node::SharedPtr& nh, const std::string& real_name, const QImage& turtle_image, const QPointF& pos, float orient)
 : nh_(nh)
 , turtle_image_(turtle_image)
 , pos_(pos)
 , orient_(orient)
-, holonomic_(holonomic)
 , lin_vel_x_(0.0)
 , lin_vel_y_(0.0)
 , ang_vel_(0.0)
@@ -93,7 +92,9 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::ConstSharedPtr ve
 {
   last_command_time_ = nh_->now();
   lin_vel_x_ = vel->linear.x;
-  if (holonomic_)
+  bool holonomic = false;
+  nh_->get_parameter_or("holonomic", holonomic, false);
+  if (holonomic)
   {
     lin_vel_y_ = vel->linear.y;
   }

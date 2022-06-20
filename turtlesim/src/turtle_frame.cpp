@@ -78,10 +78,9 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
   nh_->declare_parameter("background_b", rclcpp::ParameterValue(DEFAULT_BG_B), background_b_descriptor);
 
   rcl_interfaces::msg::ParameterDescriptor holonomic_descriptor;
-  holonomic_descriptor.description = "holonomic/non-holonomic motion";
+  holonomic_descriptor.description = "If true, then turtles will be holonomic";
   holonomic_descriptor.integer_range.push_back(range);
-  nh_->declare_parameter("holonomic", rclcpp::ParameterValue(true), holonomic_descriptor);
-  nh_->get_parameter_or("holonomic", holonomic_, true);
+  nh_->declare_parameter("holonomic", rclcpp::ParameterValue(false), holonomic_descriptor);
 
   QVector<QString> turtles;
   turtles.append("ardent.png");
@@ -119,7 +118,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
 
   width_in_meters_ = (width() - 1) / meter_;
   height_in_meters_ = (height() - 1) / meter_;
-  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0, holonomic_);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
 
   // spawn all available turtle types
   if(false)
@@ -129,7 +128,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
       QString name = turtles[index];
       name = name.split(".").first();
       name.replace(QString("-"), QString(""));
-      spawnTurtle(name.toStdString(), 1.0f + 1.5f * (index % 7), 1.0f + 1.5f * (index / 7), static_cast<float>(PI) / 2.0f, index, holonomic_);
+      spawnTurtle(name.toStdString(), 1.0f + 1.5f * (index % 7), 1.0f + 1.5f * (index / 7), static_cast<float>(PI) / 2.0f, index);
     }
   }
 }
@@ -141,7 +140,7 @@ TurtleFrame::~TurtleFrame()
 
 bool TurtleFrame::spawnCallback(const turtlesim::srv::Spawn::Request::SharedPtr req, turtlesim::srv::Spawn::Response::SharedPtr res)
 {
-  std::string name = spawnTurtle(req->name, req->x, req->y, req->theta, holonomic_);
+  std::string name = spawnTurtle(req->name, req->x, req->y, req->theta);
   if (name.empty())
   {
     RCLCPP_ERROR(nh_->get_logger(), "A turtle named [%s] already exists", req->name.c_str());
@@ -183,12 +182,12 @@ bool TurtleFrame::hasTurtle(const std::string& name)
   return turtles_.find(name) != turtles_.end();
 }
 
-std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, bool holonomic)
+std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle)
 {
-  return spawnTurtle(name, x, y, angle, rand() % turtle_images_.size(), holonomic);
+  return spawnTurtle(name, x, y, angle, rand() % turtle_images_.size());
 }
 
-std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, size_t index, bool holonomic)
+std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, float angle, size_t index)
 {
   std::string real_name = name;
   if (real_name.empty())
@@ -208,18 +207,11 @@ std::string TurtleFrame::spawnTurtle(const std::string& name, float x, float y, 
     }
   }
 
-  TurtlePtr t = std::make_shared<Turtle>(nh_, real_name, turtle_images_[static_cast<int>(index)], QPointF(x, height_in_meters_ - y), angle, holonomic);
+  TurtlePtr t = std::make_shared<Turtle>(nh_, real_name, turtle_images_[static_cast<int>(index)], QPointF(x, height_in_meters_ - y), angle);
   turtles_[real_name] = t;
   update();
 
-  if (holonomic)
-  {
-    RCLCPP_INFO(nh_->get_logger(), "Spawning holonomic turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
-  }
-  else
-  {
-    RCLCPP_INFO(nh_->get_logger(), "Spawning differential-drive turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
-  }
+  RCLCPP_INFO(nh_->get_logger(), "Spawning turtle [%s] at x=[%f], y=[%f], theta=[%f]", real_name.c_str(), x, y, angle);
 
   return real_name;
 }
@@ -303,8 +295,7 @@ bool TurtleFrame::resetCallback(const std_srvs::srv::Empty::Request::SharedPtr, 
   RCLCPP_INFO(nh_->get_logger(), "Resetting turtlesim.");
   turtles_.clear();
   id_counter_ = 0;
-  nh_->get_parameter("holonomic", holonomic_);
-  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0, holonomic_);
+  spawnTurtle("", width_in_meters_ / 2.0, height_in_meters_ / 2.0, 0);
   clear();
   return true;
 }
