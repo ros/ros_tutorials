@@ -92,7 +92,12 @@ void Turtle::velocityCallback(const geometry_msgs::msg::Twist::ConstSharedPtr ve
 {
   last_command_time_ = nh_->now();
   lin_vel_x_ = vel->linear.x;
-  lin_vel_y_ = vel->linear.y;
+  bool holonomic = false;
+  nh_->get_parameter_or("holonomic", holonomic, false);
+  if (holonomic)
+  {
+    lin_vel_y_ = vel->linear.y;
+  }
   ang_vel_ = vel->angular.z;
 
   // Abort any active action
