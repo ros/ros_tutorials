@@ -1,4 +1,4 @@
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <ros/ros.h>
 #include <turtlesim/Pose.h>
 #include <geometry_msgs/Twist.h>
@@ -154,7 +154,7 @@ int main(int argc, char** argv)
   ros::Subscriber pose_sub = nh.subscribe("turtle1/pose", 1, poseCallback);
   ros::Publisher twist_pub = nh.advertise<geometry_msgs::Twist>("turtle1/cmd_vel", 1);
   ros::ServiceClient reset = nh.serviceClient<std_srvs::Empty>("reset");
-  ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, _1, twist_pub));
+  ros::Timer timer = nh.createTimer(ros::Duration(0.016), boost::bind(timerCallback, boost::placeholders::_1, twist_pub));
 
   std_srvs::Empty empty;
   reset.call(empty);
