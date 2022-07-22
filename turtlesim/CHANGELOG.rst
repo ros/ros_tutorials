@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.2.6 (2022-07-22)
+------------------
+* Update maintainers (`#103 <https://github.com/ros/ros_tutorials/issues/103>`_)
+* Contributors: Shane Loretz
+
 1.2.5 (2020-08-05)
 ------------------
 * add holonomic motion for turtlesim (`#98 <https://github.com/ros/ros_tutorials/issues/98>`_)
