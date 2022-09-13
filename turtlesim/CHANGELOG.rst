@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.5.0 (2022-09-13)
+------------------
 * Add parameter to enable holonomic motion (`#131 <https://github.com/ros/ros_tutorials/issues/131>`_)
 * Add humble turtle (`#140 <https://github.com/ros/ros_tutorials/issues/140>`_)
 * Contributors: Audrow Nash, Daisuke Sato
