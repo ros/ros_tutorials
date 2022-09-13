@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add parameter to enable holonomic motion (`#131 <https://github.com/ros/ros_tutorials/issues/131>`_)
+* Add humble turtle (`#140 <https://github.com/ros/ros_tutorials/issues/140>`_)
+* Contributors: Audrow Nash, Daisuke Sato
+
 1.4.1 (2022-01-14)
 ------------------
 * Use ``double`` when handling ``qreal orient\_`` (`#114 <https://github.com/ros/ros_tutorials/issues/114>`_)
