@@ -7,8 +7,7 @@
     including using messages, servers, parameters, etc. These tutorials are compatible with the nodes in roscpp_tutorial.
   </description>
 
-  <maintainer email="audrow@openrobotics.org">Audrow Nash</maintainer>
-  <maintainer email="michael.jeronimo@openrobotics.org">Michael Jeronimo</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
 
   <license>BSD</license>
 
@@ -16,9 +15,11 @@
   <url type="bugtracker">https://github.com/ros/ros_tutorials/issues</url>
   <url type="repository">https://github.com/ros/ros_tutorials</url>
 
+  <author email="audrow@openrobotics.org">Audrow Nash</author>
   <author email="dthomas@osrfoundation.org">Dirk Thomas</author>
   <author>Ken Conley</author>
   <author email="mabel@openrobotics.org">Mabel Zhang</author>
+  <author email="michael.jeronimo@openrobotics.org">Michael Jeronimo</author>
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
   <buildtool_depend version_gte="0.5.68">catkin</buildtool_depend>
