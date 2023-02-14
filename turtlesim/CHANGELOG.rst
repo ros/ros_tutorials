@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.6.0 (2023-02-14)
+------------------
 * Update turtlesim to C++17. (`#146 <https://github.com/ros/ros_tutorials/issues/146>`_)
 * [rolling] Update maintainers - 2022-11-07 (`#145 <https://github.com/ros/ros_tutorials/issues/145>`_)
 * Contributors: Audrow Nash, Chris Lalancette
