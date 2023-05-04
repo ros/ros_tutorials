@@ -79,7 +79,6 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr& node_handle, QWidget* parent, 
 
   rcl_interfaces::msg::ParameterDescriptor holonomic_descriptor;
   holonomic_descriptor.description = "If true, then turtles will be holonomic";
-  holonomic_descriptor.integer_range.push_back(range);
   nh_->declare_parameter("holonomic", rclcpp::ParameterValue(false), holonomic_descriptor);
 
   QVector<QString> turtles;
