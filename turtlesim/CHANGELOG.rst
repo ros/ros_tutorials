@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove the range constraints from the holonomic parameter. (`#150 <https://github.com/ros/ros_tutorials/issues/150>`_) (`#151 <https://github.com/ros/ros_tutorials/issues/151>`_)
+* Add icon (`#148 <https://github.com/ros/ros_tutorials/issues/148>`_) (`#149 <https://github.com/ros/ros_tutorials/issues/149>`_)
+* Contributors: mergify[bot]
+
 1.6.0 (2023-02-14)
 ------------------
 * Update turtlesim to C++17. (`#146 <https://github.com/ros/ros_tutorials/issues/146>`_)
