@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.1 (2023-05-11)
+------------------
 * Remove the range constraints from the holonomic parameter. (`#150 <https://github.com/ros/ros_tutorials/issues/150>`_)
 * Add icon (`#148 <https://github.com/ros/ros_tutorials/issues/148>`_)
 * Contributors: Chris Lalancette, Yadu
