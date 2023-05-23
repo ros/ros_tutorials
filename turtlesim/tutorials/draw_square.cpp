@@ -47,18 +47,21 @@ public:
   {
     twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
 
-    pose_sub_ = this->create_subscription<turtlesim::msg::Pose>("turtle1/pose", 1, std::bind(&DrawSquare::poseCallback, this, std::placeholders::_1));
+    pose_sub_ =
+      this->create_subscription<turtlesim::msg::Pose>(
+      "turtle1/pose", 1, std::bind(&DrawSquare::poseCallback, this, std::placeholders::_1));
 
     reset_client_ = this->create_client<std_srvs::srv::Empty>("reset");
 
-    timer_ = this->create_wall_timer(std::chrono::milliseconds(16), [this](){timerCallback();});
+    timer_ = this->create_wall_timer(std::chrono::milliseconds(16), [this]() {timerCallback();});
 
     auto empty = std::make_shared<std_srvs::srv::Empty::Request>();
     reset_result_ = reset_client_->async_send_request(empty).future;
   }
 
 private:
-  enum State {
+  enum State
+  {
     FORWARD,
     STOP_FORWARD,
     TURN,
@@ -73,7 +76,9 @@ private:
 
   bool hasReachedGoal()
   {
-    return fabsf(current_pose_.x - goal_pose_.x) < 0.1 && fabsf(current_pose_.y - goal_pose_.y) < 0.1 && fabsf(current_pose_.theta - goal_pose_.theta) < 0.01;
+    return fabsf(current_pose_.x - goal_pose_.x) < 0.1 &&
+           fabsf(current_pose_.y - goal_pose_.y) < 0.1 &&
+           fabsf(current_pose_.theta - goal_pose_.theta) < 0.01;
   }
 
   bool hasStopped()
@@ -83,7 +88,8 @@ private:
 
   void printGoal()
   {
-    RCLCPP_INFO(this->get_logger(), "New goal [%f %f, %f]", goal_pose_.x, goal_pose_.y, goal_pose_.theta);
+    RCLCPP_INFO(
+      this->get_logger(), "New goal [%f %f, %f]", goal_pose_.x, goal_pose_.y, goal_pose_.theta);
   }
 
   void commandTurtle(float linear, float angular)
