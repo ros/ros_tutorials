@@ -1,1 +1,0 @@
-rosbuild_add_executable(cached_parameters cached_parameters.cpp)
