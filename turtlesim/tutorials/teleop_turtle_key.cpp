@@ -27,12 +27,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 #include <signal.h>
 #include <stdio.h>
-#ifdef _WIN32
-# include <windows.h>
-#else
-# include <termios.h>
-# include <unistd.h>
-#endif
 
 #include <functional>
 #include <stdexcept>
@@ -42,6 +36,13 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <turtlesim/action/rotate_absolute.hpp>
+
+#ifdef _WIN32
+# include <windows.h>  // NO LINT
+#else
+# include <termios.h>  // NO LINT
+# include <unistd.h>  // NO LINT
+#endif
 
 static constexpr char KEYCODE_RIGHT = 0x43;
 static constexpr char KEYCODE_LEFT = 0x44;
