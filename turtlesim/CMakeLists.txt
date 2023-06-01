@@ -40,7 +40,7 @@ set(turtlesim_node_SRCS
   src/turtle_frame.cpp
 )
 set(turtlesim_node_HDRS
-  include/turtlesim/turtle_frame.h
+  include/turtlesim/turtle_frame.hpp
 )
 
 qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
@@ -61,6 +61,11 @@ target_link_libraries(draw_square "${cpp_typesupport_target}")
 add_executable(mimic tutorials/mimic.cpp)
 ament_target_dependencies(mimic ${dependencies})
 target_link_libraries(mimic "${cpp_typesupport_target}")
+
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
+endif()
 
 install(TARGETS turtlesim_node turtle_teleop_key draw_square mimic
   DESTINATION lib/${PROJECT_NAME})
