@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.2 (2023-06-05)
+------------------
 * Added common tests (`#154 <https://github.com/ros/ros_tutorials/issues/154>`_)
 * Heavy cleanup of the draw_square tutorial. (`#152 <https://github.com/ros/ros_tutorials/issues/152>`_)
   * Heavy cleanup of the draw_square tutorial.
