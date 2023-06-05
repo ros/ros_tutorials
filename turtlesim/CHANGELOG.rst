@@ -2,6 +2,20 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Added common tests (`#154 <https://github.com/ros/ros_tutorials/issues/154>`_)
+* Heavy cleanup of the draw_square tutorial. (`#152 <https://github.com/ros/ros_tutorials/issues/152>`_)
+  * Heavy cleanup of the draw_square tutorial.
+  In particular:
+  1. Make it conform to the current ROS 2 style.
+  2. Add in copyright information.
+  3. Refactor the entire code into a class, which tidies it
+  up quite a bit and removes a bunch of globals.
+  4. Make sure to wait for the reset to complete before trying
+  to move the turtle.
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette
+
 1.7.1 (2023-05-11)
 ------------------
 * Remove the range constraints from the holonomic parameter. (`#150 <https://github.com/ros/ros_tutorials/issues/150>`_)
