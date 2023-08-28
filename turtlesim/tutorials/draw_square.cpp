@@ -186,7 +186,6 @@ private:
   bool first_goal_set_ = false;
   bool first_pose_set_ = false;
   State state_ = FORWARD;
-  State last_state_ = FORWARD;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
   rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
