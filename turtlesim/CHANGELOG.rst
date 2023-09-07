@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.3 (2023-09-07)
+------------------
 * Remove the unused member variable last_state\_ (`#156 <https://github.com/ros/ros_tutorials/issues/156>`_)
 * Contributors: Chris Lalancette
 
