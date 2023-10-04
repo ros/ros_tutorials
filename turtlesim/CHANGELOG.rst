@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.4 (2023-10-04)
+------------------
 * Crop galactic.png and rolling.png to 45x45. (`#158 <https://github.com/ros/ros_tutorials/issues/158>`_)
 * Contributors: Jason O'Kane
 
