@@ -14,6 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
+find_package(rcl_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
@@ -32,35 +33,49 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/TeleportAbsolute.srv"
   "srv/TeleportRelative.srv")
 
-set(dependencies "ament_index_cpp" "geometry_msgs" "rclcpp" "rclcpp_action" "std_msgs" "std_srvs")
-
-set(turtlesim_node_SRCS
-  src/turtlesim.cpp
-  src/turtle.cpp
-  src/turtle_frame.cpp
-)
-set(turtlesim_node_HDRS
-  include/turtlesim/turtle_frame.hpp
-)
-
-qt5_wrap_cpp(turtlesim_node_MOCS ${turtlesim_node_HDRS})
+qt5_wrap_cpp(turtlesim_node_MOCS include/turtlesim/turtle_frame.hpp)
 
 rosidl_get_typesupport_target(cpp_typesupport_target "${PROJECT_NAME}" "rosidl_typesupport_cpp")
 
-add_executable(turtlesim_node ${turtlesim_node_SRCS} ${turtlesim_node_MOCS})
-target_link_libraries(turtlesim_node Qt5::Widgets)
-ament_target_dependencies(turtlesim_node ${dependencies})
-target_link_libraries(turtlesim_node "${cpp_typesupport_target}")
+add_executable(turtlesim_node
+  src/turtlesim.cpp
+  src/turtle.cpp
+  src/turtle_frame.cpp
+  ${turtlesim_node_MOCS}
+)
+target_link_libraries(turtlesim_node PRIVATE
+  ament_index_cpp::ament_index_cpp
+  ${cpp_typesupport_target}
+  ${geometry_msgs_TARGETS}
+  Qt5::Widgets
+  ${rcl_interfaces_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
+  ${std_srvs_TARGETS}
+)
 
 add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
-ament_target_dependencies(turtle_teleop_key ${dependencies})
-target_link_libraries(turtle_teleop_key "${cpp_typesupport_target}")
+target_link_libraries(turtle_teleop_key PRIVATE
+  "${cpp_typesupport_target}"
+  ${geometry_msgs_TARGETS}
+  rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
+)
+
 add_executable(draw_square tutorials/draw_square.cpp)
-ament_target_dependencies(draw_square ${dependencies})
-target_link_libraries(draw_square "${cpp_typesupport_target}")
+target_link_libraries(draw_square PRIVATE
+  "${cpp_typesupport_target}"
+  ${geometry_msgs_TARGETS}
+  rclcpp::rclcpp
+  ${std_srvs_TARGETS}
+)
+
 add_executable(mimic tutorials/mimic.cpp)
-ament_target_dependencies(mimic ${dependencies})
-target_link_libraries(mimic "${cpp_typesupport_target}")
+target_link_libraries(mimic PRIVATE
+  "${cpp_typesupport_target}"
+  ${geometry_msgs_TARGETS}
+  rclcpp::rclcpp
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
