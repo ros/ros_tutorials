@@ -32,6 +32,17 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <functional>
+#include <string>
+
+#include "rcl_interfaces/msg/integer_range.hpp"
+#include "rcl_interfaces/msg/parameter_descriptor.hpp"
+#include "rcl_interfaces/msg/parameter_event.hpp"
+#include "rclcpp/rclcpp.hpp"
+#include "std_srvs/srv/empty.hpp"
+
+#include "turtlesim/srv/kill.hpp"
+#include "turtlesim/srv/spawn.hpp"
 
 #define DEFAULT_BG_R 0x45
 #define DEFAULT_BG_G 0x56

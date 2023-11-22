@@ -28,10 +28,22 @@
 
 #include "turtlesim/turtle.hpp"
 
-#include <math.h>
-
 #include <QColor>
 #include <QRgb>
+
+#include <cmath>
+#include <functional>
+#include <string>
+
+#include "geometry_msgs/msg/twist.hpp"
+#include "rclcpp/rclcpp.hpp"
+
+#include "turtlesim/action/rotate_absolute.hpp"
+#include "turtlesim/msg/pose.hpp"
+#include "turtlesim/msg/color.hpp"
+#include "turtlesim/srv/set_pen.hpp"
+#include "turtlesim/srv/teleport_absolute.hpp"
+#include "turtlesim/srv/teleport_relative.hpp"
 
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
