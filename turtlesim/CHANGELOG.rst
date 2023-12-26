@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove all uses of ament_target_dependencies. (`#159 <https://github.com/ros/ros_tutorials/issues/159>`_)
+* Contributors: Chris Lalancette
+
 1.7.4 (2023-10-04)
 ------------------
 * Crop galactic.png and rolling.png to 45x45. (`#158 <https://github.com/ros/ros_tutorials/issues/158>`_)
