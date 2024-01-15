@@ -46,7 +46,6 @@
 #include "turtlesim/srv/teleport_relative.hpp"
 #include "turtlesim/qos.hpp"
 
-
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
 #define DEFAULT_PEN_B 0xff
