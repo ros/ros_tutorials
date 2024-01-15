@@ -38,7 +38,6 @@ inline rclcpp::QoS topic_qos()
 {
   return rclcpp::QoS(rclcpp::KeepLast(1)).reliable();
 }
-
 }  // namespace turtlesim
 
 #endif  // TURTLESIM__QOS_HPP_
