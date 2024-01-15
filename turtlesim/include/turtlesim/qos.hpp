@@ -29,6 +29,8 @@
 #ifndef TURTLESIM__QOS_HPP_
 #define TURTLESIM__QOS_HPP_
 
+#include "rclcpp/rclcpp.hpp"
+
 namespace turtlesim
 {
 // Return the QoS used for all publishers/subscriptions.

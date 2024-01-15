@@ -27,7 +27,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include "turtlesim/turtle.hpp"
-#include "turtlesim/qos.hpp"
 
 #include <QColor>
 #include <QRgb>
@@ -45,6 +44,8 @@
 #include "turtlesim/srv/set_pen.hpp"
 #include "turtlesim/srv/teleport_absolute.hpp"
 #include "turtlesim/srv/teleport_relative.hpp"
+#include "turtlesim/qos.hpp"
+
 
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
