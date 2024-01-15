@@ -36,6 +36,8 @@
 #include <std_srvs/srv/empty.hpp>
 #include <turtlesim/msg/pose.hpp>
 
+#include "turtlesim/qos.hpp"
+
 #define PI 3.141592f
 
 class DrawSquare final : public rclcpp::Node
@@ -44,11 +46,12 @@ public:
   explicit DrawSquare(const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
   : rclcpp::Node("draw_square", options)
   {
-    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
+    const rclcpp::QoS qos = turtlesim::topic_qos();
+    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", qos);
 
     pose_sub_ =
       this->create_subscription<turtlesim::msg::Pose>(
-      "turtle1/pose", 1, std::bind(&DrawSquare::poseCallback, this, std::placeholders::_1));
+      "turtle1/pose", qos, std::bind(&DrawSquare::poseCallback, this, std::placeholders::_1));
 
     reset_client_ = this->create_client<std_srvs::srv::Empty>("reset");
 

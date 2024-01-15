@@ -1,4 +1,4 @@
-// Copyright (c) 2009, Willow Garage, Inc.
+// Copyright (c) 2024, Open Source Robotics Foundation, Inc.
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
@@ -26,39 +26,18 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
+#ifndef TURTLESIM__QOS_HPP_
+#define TURTLESIM__QOS_HPP_
+
 #include <rclcpp/rclcpp.hpp>
-#include <turtlesim/msg/pose.hpp>
-#include <geometry_msgs/msg/twist.hpp>
 
-#include "turtlesim/qos.hpp"
-
-class MimicNode : public rclcpp::Node
+namespace turtlesim
 {
-public:
-  MimicNode()
-  : rclcpp::Node("turtle_mimic")
-  {
-    const rclcpp::QoS qos = turtlesim::topic_qos();
-    twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("output/cmd_vel", qos);
-    pose_sub_ = this->create_subscription<turtlesim::msg::Pose>(
-      "input/pose", qos, std::bind(&MimicNode::poseCallback, this, std::placeholders::_1));
-  }
-
-private:
-  void poseCallback(const turtlesim::msg::Pose::ConstSharedPtr pose)
-  {
-    geometry_msgs::msg::Twist twist;
-    twist.angular.z = pose->angular_velocity;
-    twist.linear.x = pose->linear_velocity;
-    twist_pub_->publish(twist);
-  }
-
-  rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-  rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
-};
-
-int main(int argc, char ** argv)
+// Return the QoS used for all publishers/subscriptions.
+inline rclcpp::QoS topic_qos()
 {
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<MimicNode>());
+  return rclcpp::QoS(rclcpp::KeepLast(7)).reliable();
 }
+}  // namespace turtlesim
+
+#endif  // TURTLESIM__QOS_HPP_

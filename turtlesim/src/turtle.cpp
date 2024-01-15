@@ -44,6 +44,7 @@
 #include "turtlesim/srv/set_pen.hpp"
 #include "turtlesim/srv/teleport_absolute.hpp"
 #include "turtlesim/srv/teleport_relative.hpp"
+#include "turtlesim/qos.hpp"
 
 #define DEFAULT_PEN_R 0xb3
 #define DEFAULT_PEN_G 0xb8
@@ -72,7 +73,7 @@ Turtle::Turtle(
 {
   pen_.setWidth(3);
 
-  rclcpp::QoS qos(rclcpp::KeepLast(7));
+  const rclcpp::QoS qos = topic_qos();
   velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(
     real_name + "/cmd_vel", qos, std::bind(
       &Turtle::velocityCallback, this,
