@@ -27,6 +27,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include "turtlesim/turtle.hpp"
+#include "turtlesim/qos.hpp"
 
 #include <QColor>
 #include <QRgb>
@@ -72,7 +73,7 @@ Turtle::Turtle(
 {
   pen_.setWidth(3);
 
-  rclcpp::QoS qos(rclcpp::KeepLast(7));
+  const rclcpp::QoS qos = topic_qos();
   velocity_sub_ = nh_->create_subscription<geometry_msgs::msg::Twist>(
     real_name + "/cmd_vel", qos, std::bind(
       &Turtle::velocityCallback, this,

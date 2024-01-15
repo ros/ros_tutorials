@@ -44,6 +44,8 @@
 # include <unistd.h>  // NO LINT
 #endif
 
+#include "turtlesim/qos.hpp"
+
 static constexpr char KEYCODE_RIGHT = 0x43;
 static constexpr char KEYCODE_LEFT = 0x44;
 static constexpr char KEYCODE_UP = 0x41;
@@ -186,7 +188,9 @@ public:
     nh_->declare_parameter("scale_angular", 2.0);
     nh_->declare_parameter("scale_linear", 2.0);
 
-    twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", 1);
+    twist_pub_ = nh_->create_publisher<geometry_msgs::msg::Twist>(
+      "turtle1/cmd_vel",
+      turtlesim::topic_qos());
     rotate_absolute_client_ = rclcpp_action::create_client<turtlesim::action::RotateAbsolute>(
       nh_,
       "turtle1/rotate_absolute");
