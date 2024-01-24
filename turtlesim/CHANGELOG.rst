@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use same QoS for all topic pub/subs (`#161 <https://github.com/ros/ros_tutorials/issues/161>`_)
+* Contributors: Yadu
+
 1.8.0 (2023-12-26)
 ------------------
 * Remove all uses of ament_target_dependencies. (`#159 <https://github.com/ros/ros_tutorials/issues/159>`_)
