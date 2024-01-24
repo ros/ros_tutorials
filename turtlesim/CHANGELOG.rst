@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.8.1 (2024-01-24)
+------------------
 * Use same QoS for all topic pub/subs (`#161 <https://github.com/ros/ros_tutorials/issues/161>`_)
 * Contributors: Yadu
 
