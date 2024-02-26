@@ -305,13 +305,12 @@ private:
 
   void sendGoal(float theta)
   {
-    auto goal = turtlesim::action::RotateAbsolute::Goal();
+    using Rotate = turtlesim::action::RotateAbsolute;
+    auto goal = Rotate::Goal();
     goal.theta = theta;
-    auto send_goal_options =
-      rclcpp_action::Client<turtlesim::action::RotateAbsolute>::SendGoalOptions();
+    auto send_goal_options = rclcpp_action::Client<Rotate>::SendGoalOptions();
     send_goal_options.goal_response_callback =
-      [this](rclcpp_action::ClientGoalHandle<turtlesim::action::RotateAbsolute>::SharedPtr
-        goal_handle)
+      [this](rclcpp_action::ClientGoalHandle<Rotate>::SharedPtr goal_handle)
       {
         RCLCPP_DEBUG(nh_->get_logger(), "Goal response received");
         this->goal_handle_ = goal_handle;
