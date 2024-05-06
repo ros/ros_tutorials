@@ -205,8 +205,8 @@ public:
     puts("Reading from keyboard");
     puts("---------------------------");
     puts("Use arrow keys to move the turtle.");
-    puts("Use G|B|V|C|D|E|R|T keys to rotate to absolute orientations. 'F' to cancel a rotation.");
-    puts("'Q' to quit.");
+    puts("Use g|b|v|c|d|e|r|t keys to rotate to absolute orientations. 'f' to cancel a rotation.");
+    puts("'q' to quit.");
 
     while (running) {
       // get the next event from the keyboard
