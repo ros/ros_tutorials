@@ -34,7 +34,7 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <std_srvs/srv/empty.hpp>
-#include <turtlesim/msg/pose.hpp>
+#include <turtlesim_msgs/msg/pose.hpp>
 
 #include "turtlesim/qos.hpp"
 
@@ -50,7 +50,7 @@ public:
     twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("turtle1/cmd_vel", qos);
 
     pose_sub_ =
-      this->create_subscription<turtlesim::msg::Pose>(
+      this->create_subscription<turtlesim_msgs::msg::Pose>(
       "turtle1/pose", qos, std::bind(&DrawSquare::poseCallback, this, std::placeholders::_1));
 
     reset_client_ = this->create_client<std_srvs::srv::Empty>("reset");
@@ -70,7 +70,7 @@ private:
     STOP_TURN,
   };
 
-  void poseCallback(const turtlesim::msg::Pose & pose)
+  void poseCallback(const turtlesim_msgs::msg::Pose & pose)
   {
     current_pose_ = pose;
     first_pose_set_ = true;
@@ -184,14 +184,14 @@ private:
     }
   }
 
-  turtlesim::msg::Pose current_pose_;
-  turtlesim::msg::Pose goal_pose_;
+  turtlesim_msgs::msg::Pose current_pose_;
+  turtlesim_msgs::msg::Pose goal_pose_;
   bool first_goal_set_ = false;
   bool first_pose_set_ = false;
   State state_ = FORWARD;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-  rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
+  rclcpp::Subscription<turtlesim_msgs::msg::Pose>::SharedPtr pose_sub_;
   rclcpp::Client<std_srvs::srv::Empty>::SharedPtr reset_client_;
   rclcpp::Client<std_srvs::srv::Empty>::SharedFuture reset_result_;
   rclcpp::TimerBase::SharedPtr timer_;

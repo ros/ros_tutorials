@@ -27,7 +27,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <rclcpp/rclcpp.hpp>
-#include <turtlesim/msg/pose.hpp>
+#include <turtlesim_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
 #include "turtlesim/qos.hpp"
@@ -40,12 +40,12 @@ public:
   {
     const rclcpp::QoS qos = turtlesim::topic_qos();
     twist_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("output/cmd_vel", qos);
-    pose_sub_ = this->create_subscription<turtlesim::msg::Pose>(
+    pose_sub_ = this->create_subscription<turtlesim_msgs::msg::Pose>(
       "input/pose", qos, std::bind(&MimicNode::poseCallback, this, std::placeholders::_1));
   }
 
 private:
-  void poseCallback(const turtlesim::msg::Pose::ConstSharedPtr pose)
+  void poseCallback(const turtlesim_msgs::msg::Pose::ConstSharedPtr pose)
   {
     geometry_msgs::msg::Twist twist;
     twist.angular.z = pose->angular_velocity;
@@ -54,7 +54,7 @@ private:
   }
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
-  rclcpp::Subscription<turtlesim::msg::Pose>::SharedPtr pose_sub_;
+  rclcpp::Subscription<turtlesim_msgs::msg::Pose>::SharedPtr pose_sub_;
 };
 
 int main(int argc, char ** argv)

@@ -41,8 +41,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/empty.hpp"
 
-#include "turtlesim/srv/kill.hpp"
-#include "turtlesim/srv/spawn.hpp"
+#include "turtlesim_msgs/srv/kill.hpp"
+#include "turtlesim_msgs/srv/spawn.hpp"
 
 #define DEFAULT_BG_R 0x45
 #define DEFAULT_BG_G 0x56
@@ -131,11 +131,11 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr & node_handle, QWidget * parent
     "reset",
     std::bind(&TurtleFrame::resetCallback, this, std::placeholders::_1, std::placeholders::_2));
   spawn_srv_ =
-    nh_->create_service<turtlesim::srv::Spawn>(
+    nh_->create_service<turtlesim_msgs::srv::Spawn>(
     "spawn",
     std::bind(&TurtleFrame::spawnCallback, this, std::placeholders::_1, std::placeholders::_2));
   kill_srv_ =
-    nh_->create_service<turtlesim::srv::Kill>(
+    nh_->create_service<turtlesim_msgs::srv::Kill>(
     "kill",
     std::bind(&TurtleFrame::killCallback, this, std::placeholders::_1, std::placeholders::_2));
 
@@ -170,8 +170,8 @@ TurtleFrame::~TurtleFrame()
 }
 
 bool TurtleFrame::spawnCallback(
-  const turtlesim::srv::Spawn::Request::SharedPtr req,
-  turtlesim::srv::Spawn::Response::SharedPtr res)
+  const turtlesim_msgs::srv::Spawn::Request::SharedPtr req,
+  turtlesim_msgs::srv::Spawn::Response::SharedPtr res)
 {
   std::string name = spawnTurtle(req->name, req->x, req->y, req->theta);
   if (name.empty()) {
@@ -185,8 +185,8 @@ bool TurtleFrame::spawnCallback(
 }
 
 bool TurtleFrame::killCallback(
-  const turtlesim::srv::Kill::Request::SharedPtr req,
-  turtlesim::srv::Kill::Response::SharedPtr)
+  const turtlesim_msgs::srv::Kill::Request::SharedPtr req,
+  turtlesim_msgs::srv::Kill::Response::SharedPtr)
 {
   M_Turtle::iterator it = turtles_.find(req->name);
   if (it == turtles_.end()) {
