@@ -94,21 +94,22 @@ Turtle::Turtle(
     std::bind(
       &Turtle::teleportAbsoluteCallback, this, std::placeholders::_1,
       std::placeholders::_2));
-  rotate_absolute_action_server_ = rclcpp_action::create_server<turtlesim_msgs::action::RotateAbsolute>(
-    nh,
-    real_name + "/rotate_absolute",
+  rotate_absolute_action_server_ =
+    rclcpp_action::create_server<turtlesim_msgs::action::RotateAbsolute>(
+      nh,
+      real_name + "/rotate_absolute",
     [](const rclcpp_action::GoalUUID &,
     std::shared_ptr<const turtlesim_msgs::action::RotateAbsolute::Goal>)
     {
-      // Accept all goals
+        // Accept all goals
       return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
-    },
+      },
     [](const std::shared_ptr<RotateAbsoluteGoalHandle>)
     {
-      // Accept all cancel requests
+        // Accept all cancel requests
       return rclcpp_action::CancelResponse::ACCEPT;
-    },
-    std::bind(&Turtle::rotateAbsoluteAcceptCallback, this, std::placeholders::_1));
+      },
+      std::bind(&Turtle::rotateAbsoluteAcceptCallback, this, std::placeholders::_1));
 
   last_command_time_ = nh_->now();
 

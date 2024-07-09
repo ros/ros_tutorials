@@ -69,9 +69,9 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(TARGETS 
-  turtlesim_node 
-  turtle_teleop_key 
+install(TARGETS
+  turtlesim_node
+  turtle_teleop_key
   draw_square
   mimic
   DESTINATION lib/${PROJECT_NAME})
