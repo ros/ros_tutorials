@@ -119,7 +119,7 @@ void turn(rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub)
 
 void timerCallback(rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub)
 {
-  if (g_first_pose_set)
+  if (!g_first_pose_set) // Fixed the issue where only a straight line was drawn instead of a square.
   {
     return;
   }
