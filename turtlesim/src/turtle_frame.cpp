@@ -108,6 +108,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr & node_handle, QWidget * parent
   turtles.append("humble.png");
   turtles.append("iron.png");
   turtles.append("jazzy.png");
+  turtles.append("kilted.png");
   turtles.append("rolling.png");
 
   QString images_path =
