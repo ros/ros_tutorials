@@ -44,7 +44,6 @@ add_executable(turtlesim_node
 target_include_directories(turtlesim_node PRIVATE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-  ${Qt${QT_VERSION_MAJOR}Widgets_INCLUDE_DIRS}
 )
 target_link_libraries(turtlesim_node PRIVATE
   ament_index_cpp::ament_index_cpp
