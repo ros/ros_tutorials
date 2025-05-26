@@ -35,59 +35,54 @@ else()
   qt5_wrap_cpp(turtlesim_node_MOCS include/turtlesim/turtle_frame.hpp)
 endif()
 
+add_library(MocHeaders INTERFACE)
+target_include_directories(MocHeaders INTERFACE
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+)
+
 add_executable(turtlesim_node
   src/turtlesim.cpp
   src/turtle.cpp
   src/turtle_frame.cpp
   ${turtlesim_node_MOCS}
 )
-target_include_directories(turtlesim_node PRIVATE
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-)
+
 target_link_libraries(turtlesim_node PRIVATE
   ament_index_cpp::ament_index_cpp
   ${cpp_typesupport_target}
   ${geometry_msgs_TARGETS}
   ${turtlesim_msgs_TARGETS}
   Qt${QT_VERSION_MAJOR}::Widgets
+  MocHeaders
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action
   ${std_srvs_TARGETS}
 )
 
 add_executable(turtle_teleop_key tutorials/teleop_turtle_key.cpp)
-target_include_directories(turtle_teleop_key PRIVATE
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-)
 target_link_libraries(turtle_teleop_key PRIVATE
   ${turtlesim_msgs_TARGETS}
   ${geometry_msgs_TARGETS}
+  MocHeaders
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action
 )
 
 add_executable(draw_square tutorials/draw_square.cpp)
-target_include_directories(draw_square PRIVATE
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-)
 target_link_libraries(draw_square PRIVATE
   ${turtlesim_msgs_TARGETS}
   ${geometry_msgs_TARGETS}
+  MocHeaders
   rclcpp::rclcpp
   ${std_srvs_TARGETS}
 )
 
 add_executable(mimic tutorials/mimic.cpp)
-target_include_directories(mimic PRIVATE
-  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
-)
 target_link_libraries(mimic PRIVATE
   ${turtlesim_msgs_TARGETS}
   ${geometry_msgs_TARGETS}
+  MocHeaders
   rclcpp::rclcpp
 )
 
