@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.1 (2025-05-26)
+-------------------
+* Support Qt6 (`#170 <https://github.com/ros/ros_tutorials/issues/170>`_)
+* Add icon for Kilted Kaiju (`#180 <https://github.com/ros/ros_tutorials/issues/180>`_)
+* Contributors: Alejandro Hernández Cordero, Scott K Logan
+
 1.10.0 (2025-04-25)
 -------------------
 
