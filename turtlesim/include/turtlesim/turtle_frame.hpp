@@ -110,6 +110,8 @@ private:
   rclcpp::Service<turtlesim_msgs::srv::Kill>::SharedPtr kill_srv_;
   rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub_;
 
+  rclcpp::executors::SingleThreadedExecutor executor_;
+
   typedef std::map<std::string, TurtlePtr> M_Turtle;
   M_Turtle turtles_;
   uint32_t id_counter_;
