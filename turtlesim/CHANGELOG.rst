@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.4.3 (2022-10-03)
+------------------
+* Update draw_square.cpp (`#174 <https://github.com/ros/ros_tutorials/issues/174>`_)
+* Contributors: Bass Builder
+
 1.4.2 (2022-05-17)
 ------------------
 * Add humble turtle (`#140 <https://github.com/ros/ros_tutorials/issues/140>`_)
