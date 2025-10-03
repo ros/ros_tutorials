@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.2 (2025-10-03)
+-------------------
+* get rid of deprecated rclcpp::spin_some() (`#183 <https://github.com/ros/ros_tutorials/issues/183>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.10.1 (2025-05-26)
 -------------------
 * Support Qt6 (`#170 <https://github.com/ros/ros_tutorials/issues/170>`_)

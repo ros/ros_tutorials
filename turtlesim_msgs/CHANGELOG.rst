@@ -2,6 +2,11 @@
 Changelog for package turtlesim_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.2 (2025-10-03)
+-------------------
+* fix cmake deprecation (`#182 <https://github.com/ros/ros_tutorials/issues/182>`_)
+* Contributors: mosfet80
+
 1.10.1 (2025-05-26)
 -------------------
 
