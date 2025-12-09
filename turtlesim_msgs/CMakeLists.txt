@@ -15,11 +15,11 @@ find_package(ament_cmake REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-set(msg_files
+set(action_files
   action/RotateAbsolute.action
 )
 
-set(action_files
+set(msg_files
   msg/Color.msg
   msg/Pose.msg
 )
