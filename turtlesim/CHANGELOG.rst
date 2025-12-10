@@ -2,6 +2,9 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.9.4 (2025-12-10)
+------------------
+
 1.9.3 (2025-05-20)
 ------------------
 * Add icon for Kilted Kaiju (`#181 <https://github.com/ros/ros_tutorials/issues/181>`_)
