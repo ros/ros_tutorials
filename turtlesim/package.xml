@@ -22,7 +22,7 @@
   <author email="michael.jeronimo@openrobotics.org">Michael Jeronimo</author>
   <author email="sloretz@openrobotics.org">Shane Loretz</author>
 
-  <build_depend>qqt6-base-dev</build_depend>
+  <build_depend>qt6-base-dev</build_depend>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
