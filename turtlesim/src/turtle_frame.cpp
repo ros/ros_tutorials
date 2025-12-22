@@ -116,9 +116,9 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr & node_handle, QWidget * parent
   std::filesystem::path path_tutlesim_images("turtlesim");
   path_tutlesim_images /= "images";
   std::filesystem::path images_path_p;
-  ament_index_cpp::get_package_share_directory(path_tutlesim_images, images_path_p);
+  ament_index_cpp::get_package_share_directory(path_tutlesim_images.string(), images_path_p);
 
-  QString images_path = images_path_p.c_str();
+  QString images_path = images_path_p.string().c_str();
   for (int i = 0; i < turtles.size(); ++i) {
     QImage img;
     img.load(images_path + turtles[i]);
