@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.4 (2025-12-23)
+-------------------
+* Updated deprecated ament_index_cpp API (`#190 <https://github.com/ros/ros_tutorials/issues/190>`_)
+* Use qt6 as the default dependency from rosdep (`#189 <https://github.com/ros/ros_tutorials/issues/189>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.10.3 (2025-12-10)
 -------------------
 

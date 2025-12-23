@@ -2,6 +2,9 @@
 Changelog for package turtlesim_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.4 (2025-12-23)
+-------------------
+
 1.10.3 (2025-12-10)
 -------------------
 * fix: swap action and message file group names in CMakeLists.txt (`#186 <https://github.com/ros/ros_tutorials/issues/186>`_) (`#187 <https://github.com/ros/ros_tutorials/issues/187>`_)
