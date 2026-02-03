@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.5 (2026-02-03)
+-------------------
+* fix bug loading turtle images (`#192 <https://github.com/ros/ros_tutorials//issues/192>`_)
+* Contributors: dcconner
+
 1.10.4 (2025-12-23)
 -------------------
 * Updated deprecated ament_index_cpp API (`#190 <https://github.com/ros/ros_tutorials/issues/190>`_)
