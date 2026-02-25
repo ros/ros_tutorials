@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.6 (2026-02-25)
+-------------------
+* Use get_package_share_path (`#193 <https://github.com/ros/ros_tutorials/issues/193>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.10.5 (2026-02-03)
 -------------------
 * fix bug loading turtle images (`#192 <https://github.com/ros/ros_tutorials//issues/192>`_)
