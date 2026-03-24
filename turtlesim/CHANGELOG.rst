@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.10.7 (2026-03-24)
+-------------------
+* Use new ROSIDL aggregate CMake target (`#194 <https://github.com/ros/ros_tutorials/issues/194>`_)
+* Contributors: Emerson Knapp
+
 1.10.6 (2026-02-25)
 -------------------
 * Use get_package_share_path (`#193 <https://github.com/ros/ros_tutorials/issues/193>`_)
