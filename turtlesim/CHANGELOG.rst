@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.8 (2026-04-24)
+-------------------
 * Use rosdep keys that select Qt5 or Qt6 by platform (`#195 <https://github.com/ros/ros_tutorials/issues/195>`_)
 * Contributors: Shane Loretz
 
