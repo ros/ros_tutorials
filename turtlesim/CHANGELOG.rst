@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use rosdep keys that select Qt5 or Qt6 by platform (`#195 <https://github.com/ros/ros_tutorials/issues/195>`_)
+* Contributors: Shane Loretz
+
 1.10.7 (2026-03-24)
 -------------------
 * Use new ROSIDL aggregate CMake target (`#194 <https://github.com/ros/ros_tutorials/issues/194>`_)
