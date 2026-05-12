@@ -2,8 +2,8 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.10.9 (2026-05-12)
+-------------------
 * Add icon for Lyrical Luth (`#196 <https://github.com/ros/ros_tutorials/issues/196>`_) (`#197 <https://github.com/ros/ros_tutorials/issues/197>`_)
 * Contributors: mergify[bot]
 
