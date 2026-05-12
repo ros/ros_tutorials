@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add icon for Lyrical Luth (`#196 <https://github.com/ros/ros_tutorials/issues/196>`_) (`#197 <https://github.com/ros/ros_tutorials/issues/197>`_)
+* Contributors: mergify[bot]
+
 1.10.8 (2026-04-24)
 -------------------
 * Use rosdep keys that select Qt5 or Qt6 by platform (`#195 <https://github.com/ros/ros_tutorials/issues/195>`_)
