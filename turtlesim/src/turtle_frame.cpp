@@ -112,6 +112,7 @@ TurtleFrame::TurtleFrame(rclcpp::Node::SharedPtr & node_handle, QWidget * parent
   turtles.append("iron.png");
   turtles.append("jazzy.png");
   turtles.append("kilted.png");
+  turtles.append("lyrical.png");
   turtles.append("rolling.png");
 
   std::filesystem::path path_tutlesim_images("turtlesim");
