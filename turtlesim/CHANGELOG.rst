@@ -2,6 +2,11 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.11.1 (2026-05-13)
+-------------------
+* Add icon for Lyrical Luth (`#196 <https://github.com/ros/ros_tutorials/issues/196>`_)
+* Contributors: Shane Loretz
+
 1.11.0 (2026-05-06)
 -------------------
 
