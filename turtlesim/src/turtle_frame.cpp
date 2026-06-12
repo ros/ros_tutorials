@@ -296,10 +296,8 @@ void TurtleFrame::paintEvent(QPaintEvent * event)
 
   painter.drawImage(QPoint(0, 0), path_image_);
 
-  M_Turtle::iterator it = turtles_.begin();
-  M_Turtle::iterator end = turtles_.end();
-  for (; it != end; ++it) {
-    it->second->paint(painter);
+  for (auto & [name, turtle] : turtles_) {
+    turtle->paint(painter);
   }
 }
 
@@ -311,10 +309,8 @@ void TurtleFrame::updateTurtles()
   }
 
   bool modified = false;
-  M_Turtle::iterator it = turtles_.begin();
-  M_Turtle::iterator end = turtles_.end();
-  for (; it != end; ++it) {
-    modified |= it->second->update(
+  for (auto & [name, turtle] : turtles_) {
+    modified |= turtle->update(
       0.001 * update_timer_->interval(), path_painter_, path_image_, width_in_meters_,
       height_in_meters_);
   }

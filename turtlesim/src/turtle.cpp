@@ -182,8 +182,10 @@ void Turtle::rotateAbsoluteAcceptCallback(
     rotate_absolute_goal_handle_->abort(rotate_absolute_result_);
   }
   rotate_absolute_goal_handle_ = goal_handle;
-  rotate_absolute_feedback_.reset(new turtlesim_msgs::action::RotateAbsolute::Feedback);
-  rotate_absolute_result_.reset(new turtlesim_msgs::action::RotateAbsolute::Result);
+  rotate_absolute_feedback_ =
+    std::make_shared<turtlesim_msgs::action::RotateAbsolute::Feedback>();
+  rotate_absolute_result_ =
+    std::make_shared<turtlesim_msgs::action::RotateAbsolute::Result>();
   rotate_absolute_start_orient_ = orient_;
 }
 
@@ -202,11 +204,7 @@ bool Turtle::update(
   qreal old_orient = orient_;
 
   // first process any teleportation requests, in order
-  V_TeleportRequest::iterator it = teleport_requests_.begin();
-  V_TeleportRequest::iterator end = teleport_requests_.end();
-  for (; it != end; ++it) {
-    const TeleportRequest & req = *it;
-
+  for (const TeleportRequest & req : teleport_requests_) {
     QPointF old_pos = pos_;
     if (req.relative) {
       orient_ += req.theta;
