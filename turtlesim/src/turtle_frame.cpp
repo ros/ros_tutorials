@@ -32,7 +32,7 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <format>
+#include <format>  // NOLINT(build/include_order)
 #include <functional>
 #include <string>
 

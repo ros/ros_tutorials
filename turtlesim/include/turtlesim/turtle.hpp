@@ -49,7 +49,7 @@
 #include <QPointF>
 
 #include <memory>
-#include <numbers>
+#include <numbers>  // NOLINT(build/include_order)
 #include <string>
 #include <vector>
 
