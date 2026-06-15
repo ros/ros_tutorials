@@ -49,14 +49,15 @@
 #include <QPointF>
 
 #include <memory>
+#include <numbers>  // NOLINT(build/include_order)
 #include <string>
 #include <vector>
 
-#define PI 3.14159265
-#define TWO_PI 2.0 * PI
-
 namespace turtlesim
 {
+inline constexpr double PI = std::numbers::pi;
+inline constexpr double TWO_PI = 2.0 * std::numbers::pi;
+
 class Turtle
 {
 public:

@@ -30,6 +30,7 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <numbers>  // NOLINT(build/include_order)
 
 #include <geometry_msgs/msg/twist.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -38,7 +39,7 @@
 
 #include "turtlesim/qos.hpp"
 
-#define PI 3.141592f
+inline constexpr float PI = std::numbers::pi_v<float>;
 
 class DrawSquare final : public rclcpp::Node
 {
@@ -62,7 +63,7 @@ public:
   }
 
 private:
-  enum State
+  enum class State
   {
     FORWARD,
     STOP_FORWARD,
@@ -106,7 +107,7 @@ private:
   {
     if (hasStopped()) {
       RCLCPP_INFO(this->get_logger(), "Reached goal");
-      state_ = TURN;
+      state_ = State::TURN;
       goal_pose_.x = current_pose_.x;
       goal_pose_.y = current_pose_.y;
       goal_pose_.theta = fmod(current_pose_.theta + PI / 2.0f, 2.0f * PI);
@@ -124,7 +125,7 @@ private:
   {
     if (hasStopped()) {
       RCLCPP_INFO(this->get_logger(), "Reached goal");
-      state_ = FORWARD;
+      state_ = State::FORWARD;
       goal_pose_.x = cos(current_pose_.theta) * 2 + current_pose_.x;
       goal_pose_.y = sin(current_pose_.theta) * 2 + current_pose_.y;
       goal_pose_.theta = current_pose_.theta;
@@ -137,7 +138,7 @@ private:
   void forward()
   {
     if (hasReachedGoal()) {
-      state_ = STOP_FORWARD;
+      state_ = State::STOP_FORWARD;
       commandTurtle(0, 0);
     } else {
       commandTurtle(1.0f, 0);
@@ -147,7 +148,7 @@ private:
   void turn()
   {
     if (hasReachedGoal()) {
-      state_ = STOP_TURN;
+      state_ = State::STOP_TURN;
       commandTurtle(0, 0);
     } else {
       commandTurtle(0, 0.4f);
@@ -166,21 +167,27 @@ private:
 
     if (!first_goal_set_) {
       first_goal_set_ = true;
-      state_ = FORWARD;
+      state_ = State::FORWARD;
       goal_pose_.x = cos(current_pose_.theta) * 2 + current_pose_.x;
       goal_pose_.y = sin(current_pose_.theta) * 2 + current_pose_.y;
       goal_pose_.theta = current_pose_.theta;
       printGoal();
     }
 
-    if (state_ == FORWARD) {
-      forward();
-    } else if (state_ == STOP_FORWARD) {
-      stopForward();
-    } else if (state_ == TURN) {
-      turn();
-    } else if (state_ == STOP_TURN) {
-      stopTurn();
+    using enum State;
+    switch (state_) {
+      case FORWARD:
+        forward();
+        break;
+      case STOP_FORWARD:
+        stopForward();
+        break;
+      case TURN:
+        turn();
+        break;
+      case STOP_TURN:
+        stopTurn();
+        break;
     }
   }
 
@@ -188,7 +195,7 @@ private:
   turtlesim_msgs::msg::Pose goal_pose_;
   bool first_goal_set_ = false;
   bool first_pose_set_ = false;
-  State state_ = FORWARD;
+  State state_ = State::FORWARD;
 
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub_;
   rclcpp::Subscription<turtlesim_msgs::msg::Pose>::SharedPtr pose_sub_;

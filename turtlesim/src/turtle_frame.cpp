@@ -32,6 +32,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <format>  // NOLINT(build/include_order)
 #include <functional>
 #include <string>
 
@@ -222,7 +223,7 @@ void TurtleFrame::parameterEventCallback(
 
 bool TurtleFrame::hasTurtle(const std::string & name)
 {
-  return turtles_.find(name) != turtles_.end();
+  return turtles_.contains(name);
 }
 
 std::string TurtleFrame::spawnTurtle(const std::string & name, float x, float y, float angle)
@@ -236,10 +237,8 @@ std::string TurtleFrame::spawnTurtle(
 {
   std::string real_name = name;
   if (real_name.empty()) {
-    do{
-      std::stringstream ss;
-      ss << "turtle" << ++id_counter_;
-      real_name = ss.str();
+    do {
+      real_name = std::format("turtle{}", ++id_counter_);
     } while (hasTurtle(real_name));
   } else {
     if (hasTurtle(real_name)) {
