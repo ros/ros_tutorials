@@ -30,7 +30,7 @@
 #include <cmath>
 #include <functional>
 #include <memory>
-#include <numbers>
+#include <numbers>  // NOLINT(build/include_order)
 
 #include <geometry_msgs/msg/twist.hpp>
 #include <rclcpp/rclcpp.hpp>
