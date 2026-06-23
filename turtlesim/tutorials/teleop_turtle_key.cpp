@@ -205,7 +205,7 @@ public:
     // Spin the node on a background thread. std::jthread joins automatically
     // when keyLoop() returns, and the stop_token cancels the executor cleanly,
     // so the spinner is guaranteed to have stopped touching the node before it
-    // is destroyed -- unlike the previous detach() which raced shutdown.
+    // is destroyed
     std::jthread spin_thread(
       [this](std::stop_token stop_token) {
         rclcpp::executors::SingleThreadedExecutor executor;
