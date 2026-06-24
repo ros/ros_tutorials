@@ -28,8 +28,10 @@
 #include <signal.h>
 #include <stdio.h>
 
+#include <atomic>
 #include <functional>
 #include <stdexcept>
+#include <stop_token>  // NOLINT(build/include_order)
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
@@ -61,7 +63,7 @@ static constexpr char KEYCODE_R = 0x72;
 static constexpr char KEYCODE_T = 0x74;
 static constexpr char KEYCODE_V = 0x76;
 
-bool running = true;
+std::atomic<bool> running = true;
 
 class KeyboardReader final
 {
@@ -200,7 +202,17 @@ public:
   {
     char c;
 
-    std::thread{std::bind(&TeleopTurtle::spin, this)}.detach();
+    // Spin the node on a background thread. std::jthread joins automatically
+    // when keyLoop() returns, and the stop_token cancels the executor cleanly,
+    // so the spinner is guaranteed to have stopped touching the node before it
+    // is destroyed
+    std::jthread spin_thread(
+      [this](std::stop_token stop_token) {
+        rclcpp::executors::SingleThreadedExecutor executor;
+        executor.add_node(nh_);
+        std::stop_callback cancel_on_stop(stop_token, [&executor]() {executor.cancel();});
+        executor.spin();
+      });
 
     puts("Reading from keyboard");
     puts("---------------------------");
@@ -298,11 +310,6 @@ public:
   }
 
 private:
-  void spin()
-  {
-    rclcpp::spin(nh_);
-  }
-
   void sendGoal(float theta)
   {
     using Rotate = turtlesim_msgs::action::RotateAbsolute;
