@@ -31,7 +31,7 @@
 #include <atomic>
 #include <functional>
 #include <stdexcept>
-#include <stop_token>
+#include <stop_token>  // NOLINT(build/include_order)
 #include <thread>
 
 #include <rclcpp/rclcpp.hpp>
