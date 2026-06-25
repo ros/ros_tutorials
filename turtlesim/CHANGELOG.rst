@@ -2,6 +2,13 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.11.2 (2026-06-25)
+-------------------
+* replace detached spin thread with std::jthread (`#200 <https://github.com/ros/ros_tutorials//issues/200>`_)
+* bump cpp20, contains and std::numbers (`#199 <https://github.com/ros/ros_tutorials//issues/199>`_)
+* use make_shared and range-for loops (`#198 <https://github.com/ros/ros_tutorials//issues/198>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.11.1 (2026-05-13)
 -------------------
 * Add icon for Lyrical Luth (`#196 <https://github.com/ros/ros_tutorials/issues/196>`_)
