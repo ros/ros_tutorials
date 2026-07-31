@@ -34,7 +34,11 @@
 #include <stop_token>  // NOLINT(build/include_order)
 #include <thread>
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/executors/single_threaded_executor.hpp>
+#include <rclcpp/logging.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/utilities.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <turtlesim_msgs/action/rotate_absolute.hpp>

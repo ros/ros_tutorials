@@ -26,7 +26,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/qos.hpp>
+#include <rclcpp/subscription.hpp>
+#include <rclcpp/utilities.hpp>
 #include <turtlesim_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 

@@ -33,7 +33,16 @@
 #include <numbers>  // NOLINT(build/include_order)
 
 #include <geometry_msgs/msg/twist.hpp>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/client.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/logging.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/node_options.hpp>
+#include <rclcpp/publisher.hpp>
+#include <rclcpp/qos.hpp>
+#include <rclcpp/subscription.hpp>
+#include <rclcpp/timer.hpp>
+#include <rclcpp/utilities.hpp>
 #include <std_srvs/srv/empty.hpp>
 #include <turtlesim_msgs/msg/pose.hpp>
 
