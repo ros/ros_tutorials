@@ -36,7 +36,13 @@
 #include <string>
 
 #include "geometry_msgs/msg/twist.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "rclcpp/duration.hpp"
+#include "rclcpp/logging.hpp"
+#include "rclcpp/node.hpp"
+#include "rclcpp/qos.hpp"
+#include "rclcpp_action/create_server.hpp"
+#include "rclcpp_action/server.hpp"
+#include "rclcpp_action/types.hpp"
 
 #include "turtlesim_msgs/action/rotate_absolute.hpp"
 #include "turtlesim_msgs/msg/pose.hpp"

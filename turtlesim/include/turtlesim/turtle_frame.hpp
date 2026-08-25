@@ -44,7 +44,11 @@
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 #include <map>
 #include <string>
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/executors/single_threaded_executor.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/service.hpp>
+#include <rclcpp/subscription.hpp>
+#include <rclcpp/time.hpp>
 
 #include <rcl_interfaces/msg/parameter_event.hpp>
 #include <std_srvs/srv/empty.hpp>

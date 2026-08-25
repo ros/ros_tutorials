@@ -31,8 +31,13 @@
 
 // This prevents a MOC error with versions of boost >= 1.48
 #ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
-# include <rclcpp/rclcpp.hpp>
-# include <rclcpp_action/rclcpp_action.hpp>
+# include <rclcpp/node.hpp>
+# include <rclcpp/publisher.hpp>
+# include <rclcpp/service.hpp>
+# include <rclcpp/subscription.hpp>
+# include <rclcpp/time.hpp>
+# include <rclcpp_action/server.hpp>
+# include <rclcpp_action/server_goal_handle.hpp>
 
 # include <geometry_msgs/msg/twist.hpp>
 # include <turtlesim_msgs/action/rotate_absolute.hpp>

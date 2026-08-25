@@ -28,7 +28,8 @@
 
 #include <QApplication>
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/node.hpp>
+#include <rclcpp/utilities.hpp>
 
 #include "turtlesim/turtle_frame.hpp"
 
