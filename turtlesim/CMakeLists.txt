@@ -14,8 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
@@ -23,12 +22,8 @@ find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(turtlesim_msgs REQUIRED)
 
-if(${QT_VERSION_MAJOR} GREATER "5")
-  qt_standard_project_setup()
-  qt_wrap_cpp(turtlesim_node_MOCS include/turtlesim/turtle_frame.hpp)
-else()
-  qt5_wrap_cpp(turtlesim_node_MOCS include/turtlesim/turtle_frame.hpp)
-endif()
+qt_standard_project_setup()
+qt_wrap_cpp(turtlesim_node_MOCS include/turtlesim/turtle_frame.hpp)
 
 add_library(MocHeaders INTERFACE)
 target_include_directories(MocHeaders INTERFACE
@@ -48,7 +43,7 @@ target_link_libraries(turtlesim_node PRIVATE
   ${cpp_typesupport_target}
   geometry_msgs::geometry_msgs
   turtlesim_msgs::turtlesim_msgs
-  Qt${QT_VERSION_MAJOR}::Widgets
+  Qt6::Widgets
   MocHeaders
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action
