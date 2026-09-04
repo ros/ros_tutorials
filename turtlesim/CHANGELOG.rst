@@ -2,6 +2,12 @@
 Changelog for package turtlesim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.11.3 (2026-09-04)
+-------------------
+* Removed Qt5 support (`#205 <https://github.com/ros/ros_tutorials/issues/205>`_)
+* Granular rclcpp includes (`#204 <https://github.com/ros/ros_tutorials/issues/204>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.11.2 (2026-06-25)
 -------------------
 * replace detached spin thread with std::jthread (`#200 <https://github.com/ros/ros_tutorials//issues/200>`_)
