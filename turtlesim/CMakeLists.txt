@@ -16,9 +16,9 @@ find_package(geometry_msgs REQUIRED)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
+find_package(rcl_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(turtlesim_msgs REQUIRED)
 
@@ -40,11 +40,11 @@ add_executable(turtlesim_node
 
 target_link_libraries(turtlesim_node PRIVATE
   ament_index_cpp::ament_index_cpp
-  ${cpp_typesupport_target}
   geometry_msgs::geometry_msgs
   turtlesim_msgs::turtlesim_msgs
   Qt6::Widgets
   MocHeaders
+  rcl_interfaces::rcl_interfaces
   rclcpp::rclcpp
   rclcpp_action::rclcpp_action
   std_srvs::std_srvs
