@@ -26,15 +26,17 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
   <exec_depend>libqt6-core</exec_depend>
   <exec_depend>libqt6-gui</exec_depend>
+  <exec_depend>libqt6-widgets</exec_depend>
 
   <depend>ament_index_cpp</depend>
   <depend>geometry_msgs</depend>
   <depend>rcl_interfaces</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
-  <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>turtlesim_msgs</depend>
 

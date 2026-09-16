@@ -19,7 +19,6 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 find_package(rcl_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(turtlesim_msgs REQUIRED)
 
