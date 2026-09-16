@@ -40,7 +40,6 @@ add_executable(turtlesim_node
 
 target_link_libraries(turtlesim_node PRIVATE
   ament_index_cpp::ament_index_cpp
-  ${cpp_typesupport_target}
   geometry_msgs::geometry_msgs
   turtlesim_msgs::turtlesim_msgs
   Qt6::Widgets
