@@ -2,6 +2,11 @@
 Changelog for package turtlesim_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.11.4 (2026-10-22)
+-------------------
+* Include missing dependency (`#206 <https://github.com/ros/ros_tutorials/issues/206>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.11.3 (2026-09-04)
 -------------------
 
